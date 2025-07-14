@@ -1,33 +1,30 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { ThemeProvider } from '@mui/material/styles'
+import theme from './theme'
+import './App.css';
+import '@fontsource/poppins/700.css';
+import '@fontsource/poppins/600.css';
+import '@fontsource/poppins/500.css';
+import '@fontsource/poppins/400.css';
+import '@fontsource/poppins/300.css';
+import '@fontsource/inter/700.css';
+import '@fontsource/inter/600.css';
+import '@fontsource/inter/500.css';
+import '@fontsource/inter/400.css';
+import { Box } from '@mui/material';
+import { Header } from './components/Header';
+import { Footer } from './components/Footer';
+
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <ThemeProvider theme={theme}>
+        <Header />
+        <Box className="main-content" sx={{ textAlign: 'center' }}>
+          Container goes here
+        </Box>
+        <Footer />
+      </ThemeProvider>
     </>
   )
 }
