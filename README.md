@@ -3,6 +3,10 @@
 
 An exclusive e-commerce web app for discovering and shopping premium products online.
 
+## 💡About
+
+E-Commerce Exclusive is a modern e-commerce web app built with React, TypeScript, Vite, Material-UI (MUI), and Firebase for backend services. The UI is inspired by the [Full E-Commerce Website UI/UX Design](https://www.figma.com/community/file/1219312065205187851) from Figma by MD Rimel.
+
 ## 🚧 Project Status
 
 Ongoing project. Features, UI, and backend integration are under active development and may be incomplete.
@@ -32,10 +36,6 @@ Ongoing project. Features, UI, and backend integration are under active developm
 ### 🔹 UX Polish
 
 - [ ] UX Finishing (Form validation, skeleton screen, toast notif, responsive mobile)
-
-## 💡About
-
-E-Commerce Exclusive is a modern e-commerce web app built with React, TypeScript, Vite, Material-UI (MUI), and Firebase for backend services. The UI is inspired by the [Full E-Commerce Website UI/UX Design](https://www.figma.com/community/file/1219312065205187851) from Figma by MD Rimel.
 
 ## 📋 Planned Features
 
