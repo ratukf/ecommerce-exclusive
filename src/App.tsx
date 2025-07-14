@@ -12,6 +12,7 @@ import '@fontsource/inter/500.css';
 import '@fontsource/inter/400.css';
 import { Box } from '@mui/material';
 import { Header } from './components/Header';
+import { Footer } from './components/Footer';
 
 
 function App() {
@@ -19,8 +20,10 @@ function App() {
     <>
       <ThemeProvider theme={theme}>
         <Header />
-        <Box className="main-content">
+        <Box className="main-content" sx={{ textAlign: 'center' }}>
+          Container goes here
         </Box>
+        <Footer />
       </ThemeProvider>
     </>
   )
