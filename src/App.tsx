@@ -13,6 +13,7 @@ import '@fontsource/inter/400.css';
 import { Box } from '@mui/material';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
+import { Dashboard } from './pages/Dashboard';
 
 
 function App() {
@@ -21,7 +22,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <Header />
         <Box className="main-content" sx={{ textAlign: 'center' }}>
-          Container goes here
+          <Dashboard />
         </Box>
         <Footer />
       </ThemeProvider>
