@@ -68,7 +68,7 @@ export const NavigationBar = () => {
                     </Grid>
                 </Grid>
             </Box >
-            <Divider sx={{ color: '#000000', opacity: '30%', borderBottomWidth: 0.5 }} />
+            <Divider sx={{ backgroundColor: '#000000', opacity: 0.1, borderBottomWidth: 0.5 }} />
         </>
     )
 }
