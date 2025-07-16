@@ -8,9 +8,10 @@ interface FlashSaleSectionProps {
     setHovered: (id: string | null) => void;
     hovered: string | null;
     showDiscount: boolean;
+    onClick: (id: string) => void;
 }
 
-export const ProductsSection = ({ products, setHovered, hovered, showDiscount }: FlashSaleSectionProps) => {
+export const ProductsSection = ({ products, setHovered, hovered, showDiscount, onClick }: FlashSaleSectionProps) => {
     const theme = useTheme();
 
     return (
@@ -28,6 +29,7 @@ export const ProductsSection = ({ products, setHovered, hovered, showDiscount }:
                         }}
                         onMouseEnter={() => setHovered(product.id)}
                         onMouseLeave={() => setHovered(null)}
+                        onClick={() => onClick(product.id)}
                     >
                         <img
                             src={product.imageUrls[0]}
