@@ -1,4 +1,5 @@
 import { ThemeProvider } from '@mui/material/styles'
+import { BrowserRouter as Router, Routes, Route } from 'react-router';
 import theme from './theme'
 import './App.css';
 import '@fontsource/poppins/700.css';
@@ -14,18 +15,24 @@ import { Box } from '@mui/material';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { Dashboard } from './pages/Dashboard';
+import { Products } from './pages/Products';
 
 
 function App() {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <Header />
-        <Box className="main-content" sx={{ textAlign: 'center' }}>
-          <Dashboard />
-        </Box>
-        <Footer />
-      </ThemeProvider>
+        <Router>
+          <Header />
+          <Box className="main-content" sx={{ textAlign: 'center' }}>
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/products" element={<Products />} />
+            </Routes>
+          </Box>
+          <Footer />
+        </Router>
+      </ThemeProvider >
     </>
   )
 }
