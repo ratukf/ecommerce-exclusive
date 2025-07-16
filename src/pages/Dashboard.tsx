@@ -9,7 +9,7 @@ import { SLIDER } from '../contants/slider';
 import { ArrowButton } from '../components/ArrowButton';
 import { NavigationList } from '../components/Dashboard/NavigationList';
 import { ImageSlider } from '../components/Dashboard/ImageSlider';
-import { ProductsSection } from '../components/Dashboard/ProductsSection';
+import { ProductsSection } from '../components/ProductsSection';
 import { FlashSaleTimer } from '../components/Dashboard/FlashSaleTimer';
 import { CategoriesSection } from '../components/Dashboard/CategoriesSections';
 import { BannerSection } from '../components/Dashboard/BannerSection';
