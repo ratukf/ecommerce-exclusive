@@ -42,6 +42,11 @@ const theme = createTheme({
             fontSize: '2.25rem',
             fontWeight: 700,
         },
+        h3: {
+            fontFamily: 'Poppins, sans-serif',
+            fontSize: '16px',
+            fontWeight: 500,
+        },
         body1: {
             fontWeight: 400,
             fontSize: '1rem',
@@ -49,7 +54,19 @@ const theme = createTheme({
         body2: {
             fontWeight: 400,
             fontSize: '0.875rem',
-        }
+        },
+        subtitle1: {
+            fontFamily: 'Inter, sans-serif',
+            fontWeight: 600,
+            fontSize: '36px',
+            color: '#000'
+        },
+        subtitle2: {
+            fontFamily: 'Poppins, sans-serif',
+            fontWeight: 600,
+            fontSize: '16px',
+            color: '#DB4444',
+    }
     },
     components: {
         MuiButton: {
@@ -57,16 +74,31 @@ const theme = createTheme({
                 className: 'main-button',
                 style: {
                     fontFamily: 'Poppins, sans-serif',
+                    fontSize: '16px',
+                    textAlign: 'center',
+                    color: '#fafafa',
+                    textTransform: 'none'
+                }
+            },
+            styleOverrides: {
+                contained: {
                     padding: '16px 48px',
                     borderRadius: '4px',
-                    fontSize: '16px',
-                    fontWeight: 300,
-                    textAlign: 'center',
+                    fontWeight: 400,
                     backgroundColor: '#DB4444',
-                    color: '#fafafa',
+                    textTransform: 'none'
                 }
             }
         },
+        MuiListItemText: {
+            styleOverrides: {
+                primary: {
+                    fontFamily: 'Poppins, sans-serif',
+                    fontWeight: 400,
+                    fontSize: '16px',
+                }
+            }
+        }
     }
 })
 
