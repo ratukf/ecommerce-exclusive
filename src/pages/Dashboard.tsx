@@ -12,6 +12,7 @@ import { ImageSlider } from '../components/Dashboard/ImageSlider';
 import { ProductsSection } from '../components/Dashboard/ProductsSection';
 import { FlashSaleTimer } from '../components/Dashboard/FlashSaleTimer';
 import { CategoriesSection } from '../components/Dashboard/CategoriesSections';
+import { BannerSection } from '../components/Dashboard/BannerSection';
 
 export const Dashboard = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -85,6 +86,8 @@ export const Dashboard = () => {
                     <ProductsSection products={products.slice(4, 8)} setHovered={setHovered} hovered={hovered} showDiscount={false} />
                 }
             />
+            {/* Banner Section */}
+            <BannerSection />
         </>
     );
 }
