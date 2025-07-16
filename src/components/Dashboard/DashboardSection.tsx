@@ -8,6 +8,7 @@ interface DashboardSectionProps {
     buttonHeader: React.ReactNode;
     content: React.ReactNode;
     actionButton: string;
+    onClickActionButton?: () => void;
 }
 
 export const DashboardSection: React.FC<DashboardSectionProps> = ({
@@ -17,6 +18,7 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
     buttonHeader,
     content,
     actionButton,
+    onClickActionButton = () => { },
 }) => {
     const theme = useTheme();
 
@@ -47,7 +49,7 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
                 </Grid>
                 <Grid size={12}>
                     {actionButton && (
-                        <Button variant="contained">
+                        <Button variant="contained" onClick={onClickActionButton}>
                             {actionButton}
                         </Button>
                     )}

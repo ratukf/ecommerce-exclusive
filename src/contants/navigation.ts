@@ -17,7 +17,17 @@ export const NAV_LIST = [
             { label: 'Bags & Accessories', path: '/' },
         ]
     },
-    { label: "Electronics", path: '/' },
+    { label: "Electronics", path: '/',
+        children:
+        [
+            {label: 'Phones', path: '/'},
+            {label: 'Computers', path: '/'},
+            {label: 'SmartWatch', path: '/'},
+            {label: 'Camera', path: '/'},
+            {label: 'Headphones', path: '/'},
+            {label: 'Gaming', path: '/'}
+        ]
+     },
     { label: "Home & Lifestyle", path: '/' },
     { label: "Medicine", path: '/' },
     { label: "Sports & Outdoors", path: '/' },
