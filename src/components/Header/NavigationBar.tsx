@@ -1,30 +1,35 @@
 import { FavoriteBorderOutlined, SearchOutlined, ShoppingCartOutlined } from "@mui/icons-material";
 import { Box, Divider, Grid, IconButton, InputAdornment, TextField, Typography } from "@mui/material";
 import { useTheme } from "@mui/material";
+import { useLocation, useNavigate } from "react-router";
 
 export const NavigationBar = () => {
     const theme = useTheme();
     const NAVIGATION_LIST = [
         { label: 'Home', path: '/' },
-        { label: 'Contact', path: '/' },
-        { label: 'About', path: '/' },
-        { label: 'Sign Up', path: '/' }
+        { label: 'Contact', path: '/contact' },
+        { label: 'About', path: '/about' },
+        { label: 'Sign Up', path: '/signup' }
     ]
+    const nav = useNavigate();
+    const location = useLocation();
+
     return (
         <>
             <Box sx={{ width: '100%', color: theme.palette.grey[900], mt: 3 }}>
                 <Grid container sx={{ display: 'flex', mr: '8rem', ml: '8rem' }}>
                     <Grid size={3}>
-                        <Typography variant='h1' sx={{ '&:hover': { cursor: 'pointer' } }}>
+                        <Typography variant='h1' sx={{ '&:hover': { cursor: 'pointer' } }} onClick={() => nav('/')}>
                             Exclusive
                         </Typography>
                     </Grid>
                     <Grid size={6} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                         {NAVIGATION_LIST.map((item, index) => (
                             <Typography
+                                onClick={() => nav(item.path)}
                                 key={index}
                                 variant='body1'
-                                sx={{ margin: '0 20px', cursor: 'pointer', fontSize: '16px', '&:hover': { textDecoration: 'underline' } }}
+                                sx={{ margin: '0 20px', cursor: 'pointer', fontSize: '16px', textDecoration: location.pathname === item.path ? 'underline' : 'none', '&:hover': { textDecoration: 'underline' } }}
                             >
                                 {item.label}
                             </Typography>
