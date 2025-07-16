@@ -32,7 +32,7 @@ function App() {
           </Box>
           <Footer />
         </Router>
-      </ThemeProvider>
+      </ThemeProvider >
     </>
   )
 }
