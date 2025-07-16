@@ -14,6 +14,7 @@ import { FlashSaleTimer } from '../components/Dashboard/FlashSaleTimer';
 import { CategoriesSection } from '../components/Dashboard/CategoriesSections';
 import { BannerSection } from '../components/Dashboard/BannerSection';
 import { NewArrival } from '../components/Dashboard/NewArrival';
+import { Benefits } from '../components/Dashboard/Benefits';
 
 export const Dashboard = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -107,6 +108,8 @@ export const Dashboard = () => {
                 buttonHeader={null}
                 content={<NewArrival />}
             />
+            {/* Benefits Section */}
+            <Benefits />
         </>
     );
 }
