@@ -11,7 +11,7 @@ E-Commerce Exclusive is a modern e-commerce web app built with React, TypeScript
 
 Ongoing project. Features, UI, and backend integration are under active development and may be incomplete.
 
-> **Current stage:** Working on `Home`
+> **Current stage:** Working on `Product List`
 
 ### 🔹 Base Layout
 
@@ -20,7 +20,7 @@ Ongoing project. Features, UI, and backend integration are under active developm
 
 ### 🔹 Public Pages
 
-- [ ] Home (Hero, Promo, Categories, Best Selling, Products, Featured, Benefit)
+- [x] Home (Hero, Promo, Categories, Best Selling, Products, Featured, Benefit)
 - [ ] Product List
 - [ ] Product Detail
 - [ ] Contact
@@ -58,7 +58,7 @@ Ongoing project. Features, UI, and backend integration are under active developm
 
 ```bash
 # 1. Clone the repository
-git clone <your-repo-url>
+git clone https://github.com/ratukf/ecommerce-exclusive
 
 # 2. Install dependencies
 npm install
