@@ -13,6 +13,7 @@ import { ProductsSection } from '../components/Dashboard/ProductsSection';
 import { FlashSaleTimer } from '../components/Dashboard/FlashSaleTimer';
 import { CategoriesSection } from '../components/Dashboard/CategoriesSections';
 import { BannerSection } from '../components/Dashboard/BannerSection';
+import { NewArrival } from '../components/Dashboard/NewArrival';
 
 export const Dashboard = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -96,6 +97,15 @@ export const Dashboard = () => {
                 actionButton="View All Products"
                 buttonHeader={<ArrowButton />}
                 content={<ProductsSection products={products} setHovered={setHovered} hovered={hovered} showDiscount={true} />}
+            />
+            {/* New Arrival Section */}
+            <DashboardSection
+                categoryLabel="Featured"
+                sectionHeader="New Arrival"
+                sectionHeader2={null}
+                actionButton=""
+                buttonHeader={null}
+                content={<NewArrival />}
             />
         </>
     );
