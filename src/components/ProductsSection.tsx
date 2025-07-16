@@ -1,7 +1,7 @@
 import { FavoriteBorderOutlined, RemoveRedEyeOutlined } from "@mui/icons-material";
 import { Box, Grid, IconButton, Typography, useTheme } from "@mui/material";
-import type { Product } from "../../store/slice";
-import { countStar, renderStars } from "../../utils/rating";
+import type { Product } from "../store/slice";
+import { countStar, renderStars } from "../utils/rating";
 
 interface FlashSaleSectionProps {
     products: Product[];
