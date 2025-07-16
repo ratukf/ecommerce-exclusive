@@ -97,7 +97,7 @@ export const Dashboard = () => {
                 sectionHeader2={null}
                 actionButton="View All Products"
                 buttonHeader={<ArrowButton />}
-                content={<ProductsSection products={products} setHovered={setHovered} hovered={hovered} showDiscount={true} />}
+                content={<ProductsSection products={products} setHovered={setHovered} hovered={hovered} showDiscount={false} />}
             />
             {/* New Arrival Section */}
             <DashboardSection
