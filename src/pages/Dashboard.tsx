@@ -15,6 +15,7 @@ import { CategoriesSection } from '../components/Dashboard/CategoriesSections';
 import { BannerSection } from '../components/Dashboard/BannerSection';
 import { NewArrival } from '../components/Dashboard/NewArrival';
 import { Benefits } from '../components/Dashboard/Benefits';
+import { useNavigate } from 'react-router';
 
 export const Dashboard = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -46,6 +47,8 @@ export const Dashboard = () => {
         dispatch(fetchProducts());
     }, [dispatch]);
 
+    const nav = useNavigate();
+
 
     return (
         <>
@@ -67,6 +70,7 @@ export const Dashboard = () => {
                 actionButton="View All Products"
                 buttonHeader={<ArrowButton />}
                 content={<ProductsSection products={products.slice(0, 4)} setHovered={setHovered} hovered={hovered} showDiscount={true} />}
+                onClickActionButton={() => nav('/products')}
             />
             {/* Categories Section */}
             <DashboardSection
@@ -83,7 +87,7 @@ export const Dashboard = () => {
                 sectionHeader="Best Selling Products"
                 sectionHeader2={null}
                 actionButton=""
-                buttonHeader={<Button variant="contained">View All</Button>}
+                buttonHeader={<Button variant="contained" onClick={() => nav('/products')}>View All</Button>}
                 content={
                     <ProductsSection products={products.slice(4, 8)} setHovered={setHovered} hovered={hovered} showDiscount={false} />
                 }
@@ -98,6 +102,7 @@ export const Dashboard = () => {
                 actionButton="View All Products"
                 buttonHeader={<ArrowButton />}
                 content={<ProductsSection products={products} setHovered={setHovered} hovered={hovered} showDiscount={false} />}
+                onClickActionButton={() => nav('/products')}
             />
             {/* New Arrival Section */}
             <DashboardSection
