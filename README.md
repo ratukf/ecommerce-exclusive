@@ -58,7 +58,7 @@ Ongoing project. Features, UI, and backend integration are under active developm
 
 ```bash
 # 1. Clone the repository
-git clone <your-repo-url>
+git clone https://github.com/ratukf/ecommerce-exclusive
 
 # 2. Install dependencies
 npm install
