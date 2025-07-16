@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Grid } from '@mui/material';
+import { Button, Grid } from '@mui/material';
 import { DashboardSection } from '../components/Dashboard/DashboardSection';
 import { fetchProducts } from '../store/asyncAction';
 import type { AppDispatch } from '../store/store';
@@ -9,7 +9,7 @@ import { SLIDER } from '../contants/slider';
 import { ArrowButton } from '../components/ArrowButton';
 import { NavigationList } from '../components/Dashboard/NavigationList';
 import { ImageSlider } from '../components/Dashboard/ImageSlider';
-import { FlashSaleSection } from '../components/Dashboard/FlashSaleSection';
+import { ProductsSection } from '../components/Dashboard/ProductsSection';
 import { FlashSaleTimer } from '../components/Dashboard/FlashSaleTimer';
 import { CategoriesSection } from '../components/Dashboard/CategoriesSections';
 
@@ -63,7 +63,7 @@ export const Dashboard = () => {
                 sectionHeader2={<FlashSaleTimer endTime={END_TIME} />}
                 actionButton="View All Products"
                 buttonHeader={<ArrowButton />}
-                content={<FlashSaleSection products={products.slice(0, 4)} setHovered={setHovered} hovered={hovered} />}
+                content={<ProductsSection products={products.slice(0, 4)} setHovered={setHovered} hovered={hovered} showDiscount={true} />}
             />
             {/* Categories Section */}
             <DashboardSection
@@ -73,6 +73,17 @@ export const Dashboard = () => {
                 actionButton=""
                 buttonHeader={<ArrowButton />}
                 content={<CategoriesSection />}
+            />
+            {/* Best Selling Section */}
+            <DashboardSection
+                categoryLabel="This Month's"
+                sectionHeader="Best Selling Products"
+                sectionHeader2={null}
+                actionButton=""
+                buttonHeader={<Button variant="contained">View All</Button>}
+                content={
+                    <ProductsSection products={products.slice(4, 8)} setHovered={setHovered} hovered={hovered} showDiscount={false} />
+                }
             />
         </>
     );

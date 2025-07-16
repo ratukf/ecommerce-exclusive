@@ -7,9 +7,10 @@ interface FlashSaleSectionProps {
     products: Product[];
     setHovered: (id: string | null) => void;
     hovered: string | null;
+    showDiscount: boolean;
 }
 
-export const FlashSaleSection = ({ products, setHovered, hovered }: FlashSaleSectionProps) => {
+export const ProductsSection = ({ products, setHovered, hovered, showDiscount }: FlashSaleSectionProps) => {
     const theme = useTheme();
 
     return (
@@ -81,11 +82,13 @@ export const FlashSaleSection = ({ products, setHovered, hovered }: FlashSaleSec
                                 </IconButton>
                             </Box>
                         </Box>
-                        <Box sx={{ position: 'absolute', top: '1rem', left: '1rem', paddingY: '4px', paddingX: '12px', backgroundColor: theme.palette.secondary.main, borderRadius: '4px' }}>
-                            <Typography variant="h3" sx={{ color: '#fff', fontWeight: 400, fontSize: '12px' }}>
-                                -40%
-                            </Typography>
-                        </Box>
+                        {showDiscount && (
+                            <Box sx={{ position: 'absolute', top: '1rem', left: '1rem', paddingY: '4px', paddingX: '12px', backgroundColor: theme.palette.secondary.main, borderRadius: '4px' }}>
+                                <Typography variant="h3" sx={{ color: '#fff', fontWeight: 400, fontSize: '12px' }}>
+                                    -40%
+                                </Typography>
+                            </Box>
+                        )}
                     </Box>
                     <Box sx={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
                         <Typography variant="h3" sx={{ marginBottom: '1rem' }}>
