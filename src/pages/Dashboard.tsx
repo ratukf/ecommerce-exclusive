@@ -1,31 +1,19 @@
-import { Box, Button, Collapse, Grid, IconButton, List, ListItemButton, ListItemText, Typography } from '@mui/material';
-import { ArrowForwardOutlined, ExpandLess, ExpandMore } from '@mui/icons-material';
+import { Box, Button, Collapse, Grid, IconButton, List, ListItemButton, ListItemText, Typography, useTheme } from '@mui/material';
+import { ArrowForwardOutlined, ExpandLess, ExpandMore, FavoriteBorderOutlined, RemoveRedEyeOutlined, Star, StarHalf } from '@mui/icons-material';
 import { useState, useEffect } from 'react';
+import { DashboardSection } from '../components/DashboardSection';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchProducts } from '../store/asyncAction';
+import type { AppDispatch } from '../store/store';
+import type { RootState } from '../store/store';
+import { NAV_LIST } from '../contants/navigation';
+import { ArrowButton } from '../components/ArrowButton';
 
 export const Dashboard = () => {
-    const NAV_LIST = [
-        {
-            label: "Woman's Fashion", children: [
-                { label: 'Clothing', path: '/' },
-                { label: 'Shoes', path: '/' },
-                { label: 'Bags & Accessories', path: '/' },
-            ]
-        },
-        {
-            label: "Men's Fashion", children: [
-                { label: 'Clothing', path: '/' },
-                { label: 'Shoes', path: '/' },
-                { label: 'Bags & Accessories', path: '/' },
-            ]
-        },
-        { label: "Electronics", path: '/' },
-        { label: "Home & Lifestyle", path: '/' },
-        { label: "Medicine", path: '/' },
-        { label: "Sports & Outdoors", path: '/' },
-        { label: "Baby & Toys", path: '/' },
-        { label: "Grociers & Pets", path: '/' },
-        { label: "Health & Beauty", path: '/' },
-    ];
+    const theme = useTheme();
+    const dispatch = useDispatch<AppDispatch>();
+    const products = useSelector((state: RootState) => state.products.products);
+    const [hovered, setHovered] = useState<string | null>(null);
 
     const SLIDER = [
         { label: 'iPhone 16 Pro Max', img: 'hero1.png', title: 'iPhone 16 Series', desc: 'Up to 10% off Voucher' },
@@ -42,12 +30,133 @@ export const Dashboard = () => {
         setOpenIndex(openIndex === idx ? null : idx);
     };
 
+    // Auto slide functionality
     useEffect(() => {
         const timer = setInterval(() => {
             setSlideIdx((prev) => (prev === SLIDER.length - 1 ? 0 : prev + 1));
         }, 3000);
         return () => clearInterval(timer);
     }, [SLIDER.length]);
+
+    // Fetch products on component mount
+    useEffect(() => {
+        dispatch(fetchProducts());
+    }, [dispatch]);
+
+    const FlashSaleSection = () => {
+        const countStar = (reviews: { rating: number }[]) => {
+            const n = reviews.length;
+            const sum = reviews.reduce((acc: number, curr) => acc + curr.rating, 0);
+            return n > 0 ? (sum / n).toFixed(1) : null;
+        }
+        const renderStars = (rating: number) => {
+            const stars = [];
+            const rounded = Math.round(rating * 2) / 2;
+            for (let i = 1; i <= 5; i++) {
+                if (rounded >= i) {
+                    stars.push(<Star key={i} sx={{ color: '#FFD700', fontSize: 20 }} />);
+                } else if (rounded + 0.5 === i) {
+                    stars.push(<StarHalf key={i} sx={{ color: '#FFD700', fontSize: 20 }} />);
+                } else {
+                    stars.push(<Star key={i} sx={{ color: theme.palette.grey[400], fontSize: 20 }} />);
+                }
+            }
+            return stars;
+        };
+        return (
+            <>
+                {
+                    products.map((product) => (
+                        <Grid size={3} key={product.id} sx={{ marginBottom: '1rem', }}>
+                            <Box
+                                sx={{ width: '100%', aspectRatio: '1/1', overflow: 'hidden', borderRadius: '4px', position: 'relative', cursor: hovered === product.id ? 'pointer' : 'default', }}
+                                onMouseEnter={() => setHovered(product.id)}
+                                onMouseLeave={() => setHovered(null)}
+                            >
+                                <img
+                                    src={product.imageUrls[0]}
+                                    alt={product.name}
+                                    loading='lazy'
+                                    style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                                />
+                                {hovered === product.id && (
+                                    <Box
+                                        sx={{
+                                            position: 'absolute',
+                                            bottom: 0,
+                                            width: '100%',
+                                            height: '40px',
+                                            backgroundColor: '#000',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            display: 'flex',
+                                            pointerEvents: hovered === product.id ? 'auto' : 'none',
+                                        }}
+                                    >
+                                        <Typography sx={{ color: '#fff', fontFamily: 'Poppins, sans-serif', fontWeight: 500, fontSize: '16px' }}>
+                                            Add to cart
+                                        </Typography>
+                                    </Box>
+                                )}
+                                <Box sx={{ position: 'absolute', top: '1rem', right: '1rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 2 }}>
+                                    <Box sx={{
+                                        backgroundColor: '#fff',
+                                        borderRadius: '50%',
+                                        width: '2.5rem',
+                                        height: '2.5rem',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                    }}>
+                                        <IconButton>
+                                            <FavoriteBorderOutlined sx={{ color: '#000' }} />
+                                        </IconButton>
+                                    </Box>
+                                    <Box sx={{
+                                        backgroundColor: '#fff',
+                                        borderRadius: '50%',
+                                        width: '2.5rem',
+                                        height: '2.5rem',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                    }}>
+                                        <IconButton>
+                                            <RemoveRedEyeOutlined sx={{ color: '#000' }} />
+                                        </IconButton>
+                                    </Box>
+                                </Box>
+                                <Box sx={{ position: 'absolute', top: '1rem', left: '1rem', paddingY: '4px', paddingX: '12px', backgroundColor: theme.palette.secondary.main, borderRadius: '4px' }}>
+                                    <Typography variant="h3" sx={{ color: '#fff', fontWeight: 400, fontSize: '12px' }}>
+                                        -40%
+                                    </Typography>
+                                </Box>
+                            </Box>
+                            <Box sx={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                                <Typography variant="h3" sx={{ marginBottom: '1rem' }}>
+                                    {product.name}
+                                </Typography>
+                                <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
+                                    <Typography variant="h3" sx={{ marginBottom: '1rem', color: theme.palette.secondary.main }}>
+                                        ${product.variants[0].price}
+                                    </Typography>
+                                    <Typography variant="h3" sx={{ marginBottom: '1rem', color: theme.palette.grey[600], textDecoration: 'line-through' }}>
+                                        ${160}
+                                    </Typography>
+                                </Box>
+                            </Box>
+                            <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', gap: 1 }}>
+                                {renderStars(Number(countStar(product.reviews)) || 0)}
+                                <Typography variant="h3" sx={{ color: theme.palette.grey[600], marginLeft: '1rem', fontSize: '14px' }}>
+                                    {'('}{product.reviews?.length}{')'}
+                                </Typography>
+                            </Box>
+                        </Grid>
+                    ))
+                }
+            </>
+        )
+    }
 
     return (
         <>
@@ -114,7 +223,6 @@ export const Dashboard = () => {
                                 top: 0,
                                 width: '100%',
                                 height: '100%',
-                                bgcolor: 'rgba(0,0,0,0.35)',
                                 display: 'flex',
                                 flexDirection: 'column',
                                 justifyContent: 'center',
@@ -147,16 +255,43 @@ export const Dashboard = () => {
                             >
                                 {SLIDER[slideIdx].desc}
                             </Typography>
-                            <Button sx={{ textDecoration: 'underline', backgroundColor: 'transparent' }}>Shop now {' '}
+                            <Box sx={{ display: 'inline' }}>
+                                <Button
+                                    variant="text"
+                                    sx={{
+                                        backgroundColor: 'transparent',
+                                        border: 'none',
+                                        boxShadow: 'none',
+                                        padding: 0,
+                                        minWidth: 0,
+                                        textDecoration: 'underline',
+                                        textUnderlineOffset: '10px',
+                                        color: '#fff',
+                                        textTransform: 'none',
+                                        fontWeight: 500,
+                                        fontSize: '16px'
+                                    }}
+                                >
+                                    Shop now {' '}
+                                </Button>
                                 <IconButton>
-                                    <ArrowForwardOutlined />
+                                    <ArrowForwardOutlined sx={{ color: '#fff' }} />
                                 </IconButton>
-                            </Button>
+                            </Box>
                         </Box>
                     </Box>
                 </Grid>
             </Grid>
+            {/* Flash Sale Section */}
+            <DashboardSection
+                categoryLabel="Today's"
+                sectionHeader="Flash Sale"
+                sectionHeader2=""
+                actionButton="View All Products"
+                buttonHeader={<ArrowButton />}
+                content={<FlashSaleSection />}
+                data={products}
+            />
         </>
-
     );
 }
