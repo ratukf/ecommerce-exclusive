@@ -88,6 +88,15 @@ export const Dashboard = () => {
             />
             {/* Banner Section */}
             <BannerSection />
+            {/* Explore Products Section */}
+            <DashboardSection
+                categoryLabel="Our Products"
+                sectionHeader="Explore Our Products"
+                sectionHeader2={null}
+                actionButton="View All Products"
+                buttonHeader={<ArrowButton />}
+                content={<ProductsSection products={products} setHovered={setHovered} hovered={hovered} showDiscount={true} />}
+            />
         </>
     );
 }
