@@ -11,6 +11,7 @@ import { NavigationList } from '../components/Dashboard/NavigationList';
 import { ImageSlider } from '../components/Dashboard/ImageSlider';
 import { FlashSaleSection } from '../components/Dashboard/FlashSaleSection';
 import { FlashSaleTimer } from '../components/Dashboard/FlashSaleTimer';
+import { CategoriesSection } from '../components/Dashboard/CategoriesSections';
 
 export const Dashboard = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -63,7 +64,15 @@ export const Dashboard = () => {
                 actionButton="View All Products"
                 buttonHeader={<ArrowButton />}
                 content={<FlashSaleSection products={products.slice(0, 4)} setHovered={setHovered} hovered={hovered} />}
-                data={products.slice(0, 4)}
+            />
+            {/* Categories Section */}
+            <DashboardSection
+                categoryLabel="Categories"
+                sectionHeader="Browse by Category"
+                sectionHeader2={null}
+                actionButton=""
+                buttonHeader={<ArrowButton />}
+                content={<CategoriesSection />}
             />
         </>
     );

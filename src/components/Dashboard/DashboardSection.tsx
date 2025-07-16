@@ -8,7 +8,6 @@ interface DashboardSectionProps {
     buttonHeader: React.ReactNode;
     content: React.ReactNode;
     actionButton: string;
-    data: object[];
 }
 
 export const DashboardSection: React.FC<DashboardSectionProps> = ({
@@ -47,9 +46,11 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
                     </Grid>
                 </Grid>
                 <Grid size={12}>
-                    <Button variant="contained">
-                        {actionButton}
-                    </Button>
+                    {actionButton && (
+                        <Button variant="contained">
+                            {actionButton}
+                        </Button>
+                    )}
                 </Grid>
             </Grid >
         </>
