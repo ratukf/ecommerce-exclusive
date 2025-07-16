@@ -69,7 +69,7 @@ export const Dashboard = () => {
             <DashboardSection
                 categoryLabel="Categories"
                 sectionHeader="Browse by Category"
-                sectionHeader2=""
+                sectionHeader2={null}
                 actionButton=""
                 buttonHeader={<ArrowButton />}
                 content={<CategoriesSection />}
