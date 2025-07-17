@@ -3,7 +3,7 @@ import { Box, Grid, IconButton, Typography, useTheme } from "@mui/material";
 import type { Product } from "../store/slice";
 import { countStar, renderStars } from "../utils/rating";
 
-interface FlashSaleSectionProps {
+interface ProductsSectionProps {
     products: Product[];
     setHovered: (id: string | null) => void;
     hovered: string | null;
@@ -11,7 +11,7 @@ interface FlashSaleSectionProps {
     onClick: (id: string) => void;
 }
 
-export const ProductsSection = ({ products, setHovered, hovered, showDiscount, onClick }: FlashSaleSectionProps) => {
+export const ProductsSection = ({ products, setHovered, hovered, showDiscount, onClick }: ProductsSectionProps) => {
     const theme = useTheme();
 
     return (
