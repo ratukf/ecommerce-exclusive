@@ -47,10 +47,9 @@ export const ImageSlider = ({ slideIdx }: ImageSliderProps) => {
                 }}
             >
                 <Typography
-                    variant="h5"
+                    variant="subtitle1"
                     sx={{
                         color: '#fff',
-                        fontWeight: 400,
                         fontFamily: 'Inter, sans-serif',
                         mb: 1,
                         wordBreak: 'break-word',
@@ -59,14 +58,7 @@ export const ImageSlider = ({ slideIdx }: ImageSliderProps) => {
                     {SLIDER[slideIdx].title}
                 </Typography>
                 <Typography
-                    variant="h1"
-                    sx={{
-                        color: '#fff',
-                        fontWeight: 700,
-                        fontFamily: 'Inter, sans-serif',
-                        mb: 2,
-                        wordBreak: 'break-word',
-                    }}
+                    variant="h3"
                 >
                     {SLIDER[slideIdx].desc}
                 </Typography>

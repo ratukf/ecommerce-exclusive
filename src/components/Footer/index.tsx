@@ -48,7 +48,7 @@ export const Footer = () => {
         <Box sx={{ width: '100%', backgroundColor: '#000000' }}>
             <Grid container spacing={10} columns={10} sx={{ fontFamily: 'Poppins, sans-serif', color: '#ffffff', paddingLeft: '8rem', paddingRight: '8rem', paddingY: '3rem' }}>
                 <Grid size={2}>
-                    <Typography sx={{ ...tittleStyle, fontSize: '24px', fontWeight: 700 }}>
+                    <Typography variant="h4" sx={{ marginBottom: '24px' }}>
                         Exclusive
                     </Typography>
                     <Typography sx={{ ...tittleStyle, fontSize: '20px', fontWeight: 500 }}>
@@ -116,7 +116,7 @@ export const Footer = () => {
                     <Typography sx={{ ...tittleStyle }}>
                         Download App
                     </Typography>
-                    <Typography sx={{ ...listStyle, fontSize: '12px', opacity: 0.7, marginBottom: '4px' }}>
+                    <Typography variant="caption" sx={{ ...listStyle, opacity: 0.7, marginBottom: '4px' }}>
                         Save $3 with App New User Only
                     </Typography>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -146,6 +146,6 @@ export const Footer = () => {
                 © Copyright Ratu 2025. All rights reserved. <br />
                 Design by Rimel 2022
             </Typography>
-        </Box>
+        </Box >
     )
 }

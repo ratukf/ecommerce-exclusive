@@ -2,6 +2,7 @@ import { FavoriteBorderOutlined, SearchOutlined, ShoppingCartOutlined } from "@m
 import { Box, Divider, Grid, IconButton, InputAdornment, TextField, Typography } from "@mui/material";
 import { useTheme } from "@mui/material";
 import { useLocation, useNavigate } from "react-router";
+import { FW } from "../../theme";
 
 export const NavigationBar = () => {
     const theme = useTheme();
@@ -19,7 +20,7 @@ export const NavigationBar = () => {
             <Box sx={{ width: '100%', color: theme.palette.grey[900], mt: 3 }}>
                 <Grid container sx={{ display: 'flex', mr: '8rem', ml: '8rem' }}>
                     <Grid size={3}>
-                        <Typography variant='h1' sx={{ '&:hover': { cursor: 'pointer' } }} onClick={() => nav('/')}>
+                        <Typography variant='h4' sx={{ fontWeight: FW.bold, '&:hover': { cursor: 'pointer' } }} onClick={() => nav('/')}>
                             Exclusive
                         </Typography>
                     </Grid>
@@ -28,8 +29,8 @@ export const NavigationBar = () => {
                             <Typography
                                 onClick={() => nav(item.path)}
                                 key={index}
-                                variant='body1'
-                                sx={{ margin: '0 20px', cursor: 'pointer', fontSize: '16px', textDecoration: location.pathname === item.path ? 'underline' : 'none', '&:hover': { textDecoration: 'underline' } }}
+                                variant='subtitle1'
+                                sx={{ margin: '0 20px', cursor: 'pointer', textDecoration: location.pathname === item.path ? 'underline' : 'none', '&:hover': { textDecoration: 'underline' } }}
                             >
                                 {item.label}
                             </Typography>

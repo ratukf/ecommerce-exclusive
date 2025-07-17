@@ -1,5 +1,6 @@
 import { Box, Typography, useTheme } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import { FW } from "../../theme";
 
 interface FlashSaleTimerProps {
     endTime: Date | string | number;
@@ -42,42 +43,26 @@ export const FlashSaleTimer: React.FC<FlashSaleTimerProps> = ({ endTime }) => {
                             flexDirection: "column",
                             alignItems: "center",
                             minWidth: 56,
-                            padding: "8px 12px",
+                            padding: "0px 12px",
                         }}
                     >
                         <Typography
                             variant="caption"
-                            sx={{
-                                color: '#000',
-                                fontWeight: 500,
-                                fontFamily: "Poppins, sans-serif",
-                                fontSize: "12px"
-                            }}
                         >
                             {item.label}
                         </Typography>
                         <Typography
-                            variant="h3"
-                            sx={{
-                                color: '#000',
-                                fontWeight: 700,
-                                fontSize: "32px",
-                                fontFamily: "Poppins, sans-serif",
-                            }}
+                            variant="h4"
+                            sx={{ fontWeight: FW.bold }}
                         >
                             {String(item.value).padStart(2, "0")}
                         </Typography>
                     </Box>
                     {idx < items.length - 1 && (
                         <Typography
-                            variant="h3"
+                            variant="h4"
                             sx={{
                                 color: theme.palette.secondary.main,
-                                fontWeight: 500,
-                                fontSize: "32px",
-                                fontFamily: "Poppins, sans-serif",
-                                mx: 0.5,
-                                userSelect: 'none'
                             }}
                         >
                             :

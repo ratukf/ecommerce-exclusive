@@ -7,6 +7,7 @@ import { Box, Button, Divider, Grid, IconButton, Typography, useTheme } from "@m
 import { countStar, renderStars } from "../utils/rating";
 import { Favorite, LocalShippingOutlined, LoopOutlined } from "@mui/icons-material";
 import { buttonSx } from "../styles/buttonSx";
+import { FW } from "../theme";
 
 export const ProductDetail = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -57,14 +58,14 @@ export const ProductDetail = () => {
                     </Typography>
                     <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 1 }}>
                         {renderStars(countStar(reviews || []), theme)}
-                        <Typography sx={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400, fontSize: '16px', color: '#000', opacity: 0.5 }}>
+                        <Typography variant="body2" sx={{ opacity: 0.5 }}>
                             ({reviews?.length} reviews)
                         </Typography>
                         <Typography sx={{ marginLeft: '8px', color: '#000', opacity: 0.5 }}>
                             |
                         </Typography>
                         {isStockExist() ? (
-                            <Typography sx={{ color: '#00FF66', marginLeft: '8px' }}>
+                            <Typography variant="body2" sx={{ color: '#00FF66', marginLeft: '8px' }}>
                                 In Stock
                             </Typography>
                         ) : (
@@ -76,7 +77,7 @@ export const ProductDetail = () => {
                     <Typography sx={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400, fontSize: '24px' }}>
                         ${price?.toLocaleString('en-US')}
                     </Typography>
-                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400, fontSize: '14px' }}>
+                    <Typography variant="body2">
                         {description}
                     </Typography>
                 </Box>
@@ -90,8 +91,10 @@ export const ProductDetail = () => {
                                 key={index}
                                 onClick={() => setSelectedVariant(index)}
                                 variant={selectedVariant === index ? "contained" : "outlined"}
-                                sx={selectedVariant === index ? buttonSx.defaultSmall : buttonSx.greyOutlinedSmall
-                                }
+                                sx={{
+                                    ...theme.typography.body2,
+                                    ...(selectedVariant === index ? buttonSx.defaultSmall : buttonSx.greyOutlinedSmall)
+                                }}
                             >
                                 {variant.name} - ${variant.price.toLocaleString('en-US')}
                             </Button>
@@ -111,7 +114,6 @@ export const ProductDetail = () => {
                                 alignItems: 'center',
                                 gap: 1,
                                 height: 48,
-                                // minWidth: 110,
                                 background: '#fff',
                                 borderTop: `1px solid ${theme.palette.secondary.main}`,
                                 borderBottom: `1px solid ${theme.palette.secondary.main}`,
@@ -172,10 +174,12 @@ export const ProductDetail = () => {
                         <Box sx={{ display: "flex", flexDirection: 'row', alignItems: 'center', gap: 2, p: 2, borderBottom: "1px solid #ccc" }}>
                             <LocalShippingOutlined sx={{ fontSize: '3rem' }} />
                             <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
-                                <Typography fontWeight={500} fontFamily={'Poppins, sans-serif'} fontSize={'16px'}>Free Delivery</Typography>
-                                <Link to="#" style={{ textDecoration: 'underline', color: '#000', fontFamily: 'Poppins, sans-serif', fontSize: '12px', fontWeight: 500 }} >
-                                    Enter your postal code for Delivery Availability
-                                </Link>
+                                <Typography sx={{ fontWeight: FW.medium }} variant="subtitle1">Free Delivery</Typography>
+                                <Typography variant="caption" sx={{ fontWeight: FW.medium }}>
+                                    <Link to="#" style={{ textDecoration: 'underline', color: '#000' }} >
+                                        Enter your postal code for Delivery Availability
+                                    </Link>
+                                </Typography>
                             </Box>
                         </Box>
 
@@ -183,8 +187,8 @@ export const ProductDetail = () => {
                         <Box sx={{ display: "flex", flexDirection: 'row', alignItems: 'center', gap: 2, p: 2 }}>
                             <LoopOutlined sx={{ fontSize: '3rem' }} />
                             <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
-                                <Typography fontWeight={500} fontFamily={'Poppins, sans-serif'} fontSize={'16px'}>Return Delivery</Typography>
-                                <Typography sx={{ color: '#000', fontFamily: 'Poppins, sans-serif', fontSize: '12px', fontWeight: 500 }}>
+                                <Typography sx={{ fontWeight: FW.medium }} variant="subtitle1">Return Delivery</Typography>
+                                <Typography variant="caption" sx={{ fontWeight: FW.medium }}>
                                     Free 30 Days Delivery Returns.{" "}
                                     <Link to="#" style={{ textDecoration: 'underline', color: '#000' }}>Details</Link>
                                 </Typography>
@@ -192,7 +196,6 @@ export const ProductDetail = () => {
                         </Box>
                     </Box>
                 </Box>
-
             </Grid>
         </Grid >
     )

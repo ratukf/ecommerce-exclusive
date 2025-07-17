@@ -10,12 +10,13 @@ export const Benefits = () => {
                     <Typography sx={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600, fontSize: '20px' }}>
                         {benefit.label}
                     </Typography>
-                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400, fontSize: '14px' }}>
+                    <Typography variant="body2">
                         {benefit.desc}
                     </Typography>
                 </Grid>
-            ))}
+            ))
+            }
 
-        </Grid>
+        </Grid >
     )
 }
