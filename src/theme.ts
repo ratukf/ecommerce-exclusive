@@ -74,19 +74,18 @@ const theme = createTheme({
                 className: 'main-button',
                 style: {
                     fontFamily: 'Poppins, sans-serif',
-                    fontSize: '16px',
                     textAlign: 'center',
-                    color: '#fafafa',
                     textTransform: 'none'
                 }
             },
             styleOverrides: {
                 contained: {
-                    padding: '16px 48px',
                     borderRadius: '4px',
                     fontWeight: 400,
-                    backgroundColor: '#DB4444',
-                    textTransform: 'none'
+                },
+                outlined: {
+                    borderRadius: '4px',
+                    fontWeight: 400,
                 }
             }
         },

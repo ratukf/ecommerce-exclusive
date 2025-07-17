@@ -1,6 +1,8 @@
 import { Box, Button, Grid, Typography } from '@mui/material';
 import React from 'react';
 import { useTheme } from '@mui/material';
+import { buttonSx } from '../../styles/buttonSx';
+
 interface DashboardSectionProps {
     categoryLabel: string;
     sectionHeader: string;
@@ -49,7 +51,7 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
                 </Grid>
                 <Grid size={12}>
                     {actionButton && (
-                        <Button variant="contained" onClick={onClickActionButton}>
+                        <Button variant="contained" sx={buttonSx.default} onClick={onClickActionButton}>
                             {actionButton}
                         </Button>
                     )}

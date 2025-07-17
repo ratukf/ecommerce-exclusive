@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 import { fetchProductById } from "../store/asyncAction";
 import { Box, Button, Divider, Grid, IconButton, Typography, useTheme } from "@mui/material";
 import { countStar, renderStars } from "../utils/rating";
-import { FavoriteBorderOutlined, LocalShippingOutlined, LoopOutlined } from "@mui/icons-material";
+import { Favorite, LocalShippingOutlined, LoopOutlined } from "@mui/icons-material";
+import { buttonSx } from "../styles/buttonSx";
 
 export const ProductDetail = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -18,6 +19,7 @@ export const ProductDetail = () => {
     }
     const [selectedVariant, setSelectedVariant] = useState(0);
     const [quantity, setQuantity] = useState(1);
+    const [favorite, setFavorite] = useState(false);
 
     useEffect(() => {
         if (id) {
@@ -87,12 +89,9 @@ export const ProductDetail = () => {
                             <Button
                                 key={index}
                                 onClick={() => setSelectedVariant(index)}
-                                sx={{
-                                    borderRadius: '4px',
-                                    borderColor: theme.palette.secondary.main,
-                                    color: selectedVariant === index ? "#fff" : "theme.palette.secondary.main",
-                                    backgroundColor: selectedVariant === index ? theme.palette.secondary.main : theme.palette.grey[500],
-                                }}
+                                variant={selectedVariant === index ? "contained" : "outlined"}
+                                sx={selectedVariant === index ? buttonSx.defaultSmall : buttonSx.greyOutlinedSmall
+                                }
                             >
                                 {variant.name} - ${variant.price.toLocaleString('en-US')}
                             </Button>
@@ -122,23 +121,21 @@ export const ProductDetail = () => {
                             <Button
                                 variant="contained"
                                 onClick={() => setQuantity(q => Math.max(1, q - 1))}
-                                sx={{ height: '100%', borderRadius: '4px 0 0 4px', padding: 0 }}
+                                sx={{ ...buttonSx.default, height: '100%', borderRadius: '4px 0 0 4px', padding: 0 }}
                             >-</Button>
                             <Typography sx={{ textAlign: 'center', width: '40px' }}>{quantity}</Typography>
                             <Button
                                 variant="contained"
                                 onClick={() => setQuantity(q => q + 1)}
-                                sx={{ height: '100%', borderRadius: '0 4px 4px 0', padding: 0 }}
+                                sx={{ ...buttonSx.default, height: '100%', borderRadius: '0 4px 4px 0', padding: 0 }}
                             >+</Button>
                         </Box>
                         <Button
                             variant="contained"
                             color="primary"
                             sx={{
-                                fontWeight: 600,
-                                padding: '8px 32px',
+                                ...buttonSx.default,
                                 height: 48,
-                                borderRadius: '4px',
                                 flex: 1,
                             }}
                         >
@@ -156,9 +153,10 @@ export const ProductDetail = () => {
                                 alignItems: 'center',
                                 justifyContent: 'center',
                             }}
+                            onClick={() => setFavorite(!favorite)}
                         >
                             <IconButton sx={{ height: '100%' }}>
-                                <FavoriteBorderOutlined sx={{ color: theme.palette.grey[400] }} />
+                                <Favorite sx={{ color: favorite ? theme.palette.secondary.main : theme.palette.grey[400] }} />
                             </IconButton>
                         </Box>
                     </Box>
