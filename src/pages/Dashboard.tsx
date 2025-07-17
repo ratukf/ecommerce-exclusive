@@ -69,7 +69,7 @@ export const Dashboard = () => {
                 sectionHeader2={<FlashSaleTimer endTime={END_TIME} />}
                 actionButton="View All Products"
                 buttonHeader={<ArrowButton />}
-                content={<ProductsSection products={products.slice(0, 4)} setHovered={setHovered} hovered={hovered} showDiscount={true} />}
+                content={<ProductsSection onClick={(id) => nav(`/product/${id}`)} products={products.slice(0, 4)} setHovered={setHovered} hovered={hovered} showDiscount={true} />}
                 onClickActionButton={() => nav('/products')}
             />
             {/* Categories Section */}
@@ -89,7 +89,7 @@ export const Dashboard = () => {
                 actionButton=""
                 buttonHeader={<Button variant="contained" onClick={() => nav('/products')}>View All</Button>}
                 content={
-                    <ProductsSection products={products.slice(4, 8)} setHovered={setHovered} hovered={hovered} showDiscount={false} />
+                    <ProductsSection onClick={(id) => nav(`/product/${id}`)} products={products.slice(4, 8)} setHovered={setHovered} hovered={hovered} showDiscount={false} />
                 }
             />
             {/* Banner Section */}
@@ -101,7 +101,7 @@ export const Dashboard = () => {
                 sectionHeader2={null}
                 actionButton="View All Products"
                 buttonHeader={<ArrowButton />}
-                content={<ProductsSection products={products} setHovered={setHovered} hovered={hovered} showDiscount={false} />}
+                content={<ProductsSection onClick={(id) => nav(`/product/${id}`)} products={products} setHovered={setHovered} hovered={hovered} showDiscount={false} />}
                 onClickActionButton={() => nav('/products')}
             />
             {/* New Arrival Section */}
