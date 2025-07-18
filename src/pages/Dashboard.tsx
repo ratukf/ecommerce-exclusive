@@ -16,6 +16,7 @@ import { BannerSection } from '../components/Dashboard/BannerSection';
 import { NewArrival } from '../components/Dashboard/NewArrival';
 import { Benefits } from '../components/Dashboard/Benefits';
 import { useNavigate } from 'react-router';
+import { buttonSx } from '../styles/buttonSx';
 
 export const Dashboard = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -87,7 +88,7 @@ export const Dashboard = () => {
                 sectionHeader="Best Selling Products"
                 sectionHeader2={null}
                 actionButton=""
-                buttonHeader={<Button variant="contained" onClick={() => nav('/products')}>View All</Button>}
+                buttonHeader={<Button variant="contained" sx={buttonSx.default} onClick={() => nav('/products')}>View All</Button>}
                 content={
                     <ProductsSection onClick={(id) => nav(`/product/${id}`)} products={products.slice(4, 8)} setHovered={setHovered} hovered={hovered} showDiscount={false} />
                 }

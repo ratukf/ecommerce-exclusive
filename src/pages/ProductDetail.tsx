@@ -5,7 +5,9 @@ import { useEffect, useState } from "react";
 import { fetchProductById } from "../store/asyncAction";
 import { Box, Button, Divider, Grid, IconButton, Typography, useTheme } from "@mui/material";
 import { countStar, renderStars } from "../utils/rating";
-import { FavoriteBorderOutlined, LocalShippingOutlined, LoopOutlined } from "@mui/icons-material";
+import { Favorite, LocalShippingOutlined, LoopOutlined } from "@mui/icons-material";
+import { buttonSx } from "../styles/buttonSx";
+import { FW } from "../theme";
 
 export const ProductDetail = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -18,6 +20,7 @@ export const ProductDetail = () => {
     }
     const [selectedVariant, setSelectedVariant] = useState(0);
     const [quantity, setQuantity] = useState(1);
+    const [favorite, setFavorite] = useState(false);
 
     useEffect(() => {
         if (id) {
@@ -50,19 +53,19 @@ export const ProductDetail = () => {
             <Grid size={4} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 1.5 }}>
                 {/* Product name, reviews, stock, price, description */}
                 <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 1.5 }}>
-                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600, fontSize: '24px', color: '#000' }}>
+                    <Typography variant="h5">
                         {name}
                     </Typography>
                     <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 1 }}>
                         {renderStars(countStar(reviews || []), theme)}
-                        <Typography sx={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400, fontSize: '16px', color: '#000', opacity: 0.5 }}>
+                        <Typography variant="body2" sx={{ opacity: 0.5 }}>
                             ({reviews?.length} reviews)
                         </Typography>
                         <Typography sx={{ marginLeft: '8px', color: '#000', opacity: 0.5 }}>
                             |
                         </Typography>
                         {isStockExist() ? (
-                            <Typography sx={{ color: '#00FF66', marginLeft: '8px' }}>
+                            <Typography variant="body2" sx={{ color: '#00FF66', marginLeft: '8px' }}>
                                 In Stock
                             </Typography>
                         ) : (
@@ -71,10 +74,10 @@ export const ProductDetail = () => {
                             </Typography>
                         )}
                     </Box>
-                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400, fontSize: '24px' }}>
+                    <Typography variant="h5" sx={{ fontWeight: FW.regular }}>
                         ${price?.toLocaleString('en-US')}
                     </Typography>
-                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400, fontSize: '14px' }}>
+                    <Typography variant="body2">
                         {description}
                     </Typography>
                 </Box>
@@ -82,16 +85,15 @@ export const ProductDetail = () => {
                 {/* Action */}
                 <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 4 }}>
                     <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%', gap: 2 }}>
-                        <Typography sx={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400, fontSize: '20px' }}>Variants:</Typography>
+                        <Typography variant="h6" sx={{ fontWeight: FW.regular }} >Variants:</Typography>
                         {variants?.map((variant, index) => (
                             <Button
                                 key={index}
                                 onClick={() => setSelectedVariant(index)}
+                                variant={selectedVariant === index ? "contained" : "outlined"}
                                 sx={{
-                                    borderRadius: '4px',
-                                    borderColor: theme.palette.secondary.main,
-                                    color: selectedVariant === index ? "#fff" : "theme.palette.secondary.main",
-                                    backgroundColor: selectedVariant === index ? theme.palette.secondary.main : theme.palette.grey[500],
+                                    ...theme.typography.body2,
+                                    ...(selectedVariant === index ? buttonSx.defaultSmall : buttonSx.greyOutlinedSmall)
                                 }}
                             >
                                 {variant.name} - ${variant.price.toLocaleString('en-US')}
@@ -112,7 +114,6 @@ export const ProductDetail = () => {
                                 alignItems: 'center',
                                 gap: 1,
                                 height: 48,
-                                // minWidth: 110,
                                 background: '#fff',
                                 borderTop: `1px solid ${theme.palette.secondary.main}`,
                                 borderBottom: `1px solid ${theme.palette.secondary.main}`,
@@ -122,23 +123,21 @@ export const ProductDetail = () => {
                             <Button
                                 variant="contained"
                                 onClick={() => setQuantity(q => Math.max(1, q - 1))}
-                                sx={{ height: '100%', borderRadius: '4px 0 0 4px', padding: 0 }}
+                                sx={{ ...buttonSx.default, height: '100%', borderRadius: '4px 0 0 4px', padding: 0 }}
                             >-</Button>
                             <Typography sx={{ textAlign: 'center', width: '40px' }}>{quantity}</Typography>
                             <Button
                                 variant="contained"
                                 onClick={() => setQuantity(q => q + 1)}
-                                sx={{ height: '100%', borderRadius: '0 4px 4px 0', padding: 0 }}
+                                sx={{ ...buttonSx.default, height: '100%', borderRadius: '0 4px 4px 0', padding: 0 }}
                             >+</Button>
                         </Box>
                         <Button
                             variant="contained"
                             color="primary"
                             sx={{
-                                fontWeight: 600,
-                                padding: '8px 32px',
+                                ...buttonSx.default,
                                 height: 48,
-                                borderRadius: '4px',
                                 flex: 1,
                             }}
                         >
@@ -156,9 +155,10 @@ export const ProductDetail = () => {
                                 alignItems: 'center',
                                 justifyContent: 'center',
                             }}
+                            onClick={() => setFavorite(!favorite)}
                         >
                             <IconButton sx={{ height: '100%' }}>
-                                <FavoriteBorderOutlined sx={{ color: theme.palette.grey[400] }} />
+                                <Favorite sx={{ color: favorite ? theme.palette.secondary.main : theme.palette.grey[400] }} />
                             </IconButton>
                         </Box>
                     </Box>
@@ -171,22 +171,24 @@ export const ProductDetail = () => {
                         }}
                     >
                         {/* Top Section */}
-                        <Box sx={{ display: "flex", flexDirection: 'row', alignItems: 'center', gap: 2, p: 2, borderBottom: "1px solid #ccc" }}>
+                        <Box sx={{ display: "flex", flexDirection: 'row', alignItems: 'center', gap: 2, p: 3, borderBottom: "1px solid #ccc" }}>
                             <LocalShippingOutlined sx={{ fontSize: '3rem' }} />
                             <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
-                                <Typography fontWeight={500} fontFamily={'Poppins, sans-serif'} fontSize={'16px'}>Free Delivery</Typography>
-                                <Link to="#" style={{ textDecoration: 'underline', color: '#000', fontFamily: 'Poppins, sans-serif', fontSize: '12px', fontWeight: 500 }} >
-                                    Enter your postal code for Delivery Availability
-                                </Link>
+                                <Typography sx={{ fontWeight: FW.medium }} variant="subtitle1">Free Delivery</Typography>
+                                <Typography variant="caption" sx={{ fontWeight: FW.medium }}>
+                                    <Link to="#" style={{ textDecoration: 'underline', color: '#000' }} >
+                                        Enter your postal code for Delivery Availability
+                                    </Link>
+                                </Typography>
                             </Box>
                         </Box>
 
                         {/* Bottom Section */}
-                        <Box sx={{ display: "flex", flexDirection: 'row', alignItems: 'center', gap: 2, p: 2 }}>
+                        <Box sx={{ display: "flex", flexDirection: 'row', alignItems: 'center', gap: 2, p: 3 }}>
                             <LoopOutlined sx={{ fontSize: '3rem' }} />
                             <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
-                                <Typography fontWeight={500} fontFamily={'Poppins, sans-serif'} fontSize={'16px'}>Return Delivery</Typography>
-                                <Typography sx={{ color: '#000', fontFamily: 'Poppins, sans-serif', fontSize: '12px', fontWeight: 500 }}>
+                                <Typography sx={{ fontWeight: FW.medium }} variant="subtitle1">Return Delivery</Typography>
+                                <Typography variant="caption" sx={{ fontWeight: FW.medium }}>
                                     Free 30 Days Delivery Returns.{" "}
                                     <Link to="#" style={{ textDecoration: 'underline', color: '#000' }}>Details</Link>
                                 </Typography>
@@ -194,7 +196,6 @@ export const ProductDetail = () => {
                         </Box>
                     </Box>
                 </Box>
-
             </Grid>
         </Grid >
     )

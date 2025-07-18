@@ -1,5 +1,13 @@
 import { createTheme } from "@mui/material";
 
+export const FW = {
+    light: 300,
+    regular: 400,
+    medium: 500,
+    semiBold: 600,
+    bold: 700,
+}
+
 const theme = createTheme({
     palette: {
         mode: 'light',
@@ -32,41 +40,43 @@ const theme = createTheme({
         }
     },
     typography: {
-        h1: {
-            fontFamily: 'Inter, sans-serif',
-            fontSize: '3rem',
-            fontWeight: 700,
-        },
-        h2: {
-            fontFamily: 'Poppins, sans-serif',
-            fontSize: '2.25rem',
-            fontWeight: 700,
-        },
+        // Banner & image slider
         h3: {
-            fontFamily: 'Poppins, sans-serif',
-            fontSize: '16px',
-            fontWeight: 500,
-        },
-        body1: {
-            fontWeight: 400,
-            fontSize: '1rem',
-        },
-        body2: {
-            fontWeight: 400,
-            fontSize: '0.875rem',
-        },
-        subtitle1: {
             fontFamily: 'Inter, sans-serif',
-            fontWeight: 600,
-            fontSize: '36px',
-            color: '#000'
+            fontWeight: FW.bold,
+            color: '#fff',
+            mb: 2,
+            wordBreak: 'break-word',
+            maxWidth: '40%',
+            textAlign: 'left',
         },
-        subtitle2: {
+        // Flash sale timer, about us, products header, ecommerce name
+        h4: {
+            fontFamily: 'Inter, sans-serif',
+            fontWeight: FW.semiBold,
+        },
+        // New arrival header
+        h5: {
+            fontFamily: 'Inter, sans-serif',
+            fontWeight: FW.semiBold,
+        },
+        // Footer header, benefits header, whishlist header, cart total, card header
+        h6: {
             fontFamily: 'Poppins, sans-serif',
-            fontWeight: 600,
-            fontSize: '16px',
-            color: '#DB4444',
-    }
+        },
+        // Products detail, categories header, banner header, imager slider header, navbar
+        subtitle1: {
+            fontFamily: 'Poppins, sans-serif',
+        },
+        // Announcement bar, review count, product description, benefits description, breadcrumbs, contact us, variants
+        body2: {
+            fontFamily: 'Poppins, sans-serif',
+        },
+        // Banner section, flash sale timmer, discount tag, account dropdown
+        caption: {
+            fontFamily: 'Poppins, sans-serif',
+            textAlign: 'left',
+        },
     },
     components: {
         MuiButton: {
@@ -74,19 +84,18 @@ const theme = createTheme({
                 className: 'main-button',
                 style: {
                     fontFamily: 'Poppins, sans-serif',
-                    fontSize: '16px',
                     textAlign: 'center',
-                    color: '#fafafa',
                     textTransform: 'none'
                 }
             },
             styleOverrides: {
                 contained: {
-                    padding: '16px 48px',
                     borderRadius: '4px',
                     fontWeight: 400,
-                    backgroundColor: '#DB4444',
-                    textTransform: 'none'
+                },
+                outlined: {
+                    borderRadius: '4px',
+                    fontWeight: 400,
                 }
             }
         },

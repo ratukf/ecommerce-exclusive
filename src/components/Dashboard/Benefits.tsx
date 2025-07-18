@@ -1,5 +1,6 @@
 import { Grid, Typography } from "@mui/material"
 import { BENEFITS } from "../../contants/benefits"
+import { FW } from "../../theme"
 
 export const Benefits = () => {
     return (
@@ -7,15 +8,16 @@ export const Benefits = () => {
             {BENEFITS.map((benefit, index) => (
                 <Grid size={4} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: 2, gap: '1rem' }} key={index}>
                     <img src={benefit.src} alt={benefit.label} />
-                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600, fontSize: '20px' }}>
+                    <Typography variant="h6" sx={{ fontWeight: FW.semiBold }}>
                         {benefit.label}
                     </Typography>
-                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400, fontSize: '14px' }}>
+                    <Typography variant="body2">
                         {benefit.desc}
                     </Typography>
                 </Grid>
-            ))}
+            ))
+            }
 
-        </Grid>
+        </Grid >
     )
 }
