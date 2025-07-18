@@ -2,8 +2,23 @@ import { Box, Button, Grid, TextField, Typography } from "@mui/material"
 import { FW } from "../theme"
 import { buttonSx, linkSx } from "../styles/buttonSx"
 import { Link } from "react-router"
+import { useSnackBar } from "../hooks/useSnackBar";
+import { useLogIn } from "../hooks/useLogIn"
+import { SnackBar } from "../components/SnackBar"
 
 export const LogIn = () => {
+    const { snackBar, showSnackBar, handleClose } = useSnackBar();
+
+    const {
+        email,
+        password,
+        loading,
+        handleEmailChange,
+        handlePasswordChange,
+        logIn,
+    } = useLogIn(showSnackBar);
+
+
     return (
         <Grid container spacing={2} sx={{ marginY: '5rem', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
             <Grid size={6} sx={{ display: { md: 'flex', xs: 'none' } }}>
@@ -20,28 +35,41 @@ export const LogIn = () => {
                 </Box>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
                     <TextField
-                        id="standard-search"
                         label="Email"
-                        type="search"
+                        type="email"
                         variant="standard"
+                        value={email}
+                        onChange={handleEmailChange}
                     />
                     <TextField
-                        id="standard-password-input"
                         label="Password"
                         type="password"
                         autoComplete="current-password"
                         variant="standard"
+                        value={password}
+                        onChange={handlePasswordChange}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                logIn();
+                            }
+                        }}
                     />
                 </Box>
                 <Box sx={{ justifyContent: 'space-between', display: 'flex', width: '100%', alignItems: 'center', gap: '2.5rem' }}>
-                    <Button variant="contained" sx={buttonSx.default}>
-                        Log In
+                    <Button variant="contained" sx={buttonSx.default} onClick={logIn} disabled={loading}>
+                        {loading ? "Logging in..." : "Log In"}
                     </Button>
                     <Link to="/register" style={linkSx.default}>
                         Forgot Password?
                     </Link>
                 </Box>
             </Grid>
+            <SnackBar
+                open={snackBar.open}
+                message={snackBar.message}
+                severity={snackBar.severity}
+                onClose={handleClose}
+            />
         </Grid>
     )
 }
