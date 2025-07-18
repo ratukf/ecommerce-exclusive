@@ -4,7 +4,7 @@ import { buttonSx, linkSx } from "../styles/buttonSx"
 import { Link } from "react-router"
 import { useSnackBar } from "../hooks/useSnackBar";
 import { SnackBar } from "../components/SnackBar"
-import { useLogin } from "../hooks/useLogIn";
+import { useLogin } from "../hooks/useLogin";
 
 export const LogIn = () => {
     const { snackBar, showSnackBar, handleClose } = useSnackBar();
