@@ -91,11 +91,11 @@ const theme = createTheme({
             styleOverrides: {
                 contained: {
                     borderRadius: '4px',
-                    fontWeight: 400,
+                    fontWeight: FW.regular,
                 },
                 outlined: {
                     borderRadius: '4px',
-                    fontWeight: 400,
+                    fontWeight: FW.regular,
                 }
             }
         },
@@ -103,10 +103,33 @@ const theme = createTheme({
             styleOverrides: {
                 primary: {
                     fontFamily: 'Poppins, sans-serif',
-                    fontWeight: 400,
-                    fontSize: '16px',
+                    fontWeight: FW.regular,
+                    fontSize: '1rem',
                 }
             }
+        },
+        MuiTextField: {
+            defaultProps: {
+                variant: 'filled',
+                InputProps: {
+                    disableUnderline: true,
+                    style: {
+                        fontFamily: 'Poppins, sans-serif',
+                        fontSize: '1rem',
+                        fontWeight: FW.regular,
+                        color: '#000',
+                    }
+                },
+                InputLabelProps: {
+                    style: {
+                        fontFamily: 'Poppins, sans-serif',
+                        fontSize: '1rem',
+                        fontWeight: FW.regular,
+                        color: '#000',
+                        opacity: 0.5,
+                    }
+                }
+            },
         }
     }
 })
