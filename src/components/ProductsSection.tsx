@@ -3,17 +3,19 @@ import { Box, Grid, IconButton, Typography, useTheme } from "@mui/material";
 import type { Product } from "../store/slice";
 import { countStar, renderStars } from "../utils/rating";
 import { FW } from "../theme";
+import { useNavigate } from "react-router";
+import { useState } from "react";
 
 interface ProductsSectionProps {
     products: Product[];
-    setHovered: (id: string | null) => void;
-    hovered: string | null;
     showDiscount: boolean;
-    onClick: (id: string) => void;
 }
 
-export const ProductsSection = ({ products, setHovered, hovered, showDiscount, onClick }: ProductsSectionProps) => {
+export const ProductsSection = ({ products, showDiscount }: ProductsSectionProps) => {
+    const nav = useNavigate();
     const theme = useTheme();
+    const [hovered, setHovered] = useState<string | null>(null);
+
 
     return (
         <>
@@ -30,7 +32,7 @@ export const ProductsSection = ({ products, setHovered, hovered, showDiscount, o
                         }}
                         onMouseEnter={() => setHovered(product.id)}
                         onMouseLeave={() => setHovered(null)}
-                        onClick={() => onClick(product.id)}
+                        onClick={() => nav(`/product/${product.id}`)}
                     >
                         <img
                             src={product.imageUrls[0]}
