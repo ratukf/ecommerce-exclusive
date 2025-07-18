@@ -118,7 +118,6 @@ const theme = createTheme({
             defaultProps: {
                 variant: 'filled',
                 InputProps: {
-                    disableUnderline: true,
                     style: {
                         fontFamily: 'Poppins, sans-serif',
                         fontSize: '1rem',
