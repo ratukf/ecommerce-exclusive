@@ -53,7 +53,7 @@ export const ProductDetail = () => {
             <Grid size={4} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 1.5 }}>
                 {/* Product name, reviews, stock, price, description */}
                 <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 1.5 }}>
-                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600, fontSize: '24px', color: '#000' }}>
+                    <Typography variant="h5">
                         {name}
                     </Typography>
                     <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 1 }}>
@@ -74,7 +74,7 @@ export const ProductDetail = () => {
                             </Typography>
                         )}
                     </Box>
-                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400, fontSize: '24px' }}>
+                    <Typography variant="h5" sx={{ fontWeight: FW.regular }}>
                         ${price?.toLocaleString('en-US')}
                     </Typography>
                     <Typography variant="body2">
@@ -85,7 +85,7 @@ export const ProductDetail = () => {
                 {/* Action */}
                 <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 4 }}>
                     <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%', gap: 2 }}>
-                        <Typography sx={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400, fontSize: '20px' }}>Variants:</Typography>
+                        <Typography variant="h6" sx={{ fontWeight: FW.regular }} >Variants:</Typography>
                         {variants?.map((variant, index) => (
                             <Button
                                 key={index}

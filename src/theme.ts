@@ -55,6 +55,11 @@ const theme = createTheme({
             fontFamily: 'Inter, sans-serif',
             fontWeight: FW.semiBold,
         },
+        // New arrival header
+        h5: {
+            fontFamily: 'Inter, sans-serif',
+            fontWeight: FW.semiBold,
+        },
         // Footer header, benefits header, whishlist header, cart total, card header
         h6: {
             fontFamily: 'Poppins, sans-serif',
