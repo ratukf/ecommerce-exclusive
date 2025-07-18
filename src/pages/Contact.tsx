@@ -110,6 +110,7 @@ export const Contact = () => {
                 fullWidth
                 multiline={field.name === 'message'}
                 rows={field.name === 'message' ? 5 : 1}
+                InputProps={{ disableUnderline: true }}
             />
         ));
     }, [formik.values, formik.touched, formik.errors, formik.handleChange]);

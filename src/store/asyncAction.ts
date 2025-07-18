@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { getProducts, getProductById } from "../services/productService";
 import type { Product } from "./slice";
+import type { User } from "firebase/auth";
 
 export const fetchProducts = createAsyncThunk<Product[], void, { rejectValue: string }>(
     "products/fetchProducts",
@@ -41,6 +42,23 @@ export const sendContactMessage = createAsyncThunk<boolean, { name: string; emai
         } catch (error) {
             console.error("Error sending contact message:", error);
             return rejectWithValue("Failed to send contact message");
+        }
+    }
+);
+
+export const signIn = createAsyncThunk<User, { email: string; password: string }, { rejectValue: string }>(
+    "auth/signIn",
+    async ({ email, password }, { rejectWithValue }) => {
+        try {
+            const { logIn } = await import("../services/authService");
+            const user = await logIn(email, password);
+            if (!user) {
+                return rejectWithValue("Invalid email or password");
+            }
+            return user;
+        } catch (error) {
+            console.error("Error signing in:", error);
+            return rejectWithValue("Failed to sign in");
         }
     }
 );
