@@ -40,6 +40,12 @@ const theme = createTheme({
         }
     },
     typography: {
+        // Our story section
+        h2: {
+            fontFamily: 'Inter, sans-serif',
+            fontWeight: FW.semiBold,
+            textAlign: 'left',
+        },
         // Banner & image slider
         h3: {
             fontFamily: 'Inter, sans-serif',
