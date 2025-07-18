@@ -23,7 +23,7 @@ Ongoing project. Features, UI, and backend integration are under active developm
 - [x] Home (Hero, Promo, Categories, Best Selling, Products, Featured, Benefit)
 - [x] Product List
 - [x] Product Detail
-- [ ] Contact
+- [x] Contact
 - [ ] About
 - [ ] Error page
 

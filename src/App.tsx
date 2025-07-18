@@ -17,6 +17,7 @@ import { Footer } from './components/Footer';
 import { Dashboard } from './pages/Dashboard';
 import { Products } from './pages/Products';
 import { ProductDetail } from './pages/ProductDetail';
+import { Contact } from './pages/Contact';
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
               <Route path="/" element={<Dashboard />} />
               <Route path="/products" element={<Products />} />
               <Route path="/product/:id" element={<ProductDetail />} />
+              <Route path="/contact" element={<Contact />} />
             </Routes>
           </Box>
           <Footer />

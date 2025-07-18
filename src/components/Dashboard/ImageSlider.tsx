@@ -1,6 +1,6 @@
 import { ArrowForwardOutlined } from "@mui/icons-material"
 import { Box, Button, IconButton, Typography } from "@mui/material"
-import { SLIDER } from "../../contants/slider"
+import { SLIDER } from "../../constants/slider"
 
 interface ImageSliderProps {
     slideIdx: number;
