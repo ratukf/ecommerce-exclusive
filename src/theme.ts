@@ -55,6 +55,10 @@ const theme = createTheme({
             fontFamily: 'Inter, sans-serif',
             fontWeight: FW.semiBold,
         },
+        // Footer header, benefits header, whishlist header, cart total, card header
+        h6: {
+            fontFamily: 'Poppins, sans-serif',
+        },
         // Products detail, categories header, banner header, imager slider header, navbar
         subtitle1: {
             fontFamily: 'Poppins, sans-serif',
