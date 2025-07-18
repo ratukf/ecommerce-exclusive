@@ -3,8 +3,8 @@ import { FW } from "../theme"
 import { buttonSx, linkSx } from "../styles/buttonSx"
 import { Link } from "react-router"
 import { useSnackBar } from "../hooks/useSnackBar";
-import { useLogIn } from "../hooks/useLogIn"
 import { SnackBar } from "../components/SnackBar"
+import { useLogin } from "../hooks/useLogIn";
 
 export const LogIn = () => {
     const { snackBar, showSnackBar, handleClose } = useSnackBar();
@@ -16,7 +16,7 @@ export const LogIn = () => {
         handleEmailChange,
         handlePasswordChange,
         logIn,
-    } = useLogIn(showSnackBar);
+    } = useLogin(showSnackBar);
 
 
     return (

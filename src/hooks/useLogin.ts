@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { signIn } from "../store/asyncAction";
 import type { AppDispatch } from "../store/store";
 
-export const useLogIn = (
+export const useLogin = (
     showSnackBar?: (msg: string, severity?: "success" | "error" | "warning" | "info") => void
 ) => {
     const dispatch = useDispatch<AppDispatch>();
