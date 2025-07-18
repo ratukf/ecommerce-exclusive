@@ -5,7 +5,7 @@ import { DashboardSection } from '../components/Dashboard/DashboardSection';
 import { fetchProducts } from '../store/asyncAction';
 import type { AppDispatch } from '../store/store';
 import type { RootState } from '../store/store';
-import { SLIDER } from '../contants/slider';
+import { SLIDER } from '../constants/slider';
 import { ArrowButton } from '../components/ArrowButton';
 import { NavigationList } from '../components/Dashboard/NavigationList';
 import { ImageSlider } from '../components/Dashboard/ImageSlider';

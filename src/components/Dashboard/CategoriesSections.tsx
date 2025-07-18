@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Grid, Icon, Typography } from "@mui/material"
-import { CATEGORIES } from "../../contants/categories"
+import { CATEGORIES } from "../../constants/categories"
 import { CameraAltOutlined, HeadphonesOutlined, MonitorOutlined, SmartphoneOutlined, SportsEsportsOutlined, WatchOutlined } from "@mui/icons-material"
 
 const categoryIcons: Record<string, React.ReactNode> = {

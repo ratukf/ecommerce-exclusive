@@ -1,6 +1,6 @@
 import { Box, List, ListItemButton, ListItemText, Collapse } from "@mui/material";
 import { useState } from "react";
-import { NAV_LIST } from "../../contants/navigation";
+import { NAV_LIST } from "../../constants/navigation";
 
 export const SideBar = () => {
     const [openIndex, setOpenIndex] = useState<number | null>(null);
