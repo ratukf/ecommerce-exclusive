@@ -19,6 +19,7 @@ import { Products } from './pages/Products';
 import { ProductDetail } from './pages/ProductDetail';
 import { Contact } from './pages/Contact';
 import { About } from './pages/About';
+import { LogIn } from './pages/LogIn';
 
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
               <Route path="/product/:id" element={<ProductDetail />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/about" element={<About />} />
+              <Route path="/login" element={<LogIn />} />
             </Routes>
           </Box>
           <Footer />
