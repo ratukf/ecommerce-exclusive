@@ -1,6 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchProducts, fetchProductById, sendContactMessage } from "./asyncAction";
+import { fetchProducts, fetchProductById, sendContactMessage, signIn } from "./asyncAction";
+import type { User } from "firebase/auth";
 
+// --- Product Slice ---
 export interface Review {
     id: string;
     comment: string;
@@ -21,10 +23,10 @@ export interface Product {
     id: string;
     name: string;
     price: number;
-    categories: Array<string>;
-    imageUrls: Array<string>;
-    reviews: Array<Review>;
-    variants: Array<Variant>;
+    categories: string[];
+    imageUrls: string[];
+    reviews: Review[];
+    variants: Variant[];
     description: string;
 }
 
@@ -75,6 +77,7 @@ const productSlice = createSlice({
     },
 });
 
+// --- Message Slice ---
 export interface Message {
     name: string;
     email: string;
@@ -83,7 +86,7 @@ export interface Message {
 }
 
 interface MessageState {
-    loading: boolean; 
+    loading: boolean;
     error: string | null;
 }
 
@@ -93,7 +96,7 @@ const initialStateMessage: MessageState = {
 };
 
 const messageSlice = createSlice({
-    name: 'message',
+    name: "message",
     initialState: initialStateMessage,
     reducers: {},
     extraReducers: (builder) => {
@@ -110,7 +113,61 @@ const messageSlice = createSlice({
                 state.error = typeof action.payload === "string" ? action.payload : "Failed to send message";
             });
     },
-})
+});
+
+// --- Account Slice ---
+export interface Account {
+    id: string;
+    email: string;
+    name: string;
+    phone: string;
+    address: string;
+    createdAt: string;
+}
+
+interface AccountState {
+    account: Account | null;
+    loading: boolean;
+    error: string | null;
+}
+
+const initialStateAccount: AccountState = {
+    account: null,
+    loading: false,
+    error: null,
+};
+
+const accountSlice = createSlice({
+    name: "account",
+    initialState: initialStateAccount,
+    reducers: {},
+    extraReducers: (builder) => {
+        builder
+            .addCase(signIn.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(signIn.fulfilled, (state, action) => {
+                state.loading = false;
+                const user = action.payload as User;
+                state.account = user
+                    ? {
+                        id: user.uid,
+                        email: user.email ?? "",
+                        name: user.displayName ?? "",
+                        phone: user.phoneNumber ?? "",
+                        address: "",
+                        createdAt: user.metadata?.creationTime ?? "",
+                    }
+                    : null;
+            })
+            .addCase(signIn.rejected, (state, action) => {
+                state.loading = false;
+                state.error = typeof action.payload === "string" ? action.payload : "Failed to sign in";
+            });
+    },
+});
 
 export const productReducer = productSlice.reducer;
 export const messageReducer = messageSlice.reducer;
+export const accountReducer = accountSlice.reducer;
