@@ -1,5 +1,7 @@
 import { Box, Button, Grid, Typography, useTheme } from "@mui/material"
 import { useEffect, useMemo, useState } from "react";
+import { FW } from "../../theme";
+import { buttonSx } from "../../styles/buttonSx";
 
 function useCountdown(endTime: Date | string | number) {
     const getTimeLeft = () => {
@@ -26,8 +28,8 @@ const CountdownCircle = ({ value, label }: { value: number; label: string }) => 
         sx={{
             backgroundColor: "#fff",
             borderRadius: "50%",
-            width: 72,
-            height: 72,
+            width: '4rem',
+            height: '4rem',
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -37,11 +39,10 @@ const CountdownCircle = ({ value, label }: { value: number; label: string }) => 
         }}
     >
         <Typography
-            variant="h5"
+            variant="subtitle1"
             sx={{
                 color: "#000",
-                fontWeight: 700,
-                fontFamily: "Poppins, sans-serif",
+                fontWeight: FW.bold,
                 lineHeight: 1,
             }}
         >
@@ -89,10 +90,10 @@ export const BannerSection = () => {
                             gap: 3
                         }}
                     >
-                        <Typography variant="h3" sx={{ color: theme.palette.secondary.main }}>
+                        <Typography variant="subtitle1" sx={{ color: theme.palette.secondary.main }}>
                             Categories
                         </Typography>
-                        <Typography sx={{ color: '#fff', fontFamily: 'Inter, sans-serif', fontSize: '48px', fontWeight: 600, wordBreak: 'break-word', maxWidth: '50%', textAlign: 'start' }}>
+                        <Typography variant="h3">
                             Enhance Your Music Experience
                         </Typography>
                         {/* Countdown Timer */}
@@ -105,7 +106,7 @@ export const BannerSection = () => {
                             <Typography variant="h5" sx={{ color: "#000", mx: 0.5, fontWeight: 700 }}>:</Typography>
                             <CountdownCircle value={seconds} label="Seconds" />
                         </Box>
-                        <Button variant="contained">Buy Now!</Button>
+                        <Button variant="contained" sx={{ ...buttonSx.default }}>Buy Now!</Button>
                     </Box>
                 </Box>
             </Grid>

@@ -16,6 +16,7 @@ import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { Dashboard } from './pages/Dashboard';
 import { Products } from './pages/Products';
+import { ProductDetail } from './pages/ProductDetail';
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/products" element={<Products />} />
+              <Route path="/product/:id" element={<ProductDetail />} />
             </Routes>
           </Box>
           <Footer />

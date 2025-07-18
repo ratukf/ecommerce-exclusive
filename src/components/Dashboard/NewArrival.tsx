@@ -19,17 +19,15 @@ const OverlayBox = ({ label, desc }: OverlayBoxProps) => (
             flexDirection: "column",
             alignItems: "flex-start",
             justifyContent: "flex-end",
-            fontWeight: 600,
-            fontSize: "1.2rem",
             letterSpacing: 1,
             zIndex: 1,
             gap: 1,
         }}
     >
-        <Typography sx={{ fontFamily: 'Inter, sans-serif', fontWeight: 600, fontSize: '24px' }}>
+        <Typography variant="h5" sx={{ color: '#fff' }}>
             {label}
         </Typography>
-        <Typography sx={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400, fontSize: '14px' }}>
+        <Typography variant="body2">
             {desc}
         </Typography>
         <Button sx={{ padding: 0, textDecoration: 'underline' }}>

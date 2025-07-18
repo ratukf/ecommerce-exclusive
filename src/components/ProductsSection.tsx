@@ -2,16 +2,20 @@ import { FavoriteBorderOutlined, RemoveRedEyeOutlined } from "@mui/icons-materia
 import { Box, Grid, IconButton, Typography, useTheme } from "@mui/material";
 import type { Product } from "../store/slice";
 import { countStar, renderStars } from "../utils/rating";
+import { FW } from "../theme";
+import { useNavigate } from "react-router";
+import { useState } from "react";
 
-interface FlashSaleSectionProps {
+interface ProductsSectionProps {
     products: Product[];
-    setHovered: (id: string | null) => void;
-    hovered: string | null;
     showDiscount: boolean;
 }
 
-export const ProductsSection = ({ products, setHovered, hovered, showDiscount }: FlashSaleSectionProps) => {
+export const ProductsSection = ({ products, showDiscount }: ProductsSectionProps) => {
+    const nav = useNavigate();
     const theme = useTheme();
+    const [hovered, setHovered] = useState<string | null>(null);
+
 
     return (
         <>
@@ -28,6 +32,7 @@ export const ProductsSection = ({ products, setHovered, hovered, showDiscount }:
                         }}
                         onMouseEnter={() => setHovered(product.id)}
                         onMouseLeave={() => setHovered(null)}
+                        onClick={() => nav(`/product/${product.id}`)}
                     >
                         <img
                             src={product.imageUrls[0]}
@@ -49,7 +54,7 @@ export const ProductsSection = ({ products, setHovered, hovered, showDiscount }:
                                     pointerEvents: hovered === product.id ? 'auto' : 'none',
                                 }}
                             >
-                                <Typography sx={{ color: '#fff', fontFamily: 'Poppins, sans-serif', fontWeight: 500, fontSize: '16px' }}>
+                                <Typography variant="subtitle1" sx={{ fontWeight: FW.semiBold, color: '#fff' }}>
                                     Add to cart
                                 </Typography>
                             </Box>
@@ -84,28 +89,28 @@ export const ProductsSection = ({ products, setHovered, hovered, showDiscount }:
                         </Box>
                         {showDiscount && (
                             <Box sx={{ position: 'absolute', top: '1rem', left: '1rem', paddingY: '4px', paddingX: '12px', backgroundColor: theme.palette.secondary.main, borderRadius: '4px' }}>
-                                <Typography variant="h3" sx={{ color: '#fff', fontWeight: 400, fontSize: '12px' }}>
+                                <Typography variant="caption" sx={{ color: '#fff' }}>
                                     -40%
                                 </Typography>
                             </Box>
                         )}
                     </Box>
                     <Box sx={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                        <Typography variant="h3" sx={{ marginBottom: '1rem' }}>
+                        <Typography variant="subtitle1" sx={{ marginBottom: '0.75rem', fontWeight: FW.semiBold }}>
                             {product.name}
                         </Typography>
                         <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
-                            <Typography variant="h3" sx={{ marginBottom: '1rem', color: theme.palette.secondary.main }}>
+                            <Typography variant="subtitle1" sx={{ marginBottom: '0.75rem', color: theme.palette.secondary.main, fontWeight: FW.semiBold }}>
                                 ${product.variants[0].price}
                             </Typography>
-                            <Typography variant="h3" sx={{ marginBottom: '1rem', color: theme.palette.grey[600], textDecoration: 'line-through' }}>
+                            <Typography variant="subtitle1" sx={{ marginBottom: '0.75rem', color: theme.palette.grey[600], textDecoration: 'line-through', fontWeight: FW.semiBold }}>
                                 ${160}
                             </Typography>
                         </Box>
                     </Box>
                     <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', gap: 1 }}>
                         {renderStars(countStar(product.reviews), theme)}
-                        <Typography variant="h3" sx={{ color: theme.palette.grey[600], marginLeft: '1rem', fontSize: '14px' }}>
+                        <Typography variant="body2" sx={{ color: theme.palette.grey[600], marginLeft: '1rem' }}>
                             {'('}{product.reviews?.length}{')'}
                         </Typography>
                     </Box>

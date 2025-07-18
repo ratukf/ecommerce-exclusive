@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchProducts } from "./asyncAction";
+import { fetchProducts, fetchProductById } from "./asyncAction";
 
 export interface Review {
     id: string;
@@ -30,12 +30,14 @@ export interface Product {
 
 interface ProductState {
     products: Product[];
+    productDetail: Product | null;
     loading: boolean;
     error: string | null;
 }
 
 const initialState: ProductState = {
     products: [],
+    productDetail: null,
     loading: false,
     error: null,
 };
@@ -57,6 +59,18 @@ const productSlice = createSlice({
             .addCase(fetchProducts.rejected, (state, action) => {
                 state.loading = false;
                 state.error = typeof action.payload === "string" ? action.payload : "Failed to fetch products";
+            })
+            .addCase(fetchProductById.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchProductById.fulfilled, (state, action) => {
+                state.loading = false;
+                state.productDetail = action.payload;
+            })
+            .addCase(fetchProductById.rejected, (state, action) => {
+                state.loading = false;
+                state.error = typeof action.payload === "string" ? action.payload : "Failed to fetch product";
             });
     },
 });

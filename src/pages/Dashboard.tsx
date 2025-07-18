@@ -16,11 +16,11 @@ import { BannerSection } from '../components/Dashboard/BannerSection';
 import { NewArrival } from '../components/Dashboard/NewArrival';
 import { Benefits } from '../components/Dashboard/Benefits';
 import { useNavigate } from 'react-router';
+import { buttonSx } from '../styles/buttonSx';
 
 export const Dashboard = () => {
     const dispatch = useDispatch<AppDispatch>();
     const products = useSelector((state: RootState) => state.products.products);
-    const [hovered, setHovered] = useState<string | null>(null);
 
     const [openIndex, setOpenIndex] = useState<number | null>(null);
     const [slideIdx, setSlideIdx] = useState(0);
@@ -69,7 +69,7 @@ export const Dashboard = () => {
                 sectionHeader2={<FlashSaleTimer endTime={END_TIME} />}
                 actionButton="View All Products"
                 buttonHeader={<ArrowButton />}
-                content={<ProductsSection products={products.slice(0, 4)} setHovered={setHovered} hovered={hovered} showDiscount={true} />}
+                content={<ProductsSection products={products.slice(0, 4)} showDiscount={true} />}
                 onClickActionButton={() => nav('/products')}
             />
             {/* Categories Section */}
@@ -87,9 +87,9 @@ export const Dashboard = () => {
                 sectionHeader="Best Selling Products"
                 sectionHeader2={null}
                 actionButton=""
-                buttonHeader={<Button variant="contained" onClick={() => nav('/products')}>View All</Button>}
+                buttonHeader={<Button variant="contained" sx={buttonSx.default} onClick={() => nav('/products')}>View All</Button>}
                 content={
-                    <ProductsSection products={products.slice(4, 8)} setHovered={setHovered} hovered={hovered} showDiscount={false} />
+                    <ProductsSection products={products.slice(4, 8)} showDiscount={false} />
                 }
             />
             {/* Banner Section */}
@@ -101,7 +101,7 @@ export const Dashboard = () => {
                 sectionHeader2={null}
                 actionButton="View All Products"
                 buttonHeader={<ArrowButton />}
-                content={<ProductsSection products={products} setHovered={setHovered} hovered={hovered} showDiscount={false} />}
+                content={<ProductsSection products={products} showDiscount={false} />}
                 onClickActionButton={() => nav('/products')}
             />
             {/* New Arrival Section */}

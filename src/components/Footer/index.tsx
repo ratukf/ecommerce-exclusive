@@ -2,6 +2,7 @@ import { FacebookOutlined, Instagram, LinkedIn, SendOutlined, Twitter } from "@m
 import { Box, Divider, Grid, IconButton, InputAdornment, TextField, Typography } from "@mui/material"
 import { useTheme } from "@mui/material"
 import { AppStoreButton, GooglePlayButton } from "react-mobile-app-button"
+import { FW } from "../../theme"
 
 export const Footer = () => {
     const SUPPORT_LIST = [
@@ -23,19 +24,8 @@ export const Footer = () => {
         { label: 'Contact', path: '/' }
     ]
 
-    const tittleStyle = {
-        fontWeight: 500,
-        fontSize: '20px',
-        marginBottom: '24px',
-        fontFamily: 'Poppins, sans-serif',
-    }
-
     const listStyle = {
-        fontWeight: 400,
-        fontSize: '16px',
         marginBottom: '18px',
-        fontFamily: 'Poppins, sans-serif',
-        color: '#ffffff',
         '&:hover': {
             textDecoration: 'underline',
             cursor: 'pointer',
@@ -47,14 +37,15 @@ export const Footer = () => {
 
         <Box sx={{ width: '100%', backgroundColor: '#000000' }}>
             <Grid container spacing={10} columns={10} sx={{ fontFamily: 'Poppins, sans-serif', color: '#ffffff', paddingLeft: '8rem', paddingRight: '8rem', paddingY: '3rem' }}>
+                {/* Subscribe section */}
                 <Grid size={2}>
-                    <Typography sx={{ ...tittleStyle, fontSize: '24px', fontWeight: 700 }}>
+                    <Typography variant="h4" sx={{ marginBottom: '1rem' }}>
                         Exclusive
                     </Typography>
-                    <Typography sx={{ ...tittleStyle, fontSize: '20px', fontWeight: 500 }}>
+                    <Typography variant="h6" sx={{ marginBottom: '1rem' }}>
                         Subscribe
                     </Typography>
-                    <Typography sx={{ ...tittleStyle, fontSize: '16px', fontWeight: 400 }}>
+                    <Typography sx={{ marginBottom: '1rem' }}>
                         Get 10% off your first order
                     </Typography>
                     <TextField
@@ -82,41 +73,45 @@ export const Footer = () => {
                         }}
                     />
                 </Grid>
+                {/* Support section */}
                 <Grid size={2}>
-                    <Typography sx={{ ...tittleStyle }}>
+                    <Typography variant="h6" sx={{ marginBottom: '1.5rem', fontWeight: FW.semiBold }}>
                         Support
                     </Typography>
                     {SUPPORT_LIST.map((item, index) => (
-                        <Typography key={index} sx={{ ...listStyle }}>
+                        <Typography key={index} sx={{ ...listStyle }} variant="subtitle1">
                             {item.label}
                         </Typography>
                     ))}
                 </Grid>
+                {/* Account section */}
                 <Grid size={2}>
-                    <Typography sx={{ ...tittleStyle }}>
+                    <Typography variant="h6" sx={{ marginBottom: '1.5rem', fontWeight: FW.semiBold }}>
                         Account
                     </Typography>
                     {ACCOUNT_LIST.map((item, index) => (
-                        <Typography key={index} sx={{ ...listStyle }}>
+                        <Typography key={index} sx={{ ...listStyle }} variant="subtitle1">
                             {item.label}
                         </Typography>
                     ))}
                 </Grid>
+                {/* Quick link section */}
                 <Grid size={2}>
-                    <Typography sx={{ ...tittleStyle }}>
+                    <Typography variant="h6" sx={{ marginBottom: '1.5rem', fontWeight: FW.semiBold }}>
                         Quick Link
                     </Typography>
                     {QUICK_LINK.map((item, index) => (
-                        <Typography key={index} sx={{ ...listStyle }}>
+                        <Typography key={index} sx={{ ...listStyle }} variant="subtitle1">
                             {item.label}
                         </Typography>
                     ))}
                 </Grid>
+                {/* Download section */}
                 <Grid size={2}>
-                    <Typography sx={{ ...tittleStyle }}>
+                    <Typography variant="h6" sx={{ marginBottom: '1.5rem', fontWeight: FW.semiBold }}>
                         Download App
                     </Typography>
-                    <Typography sx={{ ...listStyle, fontSize: '12px', opacity: 0.7, marginBottom: '4px' }}>
+                    <Typography variant="caption" sx={{ ...listStyle, opacity: 0.7, marginBottom: '4px' }}>
                         Save $3 with App New User Only
                     </Typography>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -146,6 +141,6 @@ export const Footer = () => {
                 © Copyright Ratu 2025. All rights reserved. <br />
                 Design by Rimel 2022
             </Typography>
-        </Box>
+        </Box >
     )
 }

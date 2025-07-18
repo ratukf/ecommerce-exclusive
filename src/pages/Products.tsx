@@ -31,8 +31,6 @@ export const Products = () => {
                 <Grid container display="flex" flexDirection={'row'} spacing={2}>
                     <ProductsSection
                         products={products}
-                        setHovered={() => { }}
-                        hovered={null}
                         showDiscount={true}
                     />
                 </Grid>

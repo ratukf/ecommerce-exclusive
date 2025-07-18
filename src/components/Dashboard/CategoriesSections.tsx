@@ -29,7 +29,7 @@ export const CategoriesSection = () => {
                         <Icon sx={{ width: '100%', height: '100%' }}>
                             {categoryIcons[category.label] || null}
                         </Icon>
-                        <Typography variant="h3" sx={{ marginTop: '1rem' }}>
+                        <Typography variant="subtitle1" sx={{ marginTop: '1rem' }}>
                             {category.label}
                         </Typography>
                     </Box>
