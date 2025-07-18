@@ -11,6 +11,8 @@ import { useDispatch } from "react-redux"
 import { sendContactMessage } from "../store/asyncAction"
 import { buttonSx } from "../styles/buttonSx"
 import { useCallback } from "react";
+import { SnackBar } from "../components/SnackBar";
+import { useSnackBar } from "../hooks/useSnackBar";
 
 
 const renderContact = (label: string, desc: string[], theme: Theme) => {
@@ -55,6 +57,7 @@ const redStar = () => {
 export const Contact = () => {
     const theme = useTheme();
     const dispatch = useDispatch<AppDispatch>();
+    const { snackBar, showSnackBar, handleClose } = useSnackBar();
 
     const formik = useFormik({
         initialValues: {
@@ -82,9 +85,10 @@ export const Contact = () => {
                 try {
                     await dispatch(sendContactMessage(values));
                     formik.resetForm();
+                    showSnackBar('Message sent successfully!', 'success');
                 } catch (error) {
                     console.error('Failed to send message:', error);
-
+                    showSnackBar('Failed to send message. Please try again.', 'error');
                 }
             }
         },
@@ -112,6 +116,12 @@ export const Contact = () => {
 
     return (
         <Grid container columns={10} spacing={2} sx={{ marginY: '5rem' }}>
+            <SnackBar
+                open={snackBar.open}
+                message={snackBar.message}
+                severity={snackBar.severity}
+                onClose={handleClose}
+            />
             {/* Contacts section */}
             <Grid size={3}>
                 <Paper elevation={1} sx={{ padding: '2rem', borderRadius: '4px', boxShadow: '0px 10px 10px rgba(0, 0, 0, 0.1)' }}>
