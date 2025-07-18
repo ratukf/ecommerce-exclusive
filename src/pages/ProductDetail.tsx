@@ -171,7 +171,7 @@ export const ProductDetail = () => {
                         }}
                     >
                         {/* Top Section */}
-                        <Box sx={{ display: "flex", flexDirection: 'row', alignItems: 'center', gap: 2, p: 2, borderBottom: "1px solid #ccc" }}>
+                        <Box sx={{ display: "flex", flexDirection: 'row', alignItems: 'center', gap: 2, p: 3, borderBottom: "1px solid #ccc" }}>
                             <LocalShippingOutlined sx={{ fontSize: '3rem' }} />
                             <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
                                 <Typography sx={{ fontWeight: FW.medium }} variant="subtitle1">Free Delivery</Typography>
@@ -184,7 +184,7 @@ export const ProductDetail = () => {
                         </Box>
 
                         {/* Bottom Section */}
-                        <Box sx={{ display: "flex", flexDirection: 'row', alignItems: 'center', gap: 2, p: 2 }}>
+                        <Box sx={{ display: "flex", flexDirection: 'row', alignItems: 'center', gap: 2, p: 3 }}>
                             <LoopOutlined sx={{ fontSize: '3rem' }} />
                             <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
                                 <Typography sx={{ fontWeight: FW.medium }} variant="subtitle1">Return Delivery</Typography>
