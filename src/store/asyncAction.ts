@@ -113,3 +113,16 @@ export const signUpGithub = createAsyncThunk<User, void, {rejectValue: string}>(
         }
     }
 )
+
+export const logOut = createAsyncThunk<void, void, {rejectValue: string}>(
+    "auth/logOut",
+    async (_, {rejectWithValue}) => {
+        try {
+            const { logOut } = await import("../services/authService");
+            await logOut();
+        } catch (error) {
+            console.error("Error logging out:", error);
+            return rejectWithValue("Failed to log out");
+        }
+    }
+);

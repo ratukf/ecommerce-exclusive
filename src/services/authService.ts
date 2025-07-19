@@ -46,3 +46,7 @@ export const signUpGithub = async (): Promise<User | null> => {
         throw error;
     }
 }
+
+export const logOut = async (): Promise<void> => {
+    await auth.signOut();
+}
