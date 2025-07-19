@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { getProducts, getProductById } from "../services/productService";
 import type { Product } from "./slice";
 import type { User } from "firebase/auth";
+import type { UserProfile } from "../services/userProfileService";
 
 export const fetchProducts = createAsyncThunk<Product[], void, { rejectValue: string }>(
     "products/fetchProducts",
@@ -63,7 +64,7 @@ export const signIn = createAsyncThunk<User, { email: string; password: string }
     }
 );
 
-export const signUp = createAsyncThunk<User, {name: string, email: string, password: string}, {rejectValue: string} >(
+export const signUp = createAsyncThunk<User, {name: string, email: string,  password: string}, {rejectValue: string} >(
     "auth/signUp",
     async ({ name, email, password }, {rejectWithValue}) => {
         try {
@@ -72,6 +73,13 @@ export const signUp = createAsyncThunk<User, {name: string, email: string, passw
             if (!user) {
                 return rejectWithValue("Failed to create account");
             }
+            const { createUserProfile } = await import("../services/userProfileService");
+            const userProfile: UserProfile = {
+                uid: user.uid,
+                name: name,
+                email: email || "",
+            }
+            await createUserProfile(userProfile);
             return user;
         } catch (error) {
             console.error("Error signing up:", error);
