@@ -3,8 +3,26 @@ import { FW } from "../theme"
 import { buttonSx, linkSx } from "../styles/buttonSx"
 import { Link } from "react-router"
 import { FcGoogle } from "react-icons/fc";
+import { useSnackBar } from "../hooks/useSnackBar";
+import { useAuth } from "../hooks/useAuth";
+import { SnackBar } from "../components/SnackBar";
 
 export const SignUp = () => {
+    const { snackBar, showSnackBar, handleClose } = useSnackBar();
+
+    const { useSignup } = useAuth(showSnackBar);
+
+    const {
+        name,
+        email,
+        password,
+        loading,
+        handleNameChange,
+        handleEmailChange,
+        handlePasswordChange,
+        signUp
+    } = useSignup;
+
     return (
         <Grid container spacing={2} sx={{ marginY: '5rem', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
             <Grid size={6} sx={{ display: { md: 'flex', xs: 'none' } }}>
@@ -24,20 +42,31 @@ export const SignUp = () => {
                         label="Name"
                         type="text"
                         variant="standard"
+                        value={name}
+                        onChange={handleNameChange}
                     />
                     <TextField
                         label="Email"
                         type="email"
                         variant="standard"
+                        value={email}
+                        onChange={handleEmailChange}
                     />
                     <TextField
                         label="Password"
                         type="password"
                         variant="standard"
+                        value={password}
+                        onChange={handlePasswordChange}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                signUp();
+                            }
+                        }}
                     />
                 </Box>
                 <Box sx={{ justifyContent: 'center', display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'center', gap: '1rem' }}>
-                    <Button variant="contained" sx={{ ...buttonSx.default, width: '100%' }}>
+                    <Button onClick={signUp} loading={loading} variant="contained" sx={{ ...buttonSx.default, width: '100%' }} >
                         Create Account
                     </Button>
                     <Button variant="outlined" sx={{ ...buttonSx.defaultOutlined, width: '100%' }}>
@@ -51,6 +80,12 @@ export const SignUp = () => {
                     </Box>
                 </Box>
             </Grid>
+            <SnackBar
+                open={snackBar.open}
+                message={snackBar.message}
+                severity={snackBar.severity}
+                onClose={handleClose}
+            />
         </Grid >
     )
 }
