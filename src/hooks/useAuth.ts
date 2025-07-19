@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { signIn, signUp, signUpGoogle, signUpGithub } from "../store/asyncAction";
+import { signIn, signUp, signUpGoogle, signUpGithub, logOut } from "../store/asyncAction";
 import type { AppDispatch } from "../store/store";
 import { useNavigate } from "react-router";
 
@@ -103,6 +103,17 @@ export const useAuth = (
         }
     }
 
+    // Log out logic
+    const handleLogOut = async () => {
+        try {
+            await dispatch(logOut());
+            showSnackBar?.("You have been logged out", "success");
+        } catch (error) {
+            showSnackBar?.(`An unexpected error occurred: ${error}`, "error");
+        }
+
+    }
+
     return {
         useLogin: {
             email: loginEmail,
@@ -129,6 +140,9 @@ export const useAuth = (
         useSignUpGithub: {
             loading: githubLoading,
             signUpGithub: handleSignUpGithub,
-        }
+        },
+        useLogOut: {
+            logOut: handleLogOut,
+        },
     };
 };
