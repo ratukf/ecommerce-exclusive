@@ -121,7 +121,6 @@ export interface Account {
     email: string;
     name: string;
     phone: string;
-    address: string;
     createdAt: string;
     photoUrl?: string;
 }
@@ -161,7 +160,6 @@ const accountSlice = createSlice({
                         email: user.email ?? "",
                         name: user.displayName ?? "",
                         phone: user.phoneNumber ?? "",
-                        address: "",
                         createdAt: user.metadata?.creationTime ?? "",
                         photoUrl: user.photoURL ?? "",
                     }
@@ -183,7 +181,6 @@ const accountSlice = createSlice({
                     name: user.displayName ?? "",
                     email: user.email ?? "",
                     phone: user.phoneNumber ?? "",
-                    address: "",
                     createdAt: user.metadata?.creationTime ?? "",
                     photoUrl: user.photoURL ?? "",
                 }
@@ -205,7 +202,6 @@ const accountSlice = createSlice({
                     name: user.displayName ?? "",
                     email: user.email ?? "",
                     phone: user.phoneNumber ?? "",
-                    address: "",
                     createdAt: user.metadata?.creationTime ?? "",
                     photoUrl: user.photoURL ?? "",
                 }
@@ -227,7 +223,6 @@ const accountSlice = createSlice({
                     name: user.displayName ?? "",
                     email: user.email ?? "",
                     phone: user.phoneNumber ?? "",
-                    address: "",
                     createdAt: user.metadata?.creationTime ?? "",
                     photoUrl: user.photoURL ?? "",
                 }
