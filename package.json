@@ -26,6 +26,7 @@
     "react-mobile-app-button": "^1.2.19",
     "react-redux": "^9.2.0",
     "react-router": "^7.6.3",
+    "react-router-dom": "^7.7.0",
     "yup": "^1.6.1"
   },
   "devDependencies": {

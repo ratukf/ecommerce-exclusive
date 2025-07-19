@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { signIn, signUp } from "../store/asyncAction";
+import { signIn, signUp, signUpGoogle, signUpGithub, logOut } from "../store/asyncAction";
 import type { AppDispatch } from "../store/store";
 import { useNavigate } from "react-router";
 
@@ -25,6 +25,9 @@ export const useAuth = (
                 showSnackBar?.("Login failed", "error");
             } else {
                 showSnackBar?.("Login successful", "success");
+                setTimeout(() => {
+                    nav('/');
+                }, 2000);
             }
         } catch (error) {
             showSnackBar?.(`An unexpected error occurred: ${error}`, "error");
@@ -65,6 +68,61 @@ export const useAuth = (
         }
     };
 
+    // Sign up with Google state & logic
+    const [googleLoading, setGoogleLoading] = useState(false);
+
+    const handleSignUpGoogle = async () => {
+        setGoogleLoading(true);
+        try {
+            const resultAction = await dispatch(signUpGoogle());
+            if (signUpGoogle.rejected.match(resultAction)) {
+                showSnackBar?.("Sign up failed. Try another method", "error");
+            } else {
+                showSnackBar?.("You have been logged in", "success");
+                setTimeout(() => {
+                    nav('/');
+                }, 2000);
+            }
+        } catch (error) {
+            showSnackBar?.(`An unexpected error occurred: ${error}`, "error");
+        } finally {
+            setGoogleLoading(false);
+        }
+    }
+
+    // Sign up with GitHub state & logic
+    const [githubLoading, setGithubLoading] = useState(false);
+
+    const handleSignUpGithub = async () => {
+        setGithubLoading(true);
+        try {
+            const resultAction = await dispatch(signUpGithub());
+            if (signUpGithub.rejected.match(resultAction)) {
+                showSnackBar?.("Sign up failed. Try another method", "error");
+            } else {
+                showSnackBar?.("You have been logged in", "success");
+                setTimeout(() => {
+                    nav('/');
+                }, 2000);
+            }
+        } catch (error) {
+            showSnackBar?.(`An unexpected error occurred: ${error}`, "error");
+        } finally {
+            setGithubLoading(false);
+        }
+    }
+
+    // Log out logic
+    const handleLogOut = async () => {
+        try {
+            await dispatch(logOut());
+            showSnackBar?.("You have been logged out", "success");
+        } catch (error) {
+            showSnackBar?.(`An unexpected error occurred: ${error}`, "error");
+        }
+
+    }
+
     return {
         useLogin: {
             email: loginEmail,
@@ -83,6 +141,17 @@ export const useAuth = (
             handleEmailChange: handleSignupEmailChange,
             handlePasswordChange: handleSignupPasswordChange,
             signUp: signUpUser,
+        },
+        useSignUpGoogle: {
+            loading: googleLoading,
+            signUpGoogle: handleSignUpGoogle,
+        },
+        useSignUpGithub: {
+            loading: githubLoading,
+            signUpGithub: handleSignUpGithub,
+        },
+        useLogOut: {
+            logOut: handleLogOut,
         },
     };
 };
