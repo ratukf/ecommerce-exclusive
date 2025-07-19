@@ -7,6 +7,8 @@ import { useSelector } from "react-redux";
 import { useAuth } from "../../hooks/useAuth";
 import { useSnackBar } from "../../hooks/useSnackBar";
 import { SnackBar } from "../SnackBar";
+import { AccountPopUp } from "../AccountPopUp";
+import { useState } from "react";
 
 export const NavigationBar = () => {
     const theme = useTheme();
@@ -22,6 +24,7 @@ export const NavigationBar = () => {
     const { snackBar, showSnackBar, handleClose } = useSnackBar();
     const { useLogOut } = useAuth(showSnackBar);
     const { logOut } = useLogOut;
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     interface RootState {
         account: {
             account: {
@@ -95,13 +98,17 @@ export const NavigationBar = () => {
                                 <ShoppingCartOutlined sx={{ fontSize: 30, color: '#000000' }} />
                             </IconButton>
                             {account && (
-                                <Avatar
-                                    src={account.photoUrl ? `https://images.weserv.nl/?url=${encodeURIComponent(account.photoUrl)}` : undefined}
-                                    alt={account.displayName || 'User Avatar'}
-                                    sx={{ width: 30, height: 30, cursor: 'pointer' }}
-                                >
-                                    {account.displayName?.charAt(0) || ''}
-                                </Avatar>
+                                <>
+                                    <Avatar
+                                        onClick={(e) => setAnchorEl(e.currentTarget)}
+                                        src={account.photoUrl ? `https://images.weserv.nl/?url=${encodeURIComponent(account.photoUrl)}` : undefined}
+                                        alt={account.displayName || 'User Avatar'}
+                                        sx={{ width: 30, height: 30, cursor: 'pointer' }}
+                                    >
+                                        {account.displayName?.charAt(0) || ''}
+                                    </Avatar>
+                                    <AccountPopUp anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
+                                </>
                             )}
                         </Box>
                     </Grid>
