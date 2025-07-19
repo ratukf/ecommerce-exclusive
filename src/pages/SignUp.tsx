@@ -6,11 +6,12 @@ import { FcGoogle } from "react-icons/fc";
 import { useSnackBar } from "../hooks/useSnackBar";
 import { useAuth } from "../hooks/useAuth";
 import { SnackBar } from "../components/SnackBar";
+import { GitHub } from "@mui/icons-material";
 
 export const SignUp = () => {
     const { snackBar, showSnackBar, handleClose } = useSnackBar();
 
-    const { useSignup } = useAuth(showSnackBar);
+    const { useSignup, useSignUpGoogle, useSignUpGithub } = useAuth(showSnackBar);
 
     const {
         name,
@@ -22,6 +23,9 @@ export const SignUp = () => {
         handlePasswordChange,
         signUp
     } = useSignup;
+
+    const { loading: googleLoading, signUpGoogle } = useSignUpGoogle;
+    const { loading: githubLoading, signUpGithub } = useSignUpGithub;
 
     return (
         <Grid container spacing={2} sx={{ marginY: '5rem', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
@@ -69,9 +73,13 @@ export const SignUp = () => {
                     <Button onClick={signUp} loading={loading} variant="contained" sx={{ ...buttonSx.default, width: '100%' }} >
                         Create Account
                     </Button>
-                    <Button variant="outlined" sx={{ ...buttonSx.defaultOutlined, width: '100%' }}>
+                    <Button onClick={signUpGoogle} loading={googleLoading} variant="outlined" sx={{ ...buttonSx.defaultOutlined, width: '100%' }}>
                         <FcGoogle style={{ fontSize: '1.5rem', marginRight: '8px' }} />
                         Sign up with Google
+                    </Button>
+                    <Button onClick={signUpGithub} loading={githubLoading} variant="outlined" sx={{ ...buttonSx.defaultOutlined, width: '100%' }}>
+                        <GitHub style={{ fontSize: '1.5rem', marginRight: '8px' }} />
+                        Sign up with Github
                     </Button>
                     <Box sx={{ textAlign: 'center', marginTop: '1rem' }}>
                         <Typography variant="subtitle1">

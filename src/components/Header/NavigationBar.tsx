@@ -1,19 +1,36 @@
 import { FavoriteBorderOutlined, SearchOutlined, ShoppingCartOutlined } from "@mui/icons-material";
-import { Box, Divider, Grid, IconButton, InputAdornment, TextField, Typography } from "@mui/material";
+import { Avatar, Box, Divider, Grid, IconButton, InputAdornment, TextField, Typography } from "@mui/material";
 import { useTheme } from "@mui/material";
 import { useLocation, useNavigate } from "react-router";
 import { FW } from "../../theme";
+import { useSelector } from "react-redux";
+import { useAuth } from "../../hooks/useAuth";
+import { useSnackBar } from "../../hooks/useSnackBar";
+import { SnackBar } from "../SnackBar";
 
 export const NavigationBar = () => {
     const theme = useTheme();
+    const account = useSelector((state: RootState) => state.account.account);
     const NAVIGATION_LIST = [
         { label: 'Home', path: '/' },
         { label: 'Contact', path: '/contact' },
         { label: 'About', path: '/about' },
-        { label: 'Sign Up', path: '/signup' }
+        { label: account ? 'Log Out' : 'Sign Up', path: account ? '/' : '/signup' },
     ]
     const nav = useNavigate();
     const location = useLocation();
+    const { snackBar, showSnackBar, handleClose } = useSnackBar();
+    const { useLogOut } = useAuth(showSnackBar);
+    const { logOut } = useLogOut;
+    interface RootState {
+        account: {
+            account: {
+                photoUrl?: string;
+                displayName?: string;
+            } | null;
+        };
+    }
+
 
     return (
         <>
@@ -25,12 +42,19 @@ export const NavigationBar = () => {
                         </Typography>
                     </Grid>
                     <Grid size={6} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                        {NAVIGATION_LIST.map((item, index) => (
+                        {NAVIGATION_LIST.map((item: { label: string; path: string }, index: number) => (
                             <Typography
-                                onClick={() => nav(item.path)}
+                                onClick={() => {
+                                    if (item.label === 'Log Out') {
+                                        logOut();
+                                        nav(item.path);
+                                    } else {
+                                        nav(item.path);
+                                    }
+                                }}
                                 key={index}
                                 variant='subtitle1'
-                                sx={{ margin: '0 20px', cursor: 'pointer', textDecoration: location.pathname === item.path ? 'underline' : 'none', '&:hover': { textDecoration: 'underline' } }}
+                                sx={{ margin: '0 20px', cursor: 'pointer', textDecoration: location.pathname === item.path && item.label !== 'Log Out' ? 'underline' : 'none', '&:hover': { textDecoration: 'underline' } }}
                             >
                                 {item.label}
                             </Typography>
@@ -70,11 +94,26 @@ export const NavigationBar = () => {
                             <IconButton>
                                 <ShoppingCartOutlined sx={{ fontSize: 30, color: '#000000' }} />
                             </IconButton>
+                            {account && (
+                                <Avatar
+                                    src={account.photoUrl ? `https://images.weserv.nl/?url=${encodeURIComponent(account.photoUrl)}` : undefined}
+                                    alt={account.displayName || 'User Avatar'}
+                                    sx={{ width: 30, height: 30, cursor: 'pointer' }}
+                                >
+                                    {account.displayName?.charAt(0) || ''}
+                                </Avatar>
+                            )}
                         </Box>
                     </Grid>
                 </Grid>
             </Box >
             <Divider sx={{ backgroundColor: '#000000', opacity: 0.1, borderBottomWidth: 0.5 }} />
+            <SnackBar
+                open={snackBar.open}
+                message={snackBar.message}
+                severity={snackBar.severity}
+                onClose={handleClose}
+            />
         </>
     )
 }

@@ -11,7 +11,7 @@ E-Commerce Exclusive is a modern e-commerce web app built with React, TypeScript
 
 Ongoing project. Features, UI, and backend integration are under active development and may be incomplete.
 
-> **Current stage:** Working on `Auth`
+> **Current stage:** Working on `Account`
 
 ### 🔹 Base Layout
 
@@ -29,7 +29,7 @@ Ongoing project. Features, UI, and backend integration are under active developm
 
 ### 🔹 User Features
 
-- [ ] Auth (Login, Register)
+- [x] Auth (Login, Register)
 - [ ] Account
 - [ ] Cart, Checkout, Wishlist
 
