@@ -5,6 +5,18 @@ export const buttonSx = {
         backgroundColor: '#DB4444',
         fontSize: '1rem',
     },
+    defaultOutlined: {
+        color: '#DB4444',
+        borderColor: '#DB4444',
+        borderWidth: '1.5px',
+        padding: '1rem 3rem',
+        backgroundColor: 'transparent',
+        fontSize: '1rem',
+        '&:hover': {
+            backgroundColor: '#DB4444',
+            color: '#fafafa',
+        },
+    },
     defaultSmall: {
         color: '#fafafa',
         padding: '0.5rem 1rem',

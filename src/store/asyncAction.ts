@@ -62,3 +62,20 @@ export const signIn = createAsyncThunk<User, { email: string; password: string }
         }
     }
 );
+
+export const signUp = createAsyncThunk<User, {name: string, email: string, password: string}, {rejectValue: string} >(
+    "auth/signUp",
+    async ({ name, email, password }, {rejectWithValue}) => {
+        try {
+            const { signUp } = await import("../services/authService");
+            const user = await signUp(name, email, password);
+            if (!user) {
+                return rejectWithValue("Failed to create account");
+            }
+            return user;
+        } catch (error) {
+            console.error("Error signing up:", error);
+            return rejectWithValue("Failed to create account");
+        }
+    }
+)
