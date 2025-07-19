@@ -25,6 +25,9 @@ export const useAuth = (
                 showSnackBar?.("Login failed", "error");
             } else {
                 showSnackBar?.("Login successful", "success");
+                setTimeout(() => {
+                    nav('/');
+                }, 2000);
             }
         } catch (error) {
             showSnackBar?.(`An unexpected error occurred: ${error}`, "error");
@@ -76,6 +79,9 @@ export const useAuth = (
                 showSnackBar?.("Sign up failed", "error");
             } else {
                 showSnackBar?.("Account created successfully! You have been logged in", "success");
+                setTimeout(() => {
+                    nav('/');
+                }, 2000);
             }
         } catch (error) {
             showSnackBar?.(`An unexpected error occurred: ${error}`, "error");
@@ -95,6 +101,9 @@ export const useAuth = (
                 showSnackBar?.("Sign up failed", "error");
             } else {
                 showSnackBar?.("Account created successfully! You have been logged in", "success");
+                setTimeout(() => {
+                    nav('/');
+                }, 2000);
             }
         } catch (error) {
             showSnackBar?.(`An unexpected error occurred: ${error}`, "error");
