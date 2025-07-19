@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchProducts, fetchProductById, sendContactMessage, signIn, signUp, signUpGoogle, signUpGithub } from "./asyncAction";
+import { fetchProducts, fetchProductById, sendContactMessage, signIn, signUp, signUpGoogle, signUpGithub, logOut } from "./asyncAction";
 import type { User } from "firebase/auth";
 
 // --- Product Slice ---
@@ -123,6 +123,7 @@ export interface Account {
     phone: string;
     address: string;
     createdAt: string;
+    photoUrl?: string;
 }
 
 interface AccountState {
@@ -140,7 +141,11 @@ const initialStateAccount: AccountState = {
 const accountSlice = createSlice({
     name: "account",
     initialState: initialStateAccount,
-    reducers: {},
+    reducers: {
+        setAccount: (state, action) => {
+            state.account = action.payload;
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(signIn.pending, (state) => {
@@ -158,6 +163,7 @@ const accountSlice = createSlice({
                         phone: user.phoneNumber ?? "",
                         address: "",
                         createdAt: user.metadata?.creationTime ?? "",
+                        photoUrl: user.photoURL ?? "",
                     }
                     : null;
             })
@@ -179,6 +185,7 @@ const accountSlice = createSlice({
                     phone: user.phoneNumber ?? "",
                     address: "",
                     createdAt: user.metadata?.creationTime ?? "",
+                    photoUrl: user.photoURL ?? "",
                 }
                 : null
             })
@@ -200,6 +207,7 @@ const accountSlice = createSlice({
                     phone: user.phoneNumber ?? "",
                     address: "",
                     createdAt: user.metadata?.creationTime ?? "",
+                    photoUrl: user.photoURL ?? "",
                 }
                 : null;
             })
@@ -221,12 +229,26 @@ const accountSlice = createSlice({
                     phone: user.phoneNumber ?? "",
                     address: "",
                     createdAt: user.metadata?.creationTime ?? "",
+                    photoUrl: user.photoURL ?? "",
                 }
                 : null;
             })
             .addCase(signUpGithub.rejected, (state, action) => {
                 state.loading = false;
                 state.error = typeof action.payload === "string" ? action.payload : "Failed to sign up with GitHub";
+            })
+            .addCase(logOut.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(logOut.rejected, (state, action) => {
+                state.loading = false;
+                state.error = typeof action.payload === "string" ? action.payload : "Failed to log out";
+            })
+            .addCase(logOut.fulfilled, (state) => {
+                state.account = null;
+                state.loading = false;
+                state.error = null;
             });
     },
 });
@@ -234,3 +256,4 @@ const accountSlice = createSlice({
 export const productReducer = productSlice.reducer;
 export const messageReducer = messageSlice.reducer;
 export const accountReducer = accountSlice.reducer;
+export const { setAccount } = accountSlice.actions;
