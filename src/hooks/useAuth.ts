@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { signIn, signUp } from "../store/asyncAction";
+import { signIn, signUp, signUpGoogle, signUpGithub } from "../store/asyncAction";
 import type { AppDispatch } from "../store/store";
 import { useNavigate } from "react-router";
 
@@ -65,6 +65,50 @@ export const useAuth = (
         }
     };
 
+    // Sign up with Google state & logic
+    const [googleLoading, setGoogleLoading] = useState(false);
+
+    const handleSignUpGoogle = async () => {
+        setGoogleLoading(true);
+        try {
+            const resultAction = await dispatch(signUpGoogle());
+            if (signUpGoogle.rejected.match(resultAction)) {
+                showSnackBar?.("Sign up failed", "error");
+            } else {
+                showSnackBar?.("Account created successfully! You have been logged in", "success");
+                setTimeout(() => {
+                    nav('/login')
+                }, 2000);
+            }
+        } catch (error) {
+            showSnackBar?.(`An unexpected error occurred: ${error}`, "error");
+        } finally {
+            setSignupLoading(false);
+        }
+    }
+
+    // Sign up with GitHub state & logic
+    const [githubLoading, setGithubLoading] = useState(false);
+
+    const handleSignUpGithub = async () => {
+        setGithubLoading(true);
+        try {
+            const resultAction = await dispatch(signUpGithub());
+            if (signUpGithub.rejected.match(resultAction)) {
+                showSnackBar?.("Sign up failed", "error");
+            } else {
+                showSnackBar?.("Account created successfully! You have been logged in", "success");
+                setTimeout(() => {
+                    nav('/login')
+                }, 2000);
+            }
+        } catch (error) {
+            showSnackBar?.(`An unexpected error occurred: ${error}`, "error");
+        } finally {
+            setSignupLoading(false);
+        }
+    }
+
     return {
         useLogin: {
             email: loginEmail,
@@ -84,5 +128,13 @@ export const useAuth = (
             handlePasswordChange: handleSignupPasswordChange,
             signUp: signUpUser,
         },
+        useSignUpGoogle: {
+            loading: googleLoading,
+            signUpGoogle: handleSignUpGoogle,
+        },
+        useSignUpGithub: {
+            loading: githubLoading,
+            signUpGithub: handleSignUpGithub,
+        }
     };
 };
