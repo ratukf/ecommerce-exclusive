@@ -10,6 +10,7 @@ export const logIn = async (email: string, password: string): Promise<User | nul
         console.error("Error logging in:", error);
         throw error;
     }
+}
 
 export const signUp = async (name: string, email: string, password: string): Promise<User | null> => {
     try {
