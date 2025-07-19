@@ -185,7 +185,7 @@ const accountSlice = createSlice({
             .addCase(signUp.rejected, (state, action) => {
                 state.loading = false;
                 state.error = typeof action.payload === "string" ? action.payload : "Failed to sign up";
-            })
+            });
     },
 });
 
