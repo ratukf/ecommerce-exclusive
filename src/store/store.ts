@@ -1,10 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { productReducer, messageReducer  } from './slice.ts';
+import { productReducer, messageReducer, accountReducer  } from './slice.ts';
 
 export const store = configureStore({
     reducer: {
         products: productReducer,
         messages: messageReducer,
+        account: accountReducer,
     },
 });
 

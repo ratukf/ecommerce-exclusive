@@ -20,6 +20,7 @@ import { ProductDetail } from './pages/ProductDetail';
 import { Contact } from './pages/Contact';
 import { About } from './pages/About';
 import { LogIn } from './pages/LogIn';
+import { SignUp } from './pages/SignUp';
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
               <Route path="/contact" element={<Contact />} />
               <Route path="/about" element={<About />} />
               <Route path="/login" element={<LogIn />} />
+              <Route path="/signup" element={<SignUp />} />
             </Routes>
           </Box>
           <Footer />

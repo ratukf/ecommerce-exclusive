@@ -1,24 +1,27 @@
-import { Box, Button, Grid, TextField, Typography } from "@mui/material";
-import { FW } from "../theme";
-import { buttonSx, linkSx } from "../styles/buttonSx";
-import { Link } from "react-router";
+import { Box, Button, Grid, TextField, Typography } from "@mui/material"
+import { FW } from "../theme"
+import { buttonSx, linkSx } from "../styles/buttonSx"
+import { Link } from "react-router"
+import { FcGoogle } from "react-icons/fc";
 import { useSnackBar } from "../hooks/useSnackBar";
-import { SnackBar } from "../components/SnackBar";
 import { useAuth } from "../hooks/useAuth";
+import { SnackBar } from "../components/SnackBar";
 
-export const LogIn = () => {
+export const SignUp = () => {
     const { snackBar, showSnackBar, handleClose } = useSnackBar();
 
-    const { useLogin } = useAuth(showSnackBar);
+    const { useSignup } = useAuth(showSnackBar);
 
     const {
+        name,
         email,
         password,
         loading,
+        handleNameChange,
         handleEmailChange,
         handlePasswordChange,
-        logIn,
-    } = useLogin;
+        signUp
+    } = useSignup;
 
     return (
         <Grid container spacing={2} sx={{ marginY: '5rem', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
@@ -28,13 +31,20 @@ export const LogIn = () => {
             <Grid size={6} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'left', textAlign: 'left', gap: '3rem', padding: { md: '7rem', xs: '1rem' } }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                     <Typography variant="h4" sx={{ fontWeight: FW.medium }}>
-                        Log in to Exclusive
+                        Create an account
                     </Typography>
                     <Typography variant="subtitle1">
                         Enter your details below
                     </Typography>
                 </Box>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
+                    <TextField
+                        label="Name"
+                        type="text"
+                        variant="standard"
+                        value={name}
+                        onChange={handleNameChange}
+                    />
                     <TextField
                         label="Email"
                         type="email"
@@ -45,24 +55,29 @@ export const LogIn = () => {
                     <TextField
                         label="Password"
                         type="password"
-                        autoComplete="current-password"
                         variant="standard"
                         value={password}
                         onChange={handlePasswordChange}
                         onKeyDown={(e) => {
                             if (e.key === "Enter") {
-                                logIn();
+                                signUp();
                             }
                         }}
                     />
                 </Box>
-                <Box sx={{ justifyContent: 'space-between', display: 'flex', width: '100%', alignItems: 'center', gap: '2.5rem' }}>
-                    <Button variant="contained" sx={buttonSx.default} onClick={logIn} disabled={loading}>
-                        {loading ? "Logging in..." : "Log In"}
+                <Box sx={{ justifyContent: 'center', display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'center', gap: '1rem' }}>
+                    <Button onClick={signUp} loading={loading} variant="contained" sx={{ ...buttonSx.default, width: '100%' }} >
+                        Create Account
                     </Button>
-                    <Link to="/register" style={linkSx.default}>
-                        Forgot Password?
-                    </Link>
+                    <Button variant="outlined" sx={{ ...buttonSx.defaultOutlined, width: '100%' }}>
+                        <FcGoogle style={{ fontSize: '1.5rem', marginRight: '8px' }} />
+                        Sign up with Google
+                    </Button>
+                    <Box sx={{ textAlign: 'center', marginTop: '1rem' }}>
+                        <Typography variant="subtitle1">
+                            Already have an account? <Link to="/login" style={linkSx.default}>Log in</Link>
+                        </Typography>
+                    </Box>
                 </Box>
             </Grid>
             <SnackBar
@@ -71,6 +86,6 @@ export const LogIn = () => {
                 severity={snackBar.severity}
                 onClose={handleClose}
             />
-        </Grid>
-    );
+        </Grid >
+    )
 }
