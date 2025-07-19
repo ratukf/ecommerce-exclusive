@@ -76,14 +76,11 @@ export const useAuth = (
                 showSnackBar?.("Sign up failed", "error");
             } else {
                 showSnackBar?.("Account created successfully! You have been logged in", "success");
-                setTimeout(() => {
-                    nav('/login')
-                }, 2000);
             }
         } catch (error) {
             showSnackBar?.(`An unexpected error occurred: ${error}`, "error");
         } finally {
-            setSignupLoading(false);
+            setGoogleLoading(false);
         }
     }
 
@@ -98,14 +95,11 @@ export const useAuth = (
                 showSnackBar?.("Sign up failed", "error");
             } else {
                 showSnackBar?.("Account created successfully! You have been logged in", "success");
-                setTimeout(() => {
-                    nav('/login')
-                }, 2000);
             }
         } catch (error) {
             showSnackBar?.(`An unexpected error occurred: ${error}`, "error");
         } finally {
-            setSignupLoading(false);
+            setGithubLoading(false);
         }
     }
 
