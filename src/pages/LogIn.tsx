@@ -1,13 +1,15 @@
-import { Box, Button, Grid, TextField, Typography } from "@mui/material"
-import { FW } from "../theme"
-import { buttonSx, linkSx } from "../styles/buttonSx"
-import { Link } from "react-router"
+import { Box, Button, Grid, TextField, Typography } from "@mui/material";
+import { FW } from "../theme";
+import { buttonSx, linkSx } from "../styles/buttonSx";
+import { Link } from "react-router";
 import { useSnackBar } from "../hooks/useSnackBar";
-import { SnackBar } from "../components/SnackBar"
-import { useLogin } from "../hooks/useLogin";
+import { SnackBar } from "../components/SnackBar";
+import { useAuth } from "../hooks/useAuth";
 
 export const LogIn = () => {
     const { snackBar, showSnackBar, handleClose } = useSnackBar();
+
+    const { useLogin } = useAuth(showSnackBar);
 
     const {
         email,
@@ -16,8 +18,7 @@ export const LogIn = () => {
         handleEmailChange,
         handlePasswordChange,
         logIn,
-    } = useLogin(showSnackBar);
-
+    } = useLogin;
 
     return (
         <Grid container spacing={2} sx={{ marginY: '5rem', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
@@ -71,5 +72,5 @@ export const LogIn = () => {
                 onClose={handleClose}
             />
         </Grid>
-    )
+    );
 }
