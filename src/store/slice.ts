@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchProducts, fetchProductById, sendContactMessage, signIn, signUp } from "./asyncAction";
+import { fetchProducts, fetchProductById, sendContactMessage, signIn, signUp, signUpGoogle, signUpGithub } from "./asyncAction";
 import type { User } from "firebase/auth";
 
 // --- Product Slice ---
@@ -185,6 +185,48 @@ const accountSlice = createSlice({
             .addCase(signUp.rejected, (state, action) => {
                 state.loading = false;
                 state.error = typeof action.payload === "string" ? action.payload : "Failed to sign up";
+            })
+            .addCase(signUpGoogle.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(signUpGoogle.fulfilled, (state, action) => {
+                state.loading = false;
+                const user = action.payload as User;
+                state.account = user ? {
+                    id: user.uid,
+                    name: user.displayName ?? "",
+                    email: user.email ?? "",
+                    phone: user.phoneNumber ?? "",
+                    address: "",
+                    createdAt: user.metadata?.creationTime ?? "",
+                }
+                : null;
+            })
+            .addCase(signUpGoogle.rejected, (state, action) => {
+                state.loading = false;
+                state.error = typeof action.payload === "string" ? action.payload : "Failed to sign up with Google";
+            })
+            .addCase(signUpGithub.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(signUpGithub.fulfilled, (state, action) => {
+                state.loading = false;
+                const user = action.payload as User;
+                state.account = user ? {
+                    id: user.uid,
+                    name: user.displayName ?? "",
+                    email: user.email ?? "",
+                    phone: user.phoneNumber ?? "",
+                    address: "",
+                    createdAt: user.metadata?.creationTime ?? "",
+                }
+                : null;
+            })
+            .addCase(signUpGithub.rejected, (state, action) => {
+                state.loading = false;
+                state.error = typeof action.payload === "string" ? action.payload : "Failed to sign up with GitHub";
             });
     },
 });

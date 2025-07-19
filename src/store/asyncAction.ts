@@ -79,3 +79,37 @@ export const signUp = createAsyncThunk<User, {name: string, email: string, passw
         }
     }
 )
+
+export const signUpGoogle = createAsyncThunk<User, void, {rejectValue: string}>(
+    "auth/signUpGoogle",
+    async (_, {rejectWithValue}) => {
+        try {
+            const { signUpGoogle } = await import("../services/authService");
+            const user = await signUpGoogle();
+            if (!user) {
+                return rejectWithValue("Failed to sign up with Google");
+            }
+            return user;
+        } catch (error) {
+            console.error("Error signing up with Google:", error);
+            return rejectWithValue("Failed to sign up with Google");
+        }
+    }
+)
+
+export const signUpGithub = createAsyncThunk<User, void, {rejectValue: string}>(
+    "auth/signUpGithub",
+    async (_, {rejectWithValue}) => {
+        try {
+            const { signUpGithub } = await import("../services/authService");
+            const user = await signUpGithub();
+            if (!user) {
+                return rejectWithValue("Failed to sign up with GitHub");
+            }
+            return user;
+        } catch (error) {
+            console.error("Error signing up with GitHub:", error);
+            return rejectWithValue("Failed to sign up with GitHub");
+        }
+    }
+)
