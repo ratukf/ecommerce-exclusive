@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { signIn, signUp } from "../store/asyncAction";
 import type { AppDispatch } from "../store/store";
+import { useNavigate } from "react-router";
 
 export const useAuth = (
     showSnackBar?: (msg: string, severity?: "success" | "error" | "warning" | "info") => void
@@ -37,6 +38,7 @@ export const useAuth = (
     const [signupEmail, setSignupEmail] = useState("");
     const [signupPassword, setSignupPassword] = useState("");
     const [signupLoading, setSignupLoading] = useState(false);
+    const nav = useNavigate();
 
     const handleSignupNameChange = (e: React.ChangeEvent<HTMLInputElement>) => setSignupName(e.target.value);
     const handleSignupEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => setSignupEmail(e.target.value);
@@ -52,6 +54,9 @@ export const useAuth = (
                 showSnackBar?.("Sign up failed", "error");
             } else {
                 showSnackBar?.("Account created successfully!", "success");
+                setTimeout(() => {
+                    nav('/login')
+                }, 2000);
             }
         } catch (error) {
             showSnackBar?.(`An unexpected error occurred: ${error}`, "error");
