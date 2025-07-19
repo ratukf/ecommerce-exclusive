@@ -76,9 +76,9 @@ export const useAuth = (
         try {
             const resultAction = await dispatch(signUpGoogle());
             if (signUpGoogle.rejected.match(resultAction)) {
-                showSnackBar?.("Sign up failed", "error");
+                showSnackBar?.("Sign up failed. Try another method", "error");
             } else {
-                showSnackBar?.("Account created successfully! You have been logged in", "success");
+                showSnackBar?.("You have been logged in", "success");
                 setTimeout(() => {
                     nav('/');
                 }, 2000);
@@ -98,9 +98,9 @@ export const useAuth = (
         try {
             const resultAction = await dispatch(signUpGithub());
             if (signUpGithub.rejected.match(resultAction)) {
-                showSnackBar?.("Sign up failed", "error");
+                showSnackBar?.("Sign up failed. Try another method", "error");
             } else {
-                showSnackBar?.("Account created successfully! You have been logged in", "success");
+                showSnackBar?.("You have been logged in", "success");
                 setTimeout(() => {
                     nav('/');
                 }, 2000);
