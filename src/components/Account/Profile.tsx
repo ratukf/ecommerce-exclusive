@@ -50,66 +50,64 @@ export const Profile = () => {
     }, [account]);
 
     return (
-        <Grid size={7}>
-            <WhitePaper>
-                <form onSubmit={formik.handleSubmit}>
-                    <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                        <Typography variant="h6" sx={{ color: theme.palette.secondary.main, textAlign: 'left' }}>
-                            Edit Your Profile
-                        </Typography>
-                        <Grid container spacing='1.5rem'>
+        <WhitePaper>
+            <form onSubmit={formik.handleSubmit}>
+                <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                    <Typography variant="h6" sx={{ color: theme.palette.secondary.main, textAlign: 'left' }}>
+                        Edit Your Profile
+                    </Typography>
+                    <Grid container spacing='1.5rem'>
 
-                            {PROFILE.map((item) => (
-                                <Grid size={6}>
-                                    <Typography variant="subtitle1" sx={{ color: '#000', textAlign: 'left' }}>
-                                        {item.label}
-                                    </Typography>
-                                    <TextField
-                                        name={item.field}
-                                        key={item.label}
-                                        value={formik.values[item.field as keyof typeof formik.values]}
-                                        variant="filled"
-                                        fullWidth
-                                        InputProps={
-                                            isEditing && item.field !== 'email'
-                                                ? { disableUnderline: true }
-                                                : { readOnly: true, disableUnderline: true }
-                                        }
-                                        sx={{
-                                            "& .MuiInputBase-input": {
-                                                color: '#000',
-                                                opacity: isEditing && item.field !== 'email' ? 1 : 0.5,
-                                            },
-                                            "& .MuiInputLabel-root": {
-                                                color: '#000',
-                                                opacity: isEditing && item.field !== 'email' ? 1 : 0.5,
-                                            },
-                                        }}
-                                        onChange={formik.handleChange}
-                                    />
-                                </Grid>
-                            ))}
-                        </Grid>
-                        <Box sx={{ width: '100%', display: 'flex', justifyContent: 'flex-end', gap: '1.5rem' }}>
+                        {PROFILE.map((item) => (
+                            <Grid size={6}>
+                                <Typography variant="subtitle1" sx={{ color: '#000', textAlign: 'left' }}>
+                                    {item.label}
+                                </Typography>
+                                <TextField
+                                    name={item.field}
+                                    key={item.label}
+                                    value={formik.values[item.field as keyof typeof formik.values]}
+                                    variant="filled"
+                                    fullWidth
+                                    InputProps={
+                                        isEditing && item.field !== 'email'
+                                            ? { disableUnderline: true }
+                                            : { readOnly: true, disableUnderline: true }
+                                    }
+                                    sx={{
+                                        "& .MuiInputBase-input": {
+                                            color: '#000',
+                                            opacity: isEditing && item.field !== 'email' ? 1 : 0.5,
+                                        },
+                                        "& .MuiInputLabel-root": {
+                                            color: '#000',
+                                            opacity: isEditing && item.field !== 'email' ? 1 : 0.5,
+                                        },
+                                    }}
+                                    onChange={formik.handleChange}
+                                />
+                            </Grid>
+                        ))}
+                    </Grid>
+                    <Box sx={{ width: '100%', display: 'flex', justifyContent: 'flex-end', gap: '1.5rem' }}>
 
-                            {isEditing ? (
-                                <>
-                                    <Button variant="outlined" sx={buttonSx.transparent} onClick={() => setIsEditing(false)}>
-                                        Cancel
-                                    </Button>
-                                    <Button type="submit" variant="contained" sx={buttonSx.default}>
-                                        Save Changes
-                                    </Button>
-                                </>
-                            ) : (
-                                <Button onClick={() => setIsEditing(true)} variant="contained" sx={buttonSx.default}>
-                                    Edit
+                        {isEditing ? (
+                            <>
+                                <Button variant="outlined" sx={buttonSx.transparent} onClick={() => setIsEditing(false)}>
+                                    Cancel
                                 </Button>
-                            )}
-                        </Box>
+                                <Button type="submit" variant="contained" sx={buttonSx.default}>
+                                    Save Changes
+                                </Button>
+                            </>
+                        ) : (
+                            <Button onClick={() => setIsEditing(true)} variant="contained" sx={buttonSx.default}>
+                                Edit
+                            </Button>
+                        )}
                     </Box>
-                </form>
-            </WhitePaper>
-        </Grid >
+                </Box>
+            </form>
+        </WhitePaper>
     )
 }
