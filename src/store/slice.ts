@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchProducts, fetchProductById, sendContactMessage, signIn, signUp, signUpGoogle, signUpGithub, logOut } from "./asyncAction";
+import { fetchProducts, fetchProductById, sendContactMessage, signIn, signUp, signUpGoogle, signUpGithub, logOut, getUserProfile} from "./asyncAction";
 import type { User } from "firebase/auth";
 
 // --- Product Slice ---
@@ -125,14 +125,45 @@ export interface Account {
     photoUrl?: string;
 }
 
+interface Profile {
+    id: string;
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    phone?: string;
+}
+
+export interface Address {
+    id: string;
+    street: string;
+    city: string;
+    state: string;
+    zipCode: string;
+    country: string;
+}
+
+export interface AddressBooks {
+    id: string;
+    name: string;
+    address: Address;
+}
+
+export interface UserProfile {
+    id: string;
+    profile: Profile;
+    addressBooks: AddressBooks[];
+}
+
 interface AccountState {
     account: Account | null;
+    userProfile: UserProfile | null;
     loading: boolean;
     error: string | null;
 }
 
 const initialStateAccount: AccountState = {
     account: null,
+    userProfile: null,
     loading: false,
     error: null,
 };
@@ -184,7 +215,7 @@ const accountSlice = createSlice({
                     createdAt: user.metadata?.creationTime ?? "",
                     photoUrl: user.photoURL ?? "",
                 }
-                : null
+                : null;
             })
             .addCase(signUp.rejected, (state, action) => {
                 state.loading = false;
@@ -244,6 +275,23 @@ const accountSlice = createSlice({
                 state.account = null;
                 state.loading = false;
                 state.error = null;
+            })
+            .addCase(getUserProfile.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getUserProfile.fulfilled, (state, action) => {
+                state.loading = false;
+                const userProfile = action.payload as UserProfile | null;
+                state.userProfile = userProfile ? {
+                    id: userProfile.id,
+                    profile: userProfile.profile,
+                    addressBooks: userProfile.addressBooks,
+                } : null;
+            })
+            .addCase(getUserProfile.rejected, (state, action) => {
+                state.loading = false;
+                state.error = typeof action.payload === "string" ? action.payload : "Failed to fetch user profile";
             });
     },
 });

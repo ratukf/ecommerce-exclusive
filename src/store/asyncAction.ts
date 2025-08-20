@@ -134,3 +134,20 @@ export const logOut = createAsyncThunk<void, void, {rejectValue: string}>(
         }
     }
 );
+
+export const getUserProfile = createAsyncThunk<UserProfile | null, string, {rejectValue: string}>(
+    "user/getUserProfile",
+    async (uid, {rejectWithValue}) => {
+        try {
+            const { getUser } = await import("../services/userProfileService");
+            const userProfile = await getUser(uid);
+            if (!userProfile) {
+                return rejectWithValue("User profile not found");
+            }
+            return userProfile;
+        } catch (error) {
+            console.error("Error fetching user profile:", error);
+            return rejectWithValue("Failed to fetch user profile");
+        }
+    }
+);

@@ -1,4 +1,4 @@
-import { doc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "./firebase";
 
 export interface UserProfile {
@@ -26,3 +26,11 @@ export const createUserProfile = async (user: UserProfile) => {
 
     return profileData;
 }
+
+export const getUser = async (uid: string): Promise<UserProfile | null> => {
+    const userDoc = await getDoc(doc(db, "userProfiles", uid));
+    if (userDoc.exists()) {
+        return userDoc.data() as UserProfile;
+    }
+    return null;
+};
