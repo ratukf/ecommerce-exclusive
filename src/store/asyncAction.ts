@@ -4,6 +4,16 @@ import type { Product } from "./slice";
 import type { User } from "firebase/auth";
 import type { UserProfile } from "../services/userProfileService";
 
+const createProfile = async (user: User, name: string, email: string) => {
+    const { createUserProfile } = await import("../services/userProfileService");
+        const userProfile: UserProfile = {
+            uid: user.uid,
+            name: name,
+            email: email || "",
+        }
+    createUserProfile(userProfile);
+}
+
 export const fetchProducts = createAsyncThunk<Product[], void, { rejectValue: string }>(
     "products/fetchProducts",
     async (_, { rejectWithValue }) => {
@@ -73,13 +83,7 @@ export const signUp = createAsyncThunk<User, {name: string, email: string,  pass
             if (!user) {
                 return rejectWithValue("Failed to create account");
             }
-            const { createUserProfile } = await import("../services/userProfileService");
-            const userProfile: UserProfile = {
-                uid: user.uid,
-                name: name,
-                email: email || "",
-            }
-            await createUserProfile(userProfile);
+            createProfile(user, name, email);
             return user;
         } catch (error) {
             console.error("Error signing up:", error);
@@ -97,6 +101,7 @@ export const signUpGoogle = createAsyncThunk<User, void, {rejectValue: string}>(
             if (!user) {
                 return rejectWithValue("Failed to sign up with Google");
             }
+            createProfile(user, user.displayName || "", user.email || "");
             return user;
         } catch (error) {
             console.error("Error signing up with Google:", error);
@@ -114,6 +119,7 @@ export const signUpGithub = createAsyncThunk<User, void, {rejectValue: string}>(
             if (!user) {
                 return rejectWithValue("Failed to sign up with GitHub");
             }
+            createProfile(user, user.displayName || "", user.email || "");
             return user;
         } catch (error) {
             console.error("Error signing up with GitHub:", error);
