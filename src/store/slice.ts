@@ -153,9 +153,17 @@ export interface UserProfile {
     addressBooks: AddressBooks[];
 }
 
+export interface AccountStatus {
+    profile: boolean;
+    addresses: boolean;
+    orders: boolean;
+    wishlist: boolean;
+}
+
 interface AccountState {
     account: Account;
     userProfile: UserProfile;
+    status: AccountStatus;
     loading: boolean;
     error: string | null;
 }
@@ -180,6 +188,13 @@ const getInitialUserProfile = (): UserProfile => ({
     addressBooks: [],
 });
 
+const getInitialAccountStatus = (): AccountStatus => ({
+    profile: false,
+    addresses: false,
+    orders: false,
+    wishlist: false,
+});
+
 const setAccountFromUser = (user: User): Account => ({
     id: user.uid,
     email: user.email ?? "",
@@ -192,6 +207,7 @@ const setAccountFromUser = (user: User): Account => ({
 const initialStateAccount: AccountState = {
     account: getInitialAccount(),
     userProfile: getInitialUserProfile(),
+    status: getInitialAccountStatus(),
     loading: false,
     error: null,
 };
@@ -205,7 +221,7 @@ const accountSlice = createSlice({
         },
         setAccount: (state, action: PayloadAction<Account>) => {
             state.account = action.payload;
-        }
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -276,11 +292,11 @@ const accountSlice = createSlice({
                 state.error = null;
             })
             .addCase(getUserProfile.pending, (state) => {
-                state.loading = true;
+                state.status.profile = true;
                 state.error = null;
             })
             .addCase(getUserProfile.fulfilled, (state, action) => {
-                state.loading = false;
+                state.status.profile = false;
                 const userProfile = action.payload as UserProfile | null;
                 state.userProfile = userProfile ? {
                     id: userProfile.id || "",
@@ -299,7 +315,7 @@ const accountSlice = createSlice({
                 } : getInitialUserProfile();
             })
             .addCase(getUserProfile.rejected, (state, action) => {
-                state.loading = false;
+                state.status.profile = false;
                 state.error = typeof action.payload === "string" ? action.payload : "Failed to fetch user profile";
             });
     },

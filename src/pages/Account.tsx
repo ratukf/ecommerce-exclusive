@@ -11,9 +11,8 @@ export const Account = () => {
     const [activeList, setActiveList] = useState('My Profile');
     const dispatch = useDispatch<AppDispatch>();
     const account = useSelector((state: RootState) => state.account.account)
-    const userProfile = useSelector((state: RootState) => state.account.userProfile);
 
-    const useAccount = () => {
+    const renderAccount = () => {
         switch (activeList) {
             case 'My Profile':
                 return <Profile />;
@@ -24,24 +23,18 @@ export const Account = () => {
         }
     }
 
+    // Fetch user profile
     useEffect(() => {
         if (account) {
             dispatch(getUserProfile(account.id));
-            console.log("🚀 ~ useEffect ~ account.id:", account.id)
         }
     }, [account, dispatch])
-
-    useEffect(() => {
-        if (userProfile) {
-            console.log("🚀 ~ useEffect ~ userProfile:", userProfile)
-        }
-    }, [userProfile])
 
     return (
         <Grid container spacing={2} columns={10} sx={{ marginY: '5rem' }}>
             <SideBar activeList={activeList} setActiveList={setActiveList} />
             <Grid size={7}>
-                {useAccount()}
+                {renderAccount()}
             </Grid>
         </Grid>
     )

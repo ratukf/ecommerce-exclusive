@@ -5,26 +5,21 @@ import type { RootState } from "../../store/store";
 import { buttonSx } from "../../styles/buttonSx";
 import { useEffect, useState } from "react";
 import { useFormik } from "formik";
-
-type Account = {
-    firstName?: string;
-    lastName?: string;
-    email?: string;
-    phone?: string;
-};
+import { useAccount } from "../../hooks/useAccount";
 
 export const Profile = () => {
     const theme = useTheme();
     const [isEditing, setIsEditing] = useState(false);
-    const account = useSelector((state: RootState) => state.account.account) as Account | null;
+    const { editProfile } = useAccount();
+    const account = useSelector((state: RootState) => state.account.account);
+    const userProfile = useSelector((state: RootState) => state.account.userProfile);
 
     const PROFILE = [
-        { label: 'First Name', value: account?.firstName ?? '', field: 'firstName' },
-        { label: 'Last Name', value: account?.lastName ?? '', field: 'lastName' },
+        { label: 'First Name', value: userProfile?.profile?.firstName ?? '', field: 'firstName' },
+        { label: 'Last Name', value: userProfile?.profile?.lastName ?? '', field: 'lastName' },
         { label: 'Email', value: account?.email ?? '', field: 'email' },
-        { label: 'Phone', value: account?.phone ?? '', field: 'phone' },
+        { label: 'Phone', value: userProfile?.profile?.phone ?? '', field: 'phone' },
     ];
-
 
     const formik = useFormik({
         initialValues: {
@@ -33,21 +28,17 @@ export const Profile = () => {
             email: '',
             phone: '',
         },
-        onSubmit: (values) => {
-            console.log('Form submitted with values:', values);
+        onSubmit: async (values: typeof userProfile.profile) => {
+            editProfile.editProfile(values);
+            setIsEditing(false);
         },
     });
 
     useEffect(() => {
-        if (account) {
-            formik.setValues({
-                firstName: account.firstName ?? '',
-                lastName: account.lastName ?? '',
-                email: account.email ?? '',
-                phone: account.phone ?? '',
-            });
+        if (userProfile.profile) {
+            formik.setValues(userProfile.profile);
         }
-    }, [account]);
+    }, [userProfile])
 
     return (
         <WhitePaper>
@@ -57,7 +48,6 @@ export const Profile = () => {
                         Edit Your Profile
                     </Typography>
                     <Grid container spacing='1.5rem'>
-
                         {PROFILE.map((item) => (
                             <Grid size={6}>
                                 <Typography variant="subtitle1" sx={{ color: '#000', textAlign: 'left' }}>
@@ -67,7 +57,7 @@ export const Profile = () => {
                                     name={item.field}
                                     key={item.label}
                                     value={formik.values[item.field as keyof typeof formik.values]}
-                                    variant="filled"
+                                    variant={isEditing && item.field !== 'email' ? "outlined" : "filled"}
                                     fullWidth
                                     InputProps={
                                         isEditing && item.field !== 'email'
