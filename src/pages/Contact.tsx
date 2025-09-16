@@ -1,5 +1,5 @@
 import { Email, Phone } from "@mui/icons-material"
-import { Box, Divider, Grid, Paper, TextField, Typography, useTheme } from "@mui/material"
+import { Box, Divider, Grid, TextField, Typography, useTheme } from "@mui/material"
 import { LoadingButton } from '@mui/lab';
 import type { Theme } from "@mui/material"
 import { CONTACT, MESSAGE_FIELDS } from "../constants/contact"
@@ -13,7 +13,7 @@ import { buttonSx } from "../styles/buttonSx"
 import { useCallback } from "react";
 import { SnackBar } from "../components/SnackBar";
 import { useSnackBar } from "../hooks/useSnackBar";
-
+import { WhitePaper } from "../components/WhitePaper";
 
 const renderContact = (label: string, desc: string[], theme: Theme) => {
     return (
@@ -125,15 +125,15 @@ export const Contact = () => {
             />
             {/* Contacts section */}
             <Grid size={3}>
-                <Paper elevation={1} sx={{ padding: '2rem', borderRadius: '4px', boxShadow: '0px 10px 10px rgba(0, 0, 0, 0.1)' }}>
+                <WhitePaper>
                     {renderContact(CONTACT[0].label, CONTACT[0].desc, theme)}
                     <Divider sx={{ marginY: '1rem', backgroundColor: '#000', opacity: 0.3, borderBottomWidth: '2px' }} />
                     {renderContact(CONTACT[1].label, CONTACT[1].desc, theme)}
-                </Paper>
+                </WhitePaper>
             </Grid>
             {/* Message section */}
             <Grid size={7}>
-                <Paper elevation={1} sx={{ padding: '2rem', borderRadius: '4px', boxShadow: '0px 10px 10px rgba(0, 0, 0, 0.1)' }}>
+                <WhitePaper>
                     <form onSubmit={formik.handleSubmit} style={{ width: '100%' }}>
                         <Grid container spacing={2} sx={{ padding: '1rem', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                             <Grid size={4}>
@@ -155,7 +155,7 @@ export const Contact = () => {
                             </Grid>
                         </Grid>
                     </form>
-                </Paper>
+                </WhitePaper>
             </Grid >
         </Grid >
     )

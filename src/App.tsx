@@ -22,6 +22,8 @@ import { Contact } from './pages/Contact';
 import { About } from './pages/About';
 import { LogIn } from './pages/LogIn';
 import { SignUp } from './pages/SignUp';
+import { ProtectedRoute } from './components/ProtectedRoute';
+import { Account } from './pages/Account';
 
 
 function App() {
@@ -41,6 +43,11 @@ function App() {
               <Route path="/login" element={<LogIn />} />
               <Route path="/signup" element={<SignUp />} />
             </Routes>
+            <ProtectedRoute>
+              <Routes>
+                <Route path="/account" element={<Account />} />
+              </Routes>
+            </ProtectedRoute>
           </Box>
           <Footer />
         </Router>

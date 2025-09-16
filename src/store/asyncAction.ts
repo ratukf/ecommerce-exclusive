@@ -2,6 +2,17 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { getProducts, getProductById } from "../services/productService";
 import type { Product } from "./slice";
 import type { User } from "firebase/auth";
+import type { UserProfile } from "../services/userProfileService";
+
+const createProfile = async (user: User, name: string, email: string) => {
+    const { createUserProfile } = await import("../services/userProfileService");
+        const userProfile: UserProfile = {
+            uid: user.uid,
+            name: name,
+            email: email || "",
+        }
+    createUserProfile(userProfile);
+}
 
 export const fetchProducts = createAsyncThunk<Product[], void, { rejectValue: string }>(
     "products/fetchProducts",
@@ -63,7 +74,7 @@ export const signIn = createAsyncThunk<User, { email: string; password: string }
     }
 );
 
-export const signUp = createAsyncThunk<User, {name: string, email: string, password: string}, {rejectValue: string} >(
+export const signUp = createAsyncThunk<User, {name: string, email: string,  password: string}, {rejectValue: string} >(
     "auth/signUp",
     async ({ name, email, password }, {rejectWithValue}) => {
         try {
@@ -72,6 +83,7 @@ export const signUp = createAsyncThunk<User, {name: string, email: string, passw
             if (!user) {
                 return rejectWithValue("Failed to create account");
             }
+            createProfile(user, name, email);
             return user;
         } catch (error) {
             console.error("Error signing up:", error);
@@ -89,6 +101,7 @@ export const signUpGoogle = createAsyncThunk<User, void, {rejectValue: string}>(
             if (!user) {
                 return rejectWithValue("Failed to sign up with Google");
             }
+            createProfile(user, user.displayName || "", user.email || "");
             return user;
         } catch (error) {
             console.error("Error signing up with Google:", error);
@@ -106,6 +119,7 @@ export const signUpGithub = createAsyncThunk<User, void, {rejectValue: string}>(
             if (!user) {
                 return rejectWithValue("Failed to sign up with GitHub");
             }
+            createProfile(user, user.displayName || "", user.email || "");
             return user;
         } catch (error) {
             console.error("Error signing up with GitHub:", error);
@@ -123,6 +137,23 @@ export const logOut = createAsyncThunk<void, void, {rejectValue: string}>(
         } catch (error) {
             console.error("Error logging out:", error);
             return rejectWithValue("Failed to log out");
+        }
+    }
+);
+
+export const getUserProfile = createAsyncThunk<UserProfile | null, string, {rejectValue: string}>(
+    "user/getUserProfile",
+    async (uid, {rejectWithValue}) => {
+        try {
+            const { getUser } = await import("../services/userProfileService");
+            const userProfile = await getUser(uid);
+            if (!userProfile) {
+                return rejectWithValue("User profile not found");
+            }
+            return userProfile;
+        } catch (error) {
+            console.error("Error fetching user profile:", error);
+            return rejectWithValue("Failed to fetch user profile");
         }
     }
 );

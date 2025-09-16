@@ -1,5 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { fetchProducts, fetchProductById, sendContactMessage, signIn, signUp, signUpGoogle, signUpGithub, logOut } from "./asyncAction";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { fetchProducts, fetchProductById, sendContactMessage, signIn, signUp, signUpGoogle, signUpGithub, logOut, getUserProfile} from "./asyncAction";
 import type { User } from "firebase/auth";
 
 // --- Product Slice ---
@@ -121,19 +121,93 @@ export interface Account {
     email: string;
     name: string;
     phone: string;
-    address: string;
     createdAt: string;
     photoUrl?: string;
 }
 
+export interface Profile {
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    phone?: string;
+}
+
+export interface Address {
+    id: string;
+    street: string;
+    city: string;
+    state: string;
+    zipCode: string;
+    country: string;
+}
+
+export interface AddressBooks {
+    id: string;
+    name: string;
+    address: Address;
+}
+
+export interface UserProfile {
+    id: string;
+    profile: Profile;
+    addressBooks: AddressBooks[];
+}
+
+export interface AccountStatus {
+    profile: boolean;
+    addresses: boolean;
+    orders: boolean;
+    wishlist: boolean;
+}
+
 interface AccountState {
-    account: Account | null;
+    account: Account;
+    userProfile: UserProfile;
+    status: AccountStatus;
     loading: boolean;
     error: string | null;
 }
 
+const getInitialAccount = (): Account => ({
+    id: "",
+    email: "",
+    name: "",
+    phone: "",
+    createdAt: "",
+    photoUrl: "",
+})
+
+const getInitialUserProfile = (): UserProfile => ({
+    id: "",
+    profile: {
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+    },
+    addressBooks: [],
+});
+
+const getInitialAccountStatus = (): AccountStatus => ({
+    profile: false,
+    addresses: false,
+    orders: false,
+    wishlist: false,
+});
+
+const setAccountFromUser = (user: User): Account => ({
+    id: user.uid,
+    email: user.email ?? "",
+    name: user.displayName ?? "",
+    phone: user.phoneNumber ?? "",
+    createdAt: user.metadata?.creationTime ?? "",
+    photoUrl: user.photoURL ?? "",
+});
+
 const initialStateAccount: AccountState = {
-    account: null,
+    account: getInitialAccount(),
+    userProfile: getInitialUserProfile(),
+    status: getInitialAccountStatus(),
     loading: false,
     error: null,
 };
@@ -142,9 +216,15 @@ const accountSlice = createSlice({
     name: "account",
     initialState: initialStateAccount,
     reducers: {
-        setAccount: (state, action) => {
+        setProfile: (state, action: PayloadAction<Profile>) => {
+            state.userProfile.profile = action.payload;
+        },
+        setAccount: (state, action: PayloadAction<Account>) => {
             state.account = action.payload;
-        }
+        },
+        resetAccount: (state) => {
+            state.account = getInitialAccount();
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -155,17 +235,7 @@ const accountSlice = createSlice({
             .addCase(signIn.fulfilled, (state, action) => {
                 state.loading = false;
                 const user = action.payload as User;
-                state.account = user
-                    ? {
-                        id: user.uid,
-                        email: user.email ?? "",
-                        name: user.displayName ?? "",
-                        phone: user.phoneNumber ?? "",
-                        address: "",
-                        createdAt: user.metadata?.creationTime ?? "",
-                        photoUrl: user.photoURL ?? "",
-                    }
-                    : null;
+                state.account =  setAccountFromUser(user);
             })
             .addCase(signIn.rejected, (state, action) => {
                 state.loading = false;
@@ -178,16 +248,7 @@ const accountSlice = createSlice({
             .addCase(signUp.fulfilled, (state, action) => {
                 state.loading = false;
                 const user = action.payload as User;
-                state.account = user ? {
-                    id: user.uid,
-                    name: user.displayName ?? "",
-                    email: user.email ?? "",
-                    phone: user.phoneNumber ?? "",
-                    address: "",
-                    createdAt: user.metadata?.creationTime ?? "",
-                    photoUrl: user.photoURL ?? "",
-                }
-                : null
+                state.account = setAccountFromUser(user);
             })
             .addCase(signUp.rejected, (state, action) => {
                 state.loading = false;
@@ -200,16 +261,7 @@ const accountSlice = createSlice({
             .addCase(signUpGoogle.fulfilled, (state, action) => {
                 state.loading = false;
                 const user = action.payload as User;
-                state.account = user ? {
-                    id: user.uid,
-                    name: user.displayName ?? "",
-                    email: user.email ?? "",
-                    phone: user.phoneNumber ?? "",
-                    address: "",
-                    createdAt: user.metadata?.creationTime ?? "",
-                    photoUrl: user.photoURL ?? "",
-                }
-                : null;
+                state.account = setAccountFromUser(user);
             })
             .addCase(signUpGoogle.rejected, (state, action) => {
                 state.loading = false;
@@ -222,16 +274,7 @@ const accountSlice = createSlice({
             .addCase(signUpGithub.fulfilled, (state, action) => {
                 state.loading = false;
                 const user = action.payload as User;
-                state.account = user ? {
-                    id: user.uid,
-                    name: user.displayName ?? "",
-                    email: user.email ?? "",
-                    phone: user.phoneNumber ?? "",
-                    address: "",
-                    createdAt: user.metadata?.creationTime ?? "",
-                    photoUrl: user.photoURL ?? "",
-                }
-                : null;
+                state.account = setAccountFromUser(user);
             })
             .addCase(signUpGithub.rejected, (state, action) => {
                 state.loading = false;
@@ -246,9 +289,37 @@ const accountSlice = createSlice({
                 state.error = typeof action.payload === "string" ? action.payload : "Failed to log out";
             })
             .addCase(logOut.fulfilled, (state) => {
-                state.account = null;
+                state.account = getInitialAccount();
+                state.userProfile = getInitialUserProfile();
                 state.loading = false;
                 state.error = null;
+            })
+            .addCase(getUserProfile.pending, (state) => {
+                state.status.profile = true;
+                state.error = null;
+            })
+            .addCase(getUserProfile.fulfilled, (state, action) => {
+                state.status.profile = false;
+                const userProfile = action.payload as UserProfile | null;
+                state.userProfile = userProfile ? {
+                    id: userProfile.id || "",
+                    profile: userProfile.profile ? {
+                        firstName: userProfile.profile.firstName || "",
+                        lastName: userProfile.profile.lastName || "",
+                        email: userProfile.profile.email || "",
+                        phone: userProfile.profile.phone || "",
+                    } : {
+                        firstName: "",
+                        lastName: "",
+                        email: "",
+                        phone: "",
+                    },
+                    addressBooks: userProfile.addressBooks || [],
+                } : getInitialUserProfile();
+            })
+            .addCase(getUserProfile.rejected, (state, action) => {
+                state.status.profile = false;
+                state.error = typeof action.payload === "string" ? action.payload : "Failed to fetch user profile";
             });
     },
 });
@@ -256,4 +327,4 @@ const accountSlice = createSlice({
 export const productReducer = productSlice.reducer;
 export const messageReducer = messageSlice.reducer;
 export const accountReducer = accountSlice.reducer;
-export const { setAccount } = accountSlice.actions;
+export const { setAccount, setProfile, resetAccount } = accountSlice.actions;

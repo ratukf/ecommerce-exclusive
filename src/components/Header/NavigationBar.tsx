@@ -7,29 +7,26 @@ import { useSelector } from "react-redux";
 import { useAuth } from "../../hooks/useAuth";
 import { useSnackBar } from "../../hooks/useSnackBar";
 import { SnackBar } from "../SnackBar";
+import { AccountPopUp } from "../AccountPopUp";
+import { useState } from "react";
+import type { RootState } from "../../store/store";
 
 export const NavigationBar = () => {
     const theme = useTheme();
     const account = useSelector((state: RootState) => state.account.account);
+    const isLoggedIn = account && account.id && account.email;
     const NAVIGATION_LIST = [
         { label: 'Home', path: '/' },
         { label: 'Contact', path: '/contact' },
         { label: 'About', path: '/about' },
-        { label: account ? 'Log Out' : 'Sign Up', path: account ? '/' : '/signup' },
+        { label: isLoggedIn ? 'Log Out' : 'Sign Up', path: isLoggedIn ? '/' : '/signup' },
     ]
     const nav = useNavigate();
     const location = useLocation();
     const { snackBar, showSnackBar, handleClose } = useSnackBar();
     const { useLogOut } = useAuth(showSnackBar);
     const { logOut } = useLogOut;
-    interface RootState {
-        account: {
-            account: {
-                photoUrl?: string;
-                displayName?: string;
-            } | null;
-        };
-    }
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
 
     return (
@@ -94,14 +91,18 @@ export const NavigationBar = () => {
                             <IconButton>
                                 <ShoppingCartOutlined sx={{ fontSize: 30, color: '#000000' }} />
                             </IconButton>
-                            {account && (
-                                <Avatar
-                                    src={account.photoUrl ? `https://images.weserv.nl/?url=${encodeURIComponent(account.photoUrl)}` : undefined}
-                                    alt={account.displayName || 'User Avatar'}
-                                    sx={{ width: 30, height: 30, cursor: 'pointer' }}
-                                >
-                                    {account.displayName?.charAt(0) || ''}
-                                </Avatar>
+                            {isLoggedIn && (
+                                <>
+                                    <Avatar
+                                        onClick={(e) => setAnchorEl(e.currentTarget)}
+                                        src={account.photoUrl ? `https://images.weserv.nl/?url=${encodeURIComponent(account.photoUrl)}` : undefined}
+                                        alt={account.name || 'User Avatar'}
+                                        sx={{ width: 30, height: 30, cursor: 'pointer' }}
+                                    >
+                                        {account.name?.charAt(0) || ''}
+                                    </Avatar>
+                                    <AccountPopUp anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
+                                </>
                             )}
                         </Box>
                     </Grid>

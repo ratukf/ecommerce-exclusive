@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { auth } from "../services/firebase";
-import { setAccount } from "./slice"; 
+import { setAccount, resetAccount } from "./slice"; 
 
 export function useAuthListener() {
     const dispatch = useDispatch();
@@ -14,12 +14,11 @@ export function useAuthListener() {
                     name: user.displayName ?? "",
                     email: user.email ?? "",
                     phone: user.phoneNumber ?? "",
-                    address: "",
                     createdAt: user.metadata?.creationTime ?? "",
                     photoUrl: user.photoURL ?? "",
                 }));
             } else {
-                dispatch(setAccount(null));
+                dispatch(resetAccount());
             }
         });
         return () => unsubscribe();

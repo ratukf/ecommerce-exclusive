@@ -34,6 +34,12 @@ export const buttonSx = {
             backgroundColor: '#DB4444',
             color: '#fafafa',
         },
+    },
+    transparent: {
+        color: '#000',
+        padding: '0.5rem 1rem',
+        backgroundColor: 'transparent',
+        fontSize: '1rem',
     }
 }
 

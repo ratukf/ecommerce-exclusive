@@ -58,7 +58,7 @@ export const useAuth = (
             } else {
                 showSnackBar?.("Account created successfully!", "success");
                 setTimeout(() => {
-                    nav('/login')
+                    nav('/')
                 }, 2000);
             }
         } catch (error) {
