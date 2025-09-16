@@ -222,6 +222,9 @@ const accountSlice = createSlice({
         setAccount: (state, action: PayloadAction<Account>) => {
             state.account = action.payload;
         },
+        resetAccount: (state) => {
+            state.account = getInitialAccount();
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -324,4 +327,4 @@ const accountSlice = createSlice({
 export const productReducer = productSlice.reducer;
 export const messageReducer = messageSlice.reducer;
 export const accountReducer = accountSlice.reducer;
-export const { setAccount, setProfile } = accountSlice.actions;
+export const { setAccount, setProfile, resetAccount } = accountSlice.actions;

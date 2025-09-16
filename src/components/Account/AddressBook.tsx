@@ -4,7 +4,6 @@ import { Box, Button, Divider, Grid, IconButton, TextField, Tooltip, Typography,
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../store/store";
-import type { UserProfile } from "../../store/slice";
 import { buttonSx } from "../../styles/buttonSx";
 import { DeleteOutlineOutlined, EditOutlined } from "@mui/icons-material";
 import * as yup from "yup";
@@ -12,7 +11,7 @@ import * as yup from "yup";
 export const AddressBook = () => {
     const theme = useTheme();
     const [isEditing, setIsEditing] = useState([{ id: null, status: false }]);
-    const userProfile = useSelector((state: RootState) => state.account.userProfile) as UserProfile | null;
+    const userProfile = useSelector((state: RootState) => state.account.userProfile);
     const addressBooks = userProfile?.addressBooks ?? [];
 
     const redStar = () => {
@@ -22,7 +21,7 @@ export const AddressBook = () => {
     }
 
     const formik = useFormik({
-        initialValues: [{
+        initialValues: addressBooks.length > 0 ? addressBooks : [{
             name: '',
             address: {
                 street: '',
@@ -32,16 +31,18 @@ export const AddressBook = () => {
                 country: '',
             }
         }],
-        validationSchema: yup.object({
-            name: yup.string().required('Address Name is required'),
-            address: yup.object({
-                street: yup.string().required('Street is required'),
-                city: yup.string().required('City is required'),
-                state: yup.string().required('State is required'),
-                zipCode: yup.string().required('Zip Code is required'),
-                country: yup.string().required('Country is required')
+        validationSchema: yup.array().of(
+            yup.object({
+                name: yup.string().required('Address Name is required'),
+                address: yup.object({
+                    street: yup.string().required('Street is required'),
+                    city: yup.string().required('City is required'),
+                    state: yup.string().required('State is required'),
+                    zipCode: yup.string().required('Zip Code is required'),
+                    country: yup.string().required('Country is required')
+                })
             })
-        }),
+        ),
         onSubmit: (values) => {
             console.log('Address Book submitted with values:', values);
         },
@@ -166,7 +167,7 @@ export const AddressBook = () => {
                                                 <TextField
                                                     variant="filled"
                                                     name={`addressBooks[${idx}].address.${child.field}`}
-                                                    value={formik.values[idx]?.address?.[child.field]}
+                                                    value={formik.values[idx]?.address?.[child.field as keyof typeof formik.values[number]['address']]}
                                                     InputProps={
                                                         isEditing
                                                             ? { disableUnderline: true }
