@@ -1,0 +1,9 @@
+{
+  "extends": ["eslint:recommended", "plugin:react/recommended", "plugin:prettier/recommended"],
+  "plugins": ["prettier"],
+  "rules": {
+    "prettier/prettier": "error",
+    "no-unused-vars": "warn",
+    "semi": "warn"
+  }
+}
