@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { AddressBook } from '../components/Account/AddressBook';
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from '../store/store';
-import { getUserProfile } from '../store/asyncAction';
+import { getUserProfile } from '../store/account/accountAsyncAction';
 
 export const Account = () => {
   const [activeList, setActiveList] = useState('My Profile');

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setAccount, setProfile, setAddressBook } from '../store/accountSlice';
-import type { Profile, Account, AddressBooks } from '../store/accountSlice';
+import { setAccount, setProfile, setAddressBook } from '../store/account/accountSlice';
+import type { Profile, Account, AddressBooks } from '../store/account/accountSlice';
 
 export const useAccount = (
   showSnackBar?: (msg: string, severity: 'success' | 'error' | 'warning' | 'info') => void,

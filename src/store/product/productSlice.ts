@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchProducts, fetchProductById } from './asyncAction';
+import { fetchProducts, fetchProductById } from './productAsyncAction';
 
 // --- Product Slice ---
 export interface Review {

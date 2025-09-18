@@ -1,6 +1,12 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { signIn, signUp, signUpGoogle, signUpGithub, logOut } from '../store/asyncAction';
+import {
+  signIn,
+  signUp,
+  signUpGoogle,
+  signUpGithub,
+  logOut,
+} from '../store/account/accountAsyncAction';
 import type { AppDispatch } from '../store/store';
 import { useNavigate } from 'react-router';
 

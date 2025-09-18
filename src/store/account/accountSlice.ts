@@ -1,5 +1,12 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import { signIn, signUp, signUpGoogle, signUpGithub, logOut, getUserProfile } from './asyncAction';
+import {
+  signIn,
+  signUp,
+  signUpGoogle,
+  signUpGithub,
+  logOut,
+  getUserProfile,
+} from '../account/accountAsyncAction';
 import type { User } from 'firebase/auth';
 
 // --- Account Slice ---
@@ -29,10 +36,16 @@ export interface AddressBooks {
   country: string;
 }
 
+export interface Carts {
+  product_id: string;
+  quantity: number;
+}
+
 export interface UserProfile {
   id: string;
   profile: Profile;
   addressBooks: AddressBooks[];
+  carts: Carts[];
 }
 
 export interface AccountStatus {
@@ -76,6 +89,12 @@ const getInitialUserProfile = (): UserProfile => ({
       state: '',
       zipCode: '',
       country: '',
+    },
+  ],
+  carts: [
+    {
+      product_id: '',
+      quantity: 0,
     },
   ],
 });
@@ -215,6 +234,7 @@ const accountSlice = createSlice({
                     phone: '',
                   },
               addressBooks: userProfile.addressBooks || [],
+              carts: userProfile.carts || [],
             }
           : getInitialUserProfile();
       })

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { sendContactMessage } from './asyncAction';
+import { sendContactMessage } from '../product/productAsyncAction';
 
 // --- Message Slice ---
 export interface Message {

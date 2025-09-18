@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { productReducer } from './productSlice.ts';
-import { messageReducer } from './messageSlice.ts';
-import { accountReducer } from './accountSlice.ts';
+import { productReducer } from './product/productSlice.ts';
+import { messageReducer } from './message/messageSlice.ts';
+import { accountReducer } from './account/accountSlice.ts';
 
 export const store = configureStore({
   reducer: {
