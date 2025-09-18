@@ -1,6 +1,6 @@
-import { ThemeProvider } from '@mui/material/styles'
+import { ThemeProvider } from '@mui/material/styles';
 import { BrowserRouter as Router, Routes, Route } from 'react-router';
-import theme from './theme'
+import theme from './theme';
 import './App.css';
 import '@fontsource/poppins/700.css';
 import '@fontsource/poppins/600.css';
@@ -25,7 +25,6 @@ import { SignUp } from './pages/SignUp';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { Account } from './pages/Account';
 
-
 function App() {
   useAuthListener();
   return (
@@ -33,27 +32,27 @@ function App() {
       <ThemeProvider theme={theme}>
         <Router>
           <Header />
-          <Box className="main-content" sx={{ textAlign: 'center' }}>
+          <Box className='main-content' sx={{ textAlign: 'center' }}>
             <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/products" element={<Products />} />
-              <Route path="/product/:id" element={<ProductDetail />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/login" element={<LogIn />} />
-              <Route path="/signup" element={<SignUp />} />
+              <Route path='/' element={<Dashboard />} />
+              <Route path='/products' element={<Products />} />
+              <Route path='/product/:id' element={<ProductDetail />} />
+              <Route path='/contact' element={<Contact />} />
+              <Route path='/about' element={<About />} />
+              <Route path='/login' element={<LogIn />} />
+              <Route path='/signup' element={<SignUp />} />
             </Routes>
             <ProtectedRoute>
               <Routes>
-                <Route path="/account" element={<Account />} />
+                <Route path='/account' element={<Account />} />
               </Routes>
             </ProtectedRoute>
           </Box>
           <Footer />
         </Router>
-      </ThemeProvider >
+      </ThemeProvider>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

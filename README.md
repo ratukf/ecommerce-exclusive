@@ -1,15 +1,18 @@
-
 # E-Commerce Exclusive
 
 An exclusive e-commerce web app for discovering and shopping premium products online.
 
 ## 💡About
 
-E-Commerce Exclusive is a modern e-commerce web app built with React, TypeScript, Vite, Material-UI (MUI), and Firebase for backend services. The UI is inspired by the [Full E-Commerce Website UI/UX Design](https://www.figma.com/community/file/1219312065205187851) from Figma by MD Rimel.
+E-Commerce Exclusive is a modern e-commerce web app built with React, TypeScript, Vite, Material-UI
+(MUI), and Firebase for backend services. The UI is inspired by the
+[Full E-Commerce Website UI/UX Design](https://www.figma.com/community/file/1219312065205187851)
+from Figma by MD Rimel.
 
 ## 🚧 Project Status
 
-Ongoing project. Features, UI, and backend integration are under active development and may be incomplete.
+Ongoing project. Features, UI, and backend integration are under active development and may be
+incomplete.
 
 > **Current stage:** Working on `Account`
 
@@ -69,11 +72,13 @@ npm run dev
 
 ## 🎨 Figma
 
-The UI is based on this Figma file: [Full E-Commerce Website UI/UX Design](https://www.figma.com/design/mLGzNknh0Iljbq1Yoo4szo/Full-E-Commerce-Website-UI-UX-Design--Community-?node-id=1-3&p=f&t=vgZVno6XvZyh27CY-0)
+The UI is based on this Figma file:
+[Full E-Commerce Website UI/UX Design](https://www.figma.com/design/mLGzNknh0Iljbq1Yoo4szo/Full-E-Commerce-Website-UI-UX-Design--Community-?node-id=1-3&p=f&t=vgZVno6XvZyh27CY-0)
 
 ## 🧍Contributing
 
-Contributions are welcome! Please open an issue or submit a pull request for improvements or new features.
+Contributions are welcome! Please open an issue or submit a pull request for improvements or new
+features.
 
 ## 📄 License
 

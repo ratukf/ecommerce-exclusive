@@ -1,11 +1,11 @@
-import { AnnouncementBar } from "./AnnouncementBar"
-import { NavigationBar } from "./NavigationBar"
+import { AnnouncementBar } from './AnnouncementBar';
+import { NavigationBar } from './NavigationBar';
 
 export const Header = () => {
-    return (
-        <>
-            <AnnouncementBar />
-            <NavigationBar />
-        </>
-    )
-}
+  return (
+    <>
+      <AnnouncementBar />
+      <NavigationBar />
+    </>
+  );
+};
