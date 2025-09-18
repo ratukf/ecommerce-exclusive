@@ -50,7 +50,7 @@ export const Profile = () => {
     if (userProfile.profile) {
       formik.setValues(userProfile.profile);
     }
-  }, [userProfile, formik]);
+  }, []);
 
   return (
     <WhitePaper>
