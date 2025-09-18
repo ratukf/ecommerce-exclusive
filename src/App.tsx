@@ -24,6 +24,7 @@ import { LogIn } from './pages/LogIn';
 import { SignUp } from './pages/SignUp';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { Account } from './pages/Account';
+import ScrollToTop from './utils/scrollToTop';
 
 function App() {
   useAuthListener();
@@ -31,6 +32,7 @@ function App() {
     <>
       <ThemeProvider theme={theme}>
         <Router>
+          <ScrollToTop />
           <Header />
           <Box className='main-content' sx={{ textAlign: 'center' }}>
             <Routes>
