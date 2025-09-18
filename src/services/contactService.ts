@@ -1,5 +1,5 @@
-import { collection, addDoc } from "firebase/firestore";
-import { db } from "./firebase";
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from './firebase';
 
 export const sendContactMessage = async (data: {
   name: string;
@@ -8,10 +8,10 @@ export const sendContactMessage = async (data: {
   message: string;
 }) => {
   try {
-    await addDoc(collection(db, "messages"), data);
+    await addDoc(collection(db, 'messages'), data);
     return true;
   } catch (error) {
-    console.error("Failed to send contact message:", error);
+    console.error('Failed to send contact message:', error);
     return false;
   }
 };

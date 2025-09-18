@@ -1,21 +1,24 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback } from 'react';
 
 type SnackBarState = {
   open: boolean;
   message: string;
-  severity?: "success" | "error" | "warning" | "info";
+  severity?: 'success' | 'error' | 'warning' | 'info';
 };
 
 export const useSnackBar = () => {
   const [snackBar, setSnackBar] = useState<SnackBarState>({
     open: false,
-    message: "",
-    severity: "info",
+    message: '',
+    severity: 'info',
   });
 
-  const showSnackBar = useCallback((message: string, severity: SnackBarState["severity"] = "info") => {
-    setSnackBar({ open: true, message, severity });
-  }, []);
+  const showSnackBar = useCallback(
+    (message: string, severity: SnackBarState['severity'] = 'info') => {
+      setSnackBar({ open: true, message, severity });
+    },
+    [],
+  );
 
   const handleClose = useCallback(() => {
     setSnackBar((prev) => ({ ...prev, open: false }));
