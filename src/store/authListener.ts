@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { auth } from '../services/firebase';
-import { setAccount, resetAccount } from './slice';
+import { setAccount, resetAccount } from './accountSlice';
 
 export function useAuthListener() {
   const dispatch = useDispatch();

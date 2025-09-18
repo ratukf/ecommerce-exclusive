@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { getProducts, getProductById } from '../services/productService';
-import type { Product } from './slice';
+import type { Product } from './accountSlice';
 import type { User } from 'firebase/auth';
 import type { UserProfile } from '../services/userProfileService';
 
