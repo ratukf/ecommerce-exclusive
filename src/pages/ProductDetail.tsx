@@ -23,6 +23,7 @@ export const ProductDetail = () => {
   const [selectedVariant, setSelectedVariant] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [favorite, setFavorite] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(0);
 
   useEffect(() => {
     if (id) {
@@ -45,13 +46,14 @@ export const ProductDetail = () => {
               src={url}
               alt={`${name} ${index + 1}`}
               style={{ width: '100%', height: 'auto', borderRadius: '4px' }}
+              onClick={() => setSelectedImage(index)}
             />
           ))}
         </Grid>
         {/* Image Viewer */}
         <Grid size={5} spacing={2}>
           <img
-            src={imageUrls?.[0]}
+            src={imageUrls?.[selectedImage]}
             alt={name}
             style={{ width: '100%', height: 'auto', borderRadius: '4px' }}
           />
