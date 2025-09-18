@@ -195,12 +195,12 @@ export const ProductDetail = () => {
                 variant='contained'
                 color='primary'
                 sx={{
-                  ...buttonSx.default,
+                  ...buttonSx.defaultOutlined,
                   height: 48,
                   flex: 1,
                 }}
               >
-                Buy Now
+                Add to Cart
               </Button>
               <Box
                 sx={{
@@ -225,6 +225,7 @@ export const ProductDetail = () => {
                 </IconButton>
               </Box>
             </Box>
+            <Button sx={{ ...buttonSx.default, width: '100%' }}>Buy Now</Button>
             <Box
               sx={{
                 border: '1px solid #ccc',
