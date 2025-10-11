@@ -11,7 +11,7 @@ import '@fontsource/inter/700.css';
 import '@fontsource/inter/600.css';
 import '@fontsource/inter/500.css';
 import '@fontsource/inter/400.css';
-import { useAuthListener } from './store/authListener';
+import { useAuthListener } from './hooks/authListener';
 import { Box } from '@mui/material';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';

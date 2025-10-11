@@ -1,15 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { User } from 'firebase/auth';
-import type { UserProfile } from '../../services/userProfileService';
+import type { UserProfile } from '../../services/accountService';
+import type { Carts } from './accountSlice';
+import type { UserProfile as UserProfileType } from './accountSlice';
 
-const createProfile = async (user: User, name: string, email: string) => {
-  const { createUserProfile } = await import('../../services/userProfileService');
-  const userProfile: UserProfile = {
-    uid: user.uid,
-    name: name,
-    email: email || '',
-  };
-  createUserProfile(userProfile);
+const createProfile = async (user: User) => {
+  const { createUserProfile } = await import('../../services/accountService');
+  createUserProfile(user);
 };
 
 export const signIn = createAsyncThunk<
@@ -41,7 +38,7 @@ export const signUp = createAsyncThunk<
     if (!user) {
       return rejectWithValue('Failed to create account');
     }
-    createProfile(user, name, email);
+    createProfile(user);
     return user;
   } catch (error) {
     console.error('Error signing up:', error);
@@ -58,7 +55,7 @@ export const signUpGoogle = createAsyncThunk<User, void, { rejectValue: string }
       if (!user) {
         return rejectWithValue('Failed to sign up with Google');
       }
-      createProfile(user, user.displayName || '', user.email || '');
+      createProfile(user);
       return user;
     } catch (error) {
       console.error('Error signing up with Google:', error);
@@ -76,7 +73,7 @@ export const signUpGithub = createAsyncThunk<User, void, { rejectValue: string }
       if (!user) {
         return rejectWithValue('Failed to sign up with GitHub');
       }
-      createProfile(user, user.displayName || '', user.email || '');
+      createProfile(user);
       return user;
     } catch (error) {
       console.error('Error signing up with GitHub:', error);
@@ -98,11 +95,11 @@ export const logOut = createAsyncThunk<void, void, { rejectValue: string }>(
   },
 );
 
-export const getUserProfile = createAsyncThunk<UserProfile | null, string, { rejectValue: string }>(
+export const getUserProfile = createAsyncThunk<UserProfile, string, { rejectValue: string }>(
   'user/getUserProfile',
   async (uid, { rejectWithValue }) => {
     try {
-      const { getUser } = await import('../../services/userProfileService');
+      const { getUser } = await import('../../services/accountService');
       const userProfile = await getUser(uid);
       if (!userProfile) {
         return rejectWithValue('User profile not found');
@@ -114,3 +111,19 @@ export const getUserProfile = createAsyncThunk<UserProfile | null, string, { rej
     }
   },
 );
+
+export const addToCartAsync = createAsyncThunk<
+  Carts[], // return type: array of cart items
+  { userId: string; productId: string; quantity: number }, // arg type
+  { rejectValue: string }
+>('account/addToCart', async ({ userId, productId, quantity }, { rejectWithValue }) => {
+  try {
+    const { addToCart, getUser } = await import('../../services/accountService');
+    await addToCart(userId, productId, quantity);
+    // Ambil cart terbaru setelah update
+    const userProfile: UserProfileType = await getUser(userId);
+    return userProfile?.carts ?? [];
+  } catch {
+    return rejectWithValue('Failed to add to cart');
+  }
+});

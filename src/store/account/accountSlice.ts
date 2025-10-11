@@ -216,7 +216,7 @@ const accountSlice = createSlice({
       })
       .addCase(getUserProfile.fulfilled, (state, action) => {
         state.status.profile = false;
-        const userProfile = action.payload as UserProfile | null;
+        const userProfile = action.payload as UserProfile;
         state.userProfile = userProfile
           ? {
               id: userProfile.id || '',

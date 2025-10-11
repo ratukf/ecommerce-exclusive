@@ -6,7 +6,7 @@ export const sendContactMessage = createAsyncThunk<
   { rejectValue: string }
 >('contact/sendContactMessage', async (data, { rejectWithValue }) => {
   try {
-    const result = await import('../../services/contactService').then((module) =>
+    const result = await import('../../services/messageService').then((module) =>
       module.sendContactMessage(data),
     );
     if (!result) {
