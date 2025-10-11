@@ -115,12 +115,16 @@ export const Profile = () => {
                 >
                   Cancel
                 </Button>
-                <Button type='submit' variant='contained' sx={buttonSx.default}>
+                <Button type='submit' variant='outlined' sx={buttonSx.defaultOutlined}>
                   Save Changes
                 </Button>
               </>
             ) : (
-              <Button onClick={() => setIsEditing(true)} variant='contained' sx={buttonSx.default}>
+              <Button
+                onClick={() => setIsEditing(true)}
+                variant='outlined'
+                sx={buttonSx.defaultOutlined}
+              >
                 Edit
               </Button>
             )}
