@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material';
+import { Button, Grid } from '@mui/material';
 import { Profile } from '../components/Account/Profile';
 import { SideBar } from '../components/Account/SideBar';
 import { useEffect, useState } from 'react';
@@ -6,6 +6,7 @@ import { AddressBook } from '../components/Account/AddressBook';
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from '../store/store';
 import { getUserProfile } from '../store/account/accountAsyncAction';
+import { buttonSx } from '../styles/buttonSx';
 
 export const Account = () => {
   const [activeList, setActiveList] = useState('My Profile');
@@ -34,6 +35,11 @@ export const Account = () => {
     <Grid container spacing={2} columns={10} sx={{ marginY: '5rem' }}>
       <SideBar activeList={activeList} setActiveList={setActiveList} />
       <Grid size={7}>{renderAccount()}</Grid>
+      <Grid size={10} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <Button sx={buttonSx.default} variant='contained'>
+          Save Changes
+        </Button>
+      </Grid>
     </Grid>
   );
 };
