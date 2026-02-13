@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { logOut, signIn, signUp, signUpGithub, signUpGoogle } from './authAsyncAction';
 import type { User } from 'firebase/auth';
 import type { Auth, AuthState } from '../types/auth';
@@ -30,7 +30,19 @@ const initialStateAuth: AuthState = {
 const authSlice = createSlice({
   name: 'auth',
   initialState: initialStateAuth,
-  reducers: {},
+  reducers: {
+    // Set authentication state for log out
+    setAuth: (state, action: PayloadAction<Auth>) => {
+      state.auth = action.payload;
+      state.error = null;
+    },
+    // Reset authentication state for log out
+    resetAuth: (state) => {
+      state.auth = initialStateAuth.auth;
+      state.loading = false;
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       // Sign in with email and password
@@ -109,3 +121,4 @@ const authSlice = createSlice({
 });
 
 export const authReducer = authSlice.reducer;
+export const { setAuth, resetAuth } = authSlice.actions;
