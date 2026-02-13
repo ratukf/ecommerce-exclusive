@@ -40,7 +40,7 @@ const initialUserProfile: UserProfileState = {
   error: null,
 };
 
-const accountSlice = createSlice({
+const userProfileSlice = createSlice({
   name: 'userProfile',
   initialState: initialUserProfile,
   reducers: {},
@@ -84,4 +84,4 @@ const accountSlice = createSlice({
   },
 });
 
-export const accountReducer = accountSlice.reducer;
+export const userProfileReducer = userProfileSlice.reducer;
