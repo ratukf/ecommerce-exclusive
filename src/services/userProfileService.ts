@@ -7,7 +7,8 @@ export interface UserProfile {
   email?: string;
 }
 
-export const createUserProfile = async (user: UserProfile) => {
+// Create a new user profile
+const createUserProfile = async (user: UserProfile) => {
   const profileData = {
     user_id: user.uid,
     profile: {
@@ -27,10 +28,13 @@ export const createUserProfile = async (user: UserProfile) => {
   return profileData;
 };
 
-export const getUser = async (uid: string): Promise<UserProfile | null> => {
+// Get user profile by UID
+const getUser = async (uid: string): Promise<UserProfile | null> => {
   const userDoc = await getDoc(doc(db, 'userProfiles', uid));
   if (userDoc.exists()) {
     return userDoc.data() as UserProfile;
   }
   return null;
 };
+
+export { createUserProfile, getUser };

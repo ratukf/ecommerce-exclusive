@@ -1,7 +1,7 @@
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from './firebase';
 
-export const sendContactMessage = async (data: {
+const sendContactMessage = async (data: {
   name: string;
   email: string;
   phone: string;
@@ -15,3 +15,5 @@ export const sendContactMessage = async (data: {
     return false;
   }
 };
+
+export { sendContactMessage };
