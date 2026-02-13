@@ -9,7 +9,7 @@ import { logOut } from './authAsyncAction.ts';
 const appReducers = combineReducers({
   auth: authReducer,
   userProfile: userProfileReducer,
-  product: productReducer,
+  products: productReducer,
   message: messageReducer,
 });
 

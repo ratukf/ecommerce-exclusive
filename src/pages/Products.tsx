@@ -5,7 +5,7 @@ import type { AppDispatch } from '../store/store';
 import type { RootState } from '../store/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { fetchProducts } from '../store/asyncAction';
+import { fetchProducts } from '../store/productsAsyncAction';
 
 export const Products = () => {
   const dispatch = useDispatch<AppDispatch>();

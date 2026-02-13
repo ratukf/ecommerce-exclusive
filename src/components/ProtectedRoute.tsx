@@ -7,7 +7,7 @@ interface ProtectedRouteProps {
 }
 
 export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const account = useSelector((state: RootState) => state.account.account);
+  const account = useSelector((state: RootState) => state.auth.auth);
   const location = useLocation();
 
   const blockedRoutes = ['/account', '/login', '/signup'];

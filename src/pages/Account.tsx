@@ -5,12 +5,12 @@ import { useEffect, useState } from 'react';
 import { AddressBook } from '../components/Account/AddressBook';
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from '../store/store';
-import { getUserProfile } from '../store/asyncAction';
+import { getUserProfile } from '../store/userProfileAsyncAction';
 
 export const Account = () => {
   const [activeList, setActiveList] = useState('My Profile');
   const dispatch = useDispatch<AppDispatch>();
-  const account = useSelector((state: RootState) => state.account.account);
+  const account = useSelector((state: RootState) => state.userProfile.userProfile);
 
   const renderAccount = () => {
     switch (activeList) {

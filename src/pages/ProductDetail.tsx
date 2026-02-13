@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from '../store/store';
 import { Link, useParams } from 'react-router';
 import { useEffect, useState } from 'react';
-import { fetchProductById, fetchProducts } from '../store/asyncAction';
+import { fetchProductById, fetchProducts } from '../store/productsAsyncAction';
 import { Box, Button, Divider, Grid, IconButton, Typography, useTheme } from '@mui/material';
 import { countStar, renderStars } from '../utils/rating';
 import { Favorite, LocalShippingOutlined, LoopOutlined } from '@mui/icons-material';

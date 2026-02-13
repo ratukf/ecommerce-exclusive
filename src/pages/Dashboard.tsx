@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Grid } from '@mui/material';
 import { DashboardSection } from '../components/Dashboard/DashboardSection';
-import { fetchProducts } from '../store/asyncAction';
+import { fetchProducts } from '../store/productsAsyncAction';
 import type { AppDispatch } from '../store/store';
 import type { RootState } from '../store/store';
 import { SLIDER } from '../constants/slider';
