@@ -3,27 +3,21 @@ import { WhitePaper } from '../WhitePaper';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../store/store';
 import { buttonSx } from '../../styles/buttonSx';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useFormik } from 'formik';
-import { useAccount } from '../../hooks/useAccount';
 
 export const Profile = () => {
   const theme = useTheme();
   const [isEditing, setIsEditing] = useState(false);
-  const { editAccount } = useAccount();
-  const account = useSelector((state: RootState) => state.account.account);
-  const userProfile = useSelector((state: RootState) => state.account.userProfile);
+  // const { editProfile } = useUserProfile();
+  const account = useSelector((state: RootState) => state.userProfile.userProfile?.profile);
+  const userProfile = useSelector((state: RootState) => state.userProfile.userProfile);
 
   const PROFILE = [
     {
-      label: 'First Name',
-      value: userProfile?.profile?.firstName ?? '',
+      label: 'Name',
+      value: userProfile?.profile?.name ?? '',
       field: 'firstName',
-    },
-    {
-      label: 'Last Name',
-      value: userProfile?.profile?.lastName ?? '',
-      field: 'lastName',
     },
     { label: 'Email', value: account?.email ?? '', field: 'email' },
     {
@@ -35,22 +29,24 @@ export const Profile = () => {
 
   const formik = useFormik({
     initialValues: {
-      firstName: '',
-      lastName: '',
+      name: '',
       email: '',
       phone: '',
     },
-    onSubmit: async (values: typeof userProfile.profile) => {
-      editAccount.editProfile(values);
+    // onSubmit: async (values: typeof userProfile.profile) => {
+    //   editAccount.editProfile(values);
+    //   setIsEditing(false);
+    // },
+    onSubmit: async () => {
       setIsEditing(false);
     },
   });
 
-  useEffect(() => {
-    if (userProfile.profile) {
-      formik.setValues(userProfile.profile);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (userProfile?.profile) {
+  //     formik.setValues(userProfile.userProfile.profile);
+  //   }
+  // }, []);
 
   return (
     <WhitePaper>

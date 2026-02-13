@@ -1,6 +1,6 @@
 import { FavoriteBorderOutlined, RemoveRedEyeOutlined } from '@mui/icons-material';
 import { Box, Grid, IconButton, Typography, useTheme } from '@mui/material';
-import type { Product } from '../store/slice';
+import { type Product } from '../types/products';
 import { countStar, renderStars } from '../utils/rating';
 import { FW } from '../theme';
 import { useNavigate } from 'react-router';

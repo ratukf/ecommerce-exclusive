@@ -16,15 +16,15 @@ import { useSelector } from 'react-redux';
 import type { RootState } from '../../store/store';
 import { buttonSx } from '../../styles/buttonSx';
 import { DeleteOutlineOutlined, EditOutlined } from '@mui/icons-material';
-import { useAccount } from '../../hooks/useAccount';
+// import { useUserProfile } from '../../hooks/useUserProfile';
 import * as yup from 'yup';
 
 export const AddressBook = () => {
   const theme = useTheme();
   const [isEditing, setIsEditing] = useState([{ id: '', status: false }]);
-  const userProfile = useSelector((state: RootState) => state.account.userProfile);
+  const userProfile = useSelector((state: RootState) => state.userProfile.userProfile);
   const addressBooks = userProfile?.addressBooks ?? [];
-  const { editAccount } = useAccount();
+  // const { editAccount } = useUserProfile();
 
   const redStar = () => {
     return <span style={{ color: 'red' }}>*</span>;
@@ -87,9 +87,9 @@ export const AddressBook = () => {
         initialValues={formik.initialValues}
         validationSchema={formik.validationSchema}
         validateOnMount
-        onSubmit={(values) => {
+        onSubmit={() => {
           console.log('halo');
-          editAccount.editAddressBooks(values.addressBooks);
+          // editAccount.editAddressBooks(values.addressBooks);
           setIsEditing((prev) => prev.map((item) => ({ ...item, status: false })));
         }}
       >

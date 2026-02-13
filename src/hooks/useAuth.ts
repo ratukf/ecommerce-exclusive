@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { signIn, signUp, signUpGoogle, signUpGithub, logOut } from '../store/asyncAction';
+import { signIn, signUp, signUpGoogle, signUpGithub, logOut } from '../store/authAsyncAction';
 import type { AppDispatch } from '../store/store';
 import { useNavigate } from 'react-router';
 
@@ -14,11 +14,13 @@ export const useAuth = (
   const [loginPassword, setLoginPassword] = useState('');
   const [loginLoading, setLoginLoading] = useState(false);
 
+  // Handlers for login input changes
   const handleLoginEmailChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setLoginEmail(e.target.value);
   const handleLoginPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setLoginPassword(e.target.value);
 
+  // Async login function
   const logIn = async () => {
     setLoginLoading(true);
     try {
@@ -45,6 +47,7 @@ export const useAuth = (
   const [signupLoading, setSignupLoading] = useState(false);
   const nav = useNavigate();
 
+  // Handlers for signup input changes
   const handleSignupNameChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setSignupName(e.target.value);
   const handleSignupEmailChange = (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -52,6 +55,7 @@ export const useAuth = (
   const handleSignupPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setSignupPassword(e.target.value);
 
+  // Async signup function
   const signUpUser = async () => {
     setSignupLoading(true);
     try {
@@ -80,6 +84,7 @@ export const useAuth = (
   // Sign up with Google state & logic
   const [googleLoading, setGoogleLoading] = useState(false);
 
+  // Async Google signup function
   const handleSignUpGoogle = async () => {
     setGoogleLoading(true);
     try {
@@ -102,6 +107,7 @@ export const useAuth = (
   // Sign up with GitHub state & logic
   const [githubLoading, setGithubLoading] = useState(false);
 
+  // Async GitHub signup function
   const handleSignUpGithub = async () => {
     setGithubLoading(true);
     try {

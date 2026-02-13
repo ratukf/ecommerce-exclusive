@@ -1,6 +1,7 @@
 import { getDocs, collection, doc, getDoc } from 'firebase/firestore';
 import { db } from './firebase';
 
+// Fetch all products
 export const getProducts = async () => {
   const snapshot = await getDocs(collection(db, 'products'));
   return snapshot.docs.map((doc) => ({
@@ -9,6 +10,7 @@ export const getProducts = async () => {
   }));
 };
 
+// Fetch a single product by ID
 export const getProductById = async (id: string) => {
   const docRef = doc(db, 'products', id);
   const docSnap = await getDoc(docRef);

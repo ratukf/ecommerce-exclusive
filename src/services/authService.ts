@@ -9,7 +9,8 @@ import {
 } from 'firebase/auth';
 import type { User } from 'firebase/auth';
 
-export const logIn = async (email: string, password: string): Promise<User | null> => {
+// Login with email and password
+const logIn = async (email: string, password: string): Promise<User | null> => {
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     return userCredential.user;
@@ -19,11 +20,8 @@ export const logIn = async (email: string, password: string): Promise<User | nul
   }
 };
 
-export const signUp = async (
-  name: string,
-  email: string,
-  password: string,
-): Promise<User | null> => {
+// Signup with email and password
+const signUp = async (name: string, email: string, password: string): Promise<User | null> => {
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     if (userCredential.user) {
@@ -36,7 +34,8 @@ export const signUp = async (
   }
 };
 
-export const signUpGoogle = async (): Promise<User | null> => {
+// Signup / login with Google
+const signUpGoogle = async (): Promise<User | null> => {
   const provider = new GoogleAuthProvider();
   try {
     const userCredential = await signInWithPopup(auth, provider);
@@ -47,7 +46,8 @@ export const signUpGoogle = async (): Promise<User | null> => {
   }
 };
 
-export const signUpGithub = async (): Promise<User | null> => {
+// Signup / login with GitHub
+const signUpGithub = async (): Promise<User | null> => {
   const provider = new GithubAuthProvider();
   try {
     const userCredential = await signInWithPopup(auth, provider);
@@ -58,6 +58,9 @@ export const signUpGithub = async (): Promise<User | null> => {
   }
 };
 
-export const logOut = async (): Promise<void> => {
+// Logout
+const logOut = async (): Promise<void> => {
   await auth.signOut();
 };
+
+export { logIn, signUp, signUpGoogle, signUpGithub, logOut };

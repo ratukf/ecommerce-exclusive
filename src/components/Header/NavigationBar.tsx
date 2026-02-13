@@ -22,7 +22,7 @@ import type { RootState } from '../../store/store';
 
 export const NavigationBar = () => {
   const theme = useTheme();
-  const account = useSelector((state: RootState) => state.account.account);
+  const account = useSelector((state: RootState) => state.auth.auth);
   const isLoggedIn = account && account.id && account.email;
   const NAVIGATION_LIST = [
     { label: 'Home', path: '/' },
@@ -138,10 +138,10 @@ export const NavigationBar = () => {
                         ? `https://images.weserv.nl/?url=${encodeURIComponent(account.photoUrl)}`
                         : undefined
                     }
-                    alt={account.name || 'User Avatar'}
+                    alt={account.displayName || 'User Avatar'}
                     sx={{ width: 30, height: 30, cursor: 'pointer' }}
                   >
-                    {account.name?.charAt(0) || ''}
+                    {account.displayName?.charAt(0) || ''}
                   </Avatar>
                   <AccountPopUp anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
                 </>

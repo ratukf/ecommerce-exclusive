@@ -8,7 +8,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import type { AppDispatch } from '../store/store';
 import { useDispatch } from 'react-redux';
-import { sendContactMessage } from '../store/asyncAction';
+import { sendContactMessage } from '../store/messageAsyncAction';
 import { buttonSx } from '../styles/buttonSx';
 import { useCallback } from 'react';
 import { SnackBar } from '../components/SnackBar';
