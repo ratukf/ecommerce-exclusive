@@ -1,6 +1,13 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { signIn, signUp, signUpGoogle, signUpGithub, logOut } from '../store/authAsyncAction';
+import {
+  signIn,
+  signUp,
+  signUpGoogle,
+  signUpGithub,
+  logOut,
+  updateAuthAsyncAction,
+} from '../store/authAsyncAction';
 import type { AppDispatch } from '../store/store';
 import { useNavigate } from 'react-router';
 
@@ -137,6 +144,21 @@ export const useAuth = (
     }
   };
 
+  // Updating auth account state & logic
+  const [updateLoading, setUpdateLoading] = useState(false);
+
+  // Update auth
+  const handleUpdateAuth = async (name: string) => {
+    setUpdateLoading(true);
+    try {
+      await dispatch(updateAuthAsyncAction(name));
+    } catch {
+      showSnackBar?.('Failed to update auth account data');
+    } finally {
+      setUpdateLoading(false);
+    }
+  };
+
   return {
     useLogin: {
       email: loginEmail,
@@ -166,6 +188,10 @@ export const useAuth = (
     },
     useLogOut: {
       logOut: handleLogOut,
+    },
+    useUpdateAuth: {
+      loadingUpdateAuth: updateLoading,
+      updateAuth: handleUpdateAuth,
     },
   };
 };

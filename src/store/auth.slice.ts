@@ -6,6 +6,7 @@ import {
   signUp,
   signUpGithub,
   signUpGoogle,
+  updateAuthAsyncAction,
 } from './authAsyncAction';
 import type { User } from 'firebase/auth';
 import type { Auth, AuthState } from '../types/auth';
@@ -86,6 +87,7 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(signUpGoogle.fulfilled, (state, action) => {
+        console.log('🚀 ~ action.payload:', action.payload);
         state.loading = false;
         const user = action.payload as User;
         state.auth = setUserProfileFromAuth(user);
@@ -135,6 +137,19 @@ const authSlice = createSlice({
           typeof action.payload === 'string' ? action.payload : 'Failed to create user profile';
       })
       .addCase(ensureUserProfile.fulfilled, (state) => {
+        state.loading = false;
+        state.error = null;
+      })
+      // Update name on auth account
+      .addCase(updateAuthAsyncAction.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateAuthAsyncAction.rejected, (state, action) => {
+        state.loading = false;
+        state.error = typeof action.payload === 'string' ? action.payload : 'Failed to update name';
+      })
+      .addCase(updateAuthAsyncAction.fulfilled, (state) => {
         state.loading = false;
         state.error = null;
       });

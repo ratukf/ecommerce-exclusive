@@ -1,5 +1,5 @@
 import { Grid } from '@mui/material';
-import { Profile } from '../components/Account/Profile';
+import { ProfileSection } from '../components/Account/ProfileSection';
 import { SideBar } from '../components/Account/SideBar';
 import { useEffect, useState } from 'react';
 import { AddressBook } from '../components/Account/AddressBook';
@@ -10,16 +10,16 @@ import { getUserProfile } from '../store/userProfileAsyncAction';
 export const Account = () => {
   const [activeList, setActiveList] = useState('My Profile');
   const dispatch = useDispatch<AppDispatch>();
-  const account = useSelector((state: RootState) => state.userProfile.userProfile);
+  const account = useSelector((state: RootState) => state.auth.auth);
 
   const renderAccount = () => {
     switch (activeList) {
       case 'My Profile':
-        return <Profile />;
+        return <ProfileSection />;
       case 'Address Book':
         return <AddressBook />;
       default:
-        return <Profile />;
+        return <ProfileSection />;
     }
   };
 
