@@ -1,14 +1,16 @@
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { auth } from '../services/firebase';
 import { setAuth, resetAuth } from './auth.slice';
+import { ensureUserProfile } from './authAsyncAction';
+import { useAppDispatch } from './hooks';
 
 export function useAuthListener() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
+        dispatch(ensureUserProfile(user));
         dispatch(
           setAuth({
             id: user.uid,

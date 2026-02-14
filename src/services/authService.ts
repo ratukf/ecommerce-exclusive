@@ -1,4 +1,4 @@
-import { auth } from './firebase';
+import { auth, db } from './firebase';
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -8,6 +8,7 @@ import {
   GithubAuthProvider,
 } from 'firebase/auth';
 import type { User } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
 
 // Login with email and password
 const logIn = async (email: string, password: string): Promise<User | null> => {
@@ -63,4 +64,24 @@ const logOut = async (): Promise<void> => {
   await auth.signOut();
 };
 
-export { logIn, signUp, signUpGoogle, signUpGithub, logOut };
+// Create user profile when sucessfully sign up for the first time
+const ensureUserProfileService = async (user: User) => {
+  const userRef = doc(db, 'userProfiles', user.uid);
+  await setDoc(
+    userRef,
+    {
+      id: user.uid,
+      profile: {
+        name: user.displayName ?? '',
+        email: user.email ?? '',
+        phone: '',
+      },
+      addressBooks: [],
+      orders: [],
+      wishlist: [],
+    },
+    { merge: true },
+  );
+};
+
+export { logIn, signUp, signUpGoogle, signUpGithub, logOut, ensureUserProfileService };

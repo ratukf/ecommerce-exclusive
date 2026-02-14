@@ -3,7 +3,6 @@ import { authReducer } from './auth.slice';
 import { userProfileReducer } from './userProfile.slice';
 import { productReducer } from './products.slice';
 import { messageReducer } from './message.slice';
-import { type Action } from '@reduxjs/toolkit';
 import { logOut } from './authAsyncAction.ts';
 
 const appReducers = combineReducers({
@@ -13,9 +12,9 @@ const appReducers = combineReducers({
   message: messageReducer,
 });
 
-const rootReducer = (state: ReturnType<typeof appReducers> | undefined, action: Action) => {
+const rootReducer: typeof appReducers = (state, action) => {
   if (action.type === logOut.fulfilled.type) {
-    state = undefined;
+    return appReducers(undefined, action);
   }
   return appReducers(state, action);
 };

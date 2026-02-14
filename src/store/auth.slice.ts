@@ -1,5 +1,12 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import { logOut, signIn, signUp, signUpGithub, signUpGoogle } from './authAsyncAction';
+import {
+  ensureUserProfile,
+  logOut,
+  signIn,
+  signUp,
+  signUpGithub,
+  signUpGoogle,
+} from './authAsyncAction';
 import type { User } from 'firebase/auth';
 import type { Auth, AuthState } from '../types/auth';
 
@@ -114,6 +121,20 @@ const authSlice = createSlice({
       })
       .addCase(logOut.fulfilled, (state) => {
         state.auth = initialStateAuth.auth;
+        state.loading = false;
+        state.error = null;
+      })
+      // Create user profile when sucessfully sign up for the first time
+      .addCase(ensureUserProfile.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(ensureUserProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.error =
+          typeof action.payload === 'string' ? action.payload : 'Failed to create user profile';
+      })
+      .addCase(ensureUserProfile.fulfilled, (state) => {
         state.loading = false;
         state.error = null;
       });
