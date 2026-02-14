@@ -1,5 +1,5 @@
 import { Grid } from '@mui/material';
-import { Profile } from '../components/Account/Profile';
+import { ProfileSection } from '../components/Account/ProfileSection';
 import { SideBar } from '../components/Account/SideBar';
 import { useEffect, useState } from 'react';
 import { AddressBook } from '../components/Account/AddressBook';
@@ -15,11 +15,11 @@ export const Account = () => {
   const renderAccount = () => {
     switch (activeList) {
       case 'My Profile':
-        return <Profile />;
+        return <ProfileSection />;
       case 'Address Book':
         return <AddressBook />;
       default:
-        return <Profile />;
+        return <ProfileSection />;
     }
   };
 

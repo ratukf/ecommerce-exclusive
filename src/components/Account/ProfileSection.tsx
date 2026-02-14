@@ -7,19 +7,25 @@ import { useState } from 'react';
 import { useFormik } from 'formik';
 import { useAppSelector } from '../../store/hooks';
 import { Loading } from '../Loading';
+import { useAuth } from '../../hooks/useAuth';
+import { useSnackBar } from '../../hooks/useSnackBar';
 
-export const Profile = () => {
+export const ProfileSection = () => {
   const theme = useTheme();
   const [isEditing, setIsEditing] = useState(false);
+  const { showSnackBar } = useSnackBar();
+  const { useUpdateAuth } = useAuth(showSnackBar);
+  const { loadingUpdateAuth, updateAuth } = useUpdateAuth;
   // const { editProfile } = useUserProfile();
+  // const id = useSelector((state: RootState) => state.userProfile.userProfile?.id);
   const profile = useSelector((state: RootState) => state.userProfile.userProfile?.profile);
   const { loading } = useAppSelector((state: RootState) => state.userProfile);
 
   const PROFILE = [
     {
       label: 'Name',
-      value: profile.name,
-      field: 'name',
+      value: profile.displayName,
+      field: 'displayName',
     },
     { label: 'Email', value: profile.email, field: 'email' },
     {
@@ -32,16 +38,13 @@ export const Profile = () => {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      name: profile.name,
+      displayName: profile.displayName,
       email: profile.email,
       phone: profile.phone,
     },
-    // onSubmit: async (values: typeof userProfile.profile) => {
-    //   editAccount.editProfile(values);
-    //   setIsEditing(false);
-    // },
     onSubmit: async () => {
       setIsEditing(false);
+      updateAuth(formik.values.displayName);
     },
   });
 
@@ -56,7 +59,7 @@ export const Profile = () => {
             gap: '1.5rem',
           }}
         >
-          {loading ? (
+          {loading || loadingUpdateAuth ? (
             <Loading />
           ) : (
             <>
