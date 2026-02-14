@@ -11,56 +11,36 @@ import type { User } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 
 // Login with email and password
-const logIn = async (email: string, password: string): Promise<User | null> => {
-  try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    return userCredential.user;
-  } catch (error) {
-    console.error('Error logging in:', error);
-    throw error;
-  }
+const logInService = async (email: string, password: string): Promise<User> => {
+  const userCredential = await signInWithEmailAndPassword(auth, email, password);
+  return userCredential.user;
 };
 
 // Signup with email and password
-const signUp = async (name: string, email: string, password: string): Promise<User | null> => {
-  try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    if (userCredential.user) {
-      await updateProfile(userCredential.user, { displayName: name });
-    }
-    return userCredential.user;
-  } catch (error) {
-    console.error('Error signing up:', error);
-    throw error;
+const signUpService = async (name: string, email: string, password: string): Promise<User> => {
+  const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+  if (userCredential.user) {
+    await updateProfile(userCredential.user, { displayName: name });
   }
+  return userCredential.user;
 };
 
 // Signup / login with Google
-const signUpGoogle = async (): Promise<User | null> => {
+const signUpGoogleService = async (): Promise<User> => {
   const provider = new GoogleAuthProvider();
-  try {
-    const userCredential = await signInWithPopup(auth, provider);
-    return userCredential.user;
-  } catch (error) {
-    console.error('Error signing up with Google:', error);
-    throw error;
-  }
+  const userCredential = await signInWithPopup(auth, provider);
+  return userCredential.user;
 };
 
 // Signup / login with GitHub
-const signUpGithub = async (): Promise<User | null> => {
+const signUpGithubService = async (): Promise<User> => {
   const provider = new GithubAuthProvider();
-  try {
-    const userCredential = await signInWithPopup(auth, provider);
-    return userCredential.user;
-  } catch (error) {
-    console.error('Error signing up with GitHub:', error);
-    throw error;
-  }
+  const userCredential = await signInWithPopup(auth, provider);
+  return userCredential.user;
 };
 
 // Logout
-const logOut = async (): Promise<void> => {
+const logOutService = async (): Promise<void> => {
   await auth.signOut();
 };
 
@@ -85,20 +65,22 @@ const ensureUserProfileService = async (user: User) => {
 };
 
 // Update user data
-const updateAuth = async (name: string) => {
+const updateAuthService = async (name: string) => {
   const user = auth.currentUser;
   if (!user) {
     throw new Error('User not authenticated');
   }
-  try {
-    await updateProfile(user, {
-      displayName: name,
-    });
-    return user.displayName;
-  } catch (error) {
-    console.error('Error updating name:', error);
-    throw error;
-  }
+  await updateProfile(user, {
+    displayName: name,
+  });
 };
 
-export { logIn, signUp, signUpGoogle, signUpGithub, logOut, ensureUserProfileService, updateAuth };
+export {
+  logInService,
+  signUpService,
+  signUpGoogleService,
+  signUpGithubService,
+  logOutService,
+  ensureUserProfileService,
+  updateAuthService,
+};

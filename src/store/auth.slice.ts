@@ -10,6 +10,7 @@ import {
 } from './authAsyncAction';
 import type { User } from 'firebase/auth';
 import type { Auth, AuthState } from '../types/auth';
+import { isPending, isRejected, isFulfilled } from '@reduxjs/toolkit';
 
 // Helper function to set user profile from Firebase Auth user
 const setUserProfileFromAuth = (user: User): Auth => ({
@@ -53,105 +54,59 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Sign in with email and password
-      .addCase(signIn.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(signIn.fulfilled, (state, action) => {
-        state.loading = false;
-        const user = action.payload as User;
-        state.auth = setUserProfileFromAuth(user);
-      })
-      .addCase(signIn.rejected, (state, action) => {
-        state.loading = false;
-        state.error = typeof action.payload === 'string' ? action.payload : 'Failed to sign in';
-      })
-      // Sign up with email and password
-      .addCase(signUp.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(signUp.fulfilled, (state, action) => {
-        state.loading = false;
-        const user = action.payload as User;
-        state.auth = setUserProfileFromAuth(user);
-      })
-      .addCase(signUp.rejected, (state, action) => {
-        state.loading = false;
-        state.error = typeof action.payload === 'string' ? action.payload : 'Failed to sign up';
-      })
-      // Sign up / login with Google
-      .addCase(signUpGoogle.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(signUpGoogle.fulfilled, (state, action) => {
-        console.log('🚀 ~ action.payload:', action.payload);
-        state.loading = false;
-        const user = action.payload as User;
-        state.auth = setUserProfileFromAuth(user);
-      })
-      .addCase(signUpGoogle.rejected, (state, action) => {
-        state.loading = false;
-        state.error =
-          typeof action.payload === 'string' ? action.payload : 'Failed to sign up with Google';
-      })
-      // Sign up / login with GitHub
-      .addCase(signUpGithub.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(signUpGithub.fulfilled, (state, action) => {
-        state.loading = false;
-        const user = action.payload as User;
-        state.auth = setUserProfileFromAuth(user);
-      })
-      .addCase(signUpGithub.rejected, (state, action) => {
-        state.loading = false;
-        state.error =
-          typeof action.payload === 'string' ? action.payload : 'Failed to sign up with GitHub';
-      })
       // Logout
-      .addCase(logOut.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(logOut.rejected, (state, action) => {
-        state.loading = false;
-        state.error = typeof action.payload === 'string' ? action.payload : 'Failed to log out';
-      })
       .addCase(logOut.fulfilled, (state) => {
         state.auth = initialStateAuth.auth;
-        state.loading = false;
-        state.error = null;
       })
-      // Create user profile when sucessfully sign up for the first time
-      .addCase(ensureUserProfile.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(ensureUserProfile.rejected, (state, action) => {
-        state.loading = false;
-        state.error =
-          typeof action.payload === 'string' ? action.payload : 'Failed to create user profile';
-      })
-      .addCase(ensureUserProfile.fulfilled, (state) => {
-        state.loading = false;
-        state.error = null;
-      })
-      // Update name on auth account
-      .addCase(updateAuthAsyncAction.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(updateAuthAsyncAction.rejected, (state, action) => {
-        state.loading = false;
-        state.error = typeof action.payload === 'string' ? action.payload : 'Failed to update name';
-      })
-      .addCase(updateAuthAsyncAction.fulfilled, (state) => {
-        state.loading = false;
-        state.error = null;
+      .addMatcher(
+        isPending(
+          signIn,
+          signUp,
+          signUpGoogle,
+          signUpGithub,
+          logOut,
+          ensureUserProfile,
+          updateAuthAsyncAction,
+        ),
+        (state) => {
+          state.loading = true;
+          state.error = null;
+        },
+      )
+      .addMatcher(
+        isRejected(
+          signIn,
+          signUp,
+          signUpGoogle,
+          signUpGithub,
+          logOut,
+          ensureUserProfile,
+          updateAuthAsyncAction,
+        ),
+        (state, action) => {
+          state.loading = false;
+          state.error =
+            typeof action.payload === 'string'
+              ? action.payload
+              : (action.error.message ?? 'Something went wrong');
+        },
+      )
+      .addMatcher(
+        isFulfilled(
+          signIn,
+          signUp,
+          signUpGoogle,
+          signUpGithub,
+          logOut,
+          ensureUserProfile,
+          updateAuthAsyncAction,
+        ),
+        (state) => {
+          state.loading = false;
+        },
+      )
+      .addMatcher(isFulfilled(signIn, signUp, signUpGoogle, signUpGithub), (state, action) => {
+        state.auth = setUserProfileFromAuth(action.payload);
       });
   },
 });
