@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { User } from 'firebase/auth';
-import { ensureUserProfileService } from '../services/authService';
+import { ensureUserProfileService, updateAuth } from '../services/authService';
 
 // Sign in with email and password
 const signIn = createAsyncThunk<User, { email: string; password: string }, { rejectValue: string }>(
@@ -91,7 +91,7 @@ const logOut = createAsyncThunk<void, void, { rejectValue: string }>(
 
 // Create user profile when sucessfully sign up for the first time
 const ensureUserProfile = createAsyncThunk<void, User, { rejectValue: string }>(
-  'userProfile/ensureUserProfile',
+  'auth/ensureUserProfile',
   async (user, { rejectWithValue }) => {
     try {
       await ensureUserProfileService(user);
@@ -102,4 +102,24 @@ const ensureUserProfile = createAsyncThunk<void, User, { rejectValue: string }>(
   },
 );
 
-export { signIn, signUp, signUpGoogle, signUpGithub, logOut, ensureUserProfile };
+const updateAuthAsyncAction = createAsyncThunk<void, string, { rejectValue: string }>(
+  'auth/updateAuth',
+  async (name, { rejectWithValue }) => {
+    try {
+      await updateAuth(name);
+    } catch (error) {
+      console.error(error);
+      return rejectWithValue('Failed to update name');
+    }
+  },
+);
+
+export {
+  signIn,
+  signUp,
+  signUpGoogle,
+  signUpGithub,
+  logOut,
+  ensureUserProfile,
+  updateAuthAsyncAction,
+};

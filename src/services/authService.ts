@@ -72,7 +72,7 @@ const ensureUserProfileService = async (user: User) => {
     {
       id: user.uid,
       profile: {
-        name: user.displayName ?? '',
+        displayName: user.displayName ?? '',
         email: user.email ?? '',
         phone: '',
       },
@@ -84,4 +84,21 @@ const ensureUserProfileService = async (user: User) => {
   );
 };
 
-export { logIn, signUp, signUpGoogle, signUpGithub, logOut, ensureUserProfileService };
+// Update user data
+const updateAuth = async (name: string) => {
+  const user = auth.currentUser;
+  if (!user) {
+    throw new Error('User not authenticated');
+  }
+  try {
+    await updateProfile(user, {
+      displayName: name,
+    });
+    return user.displayName;
+  } catch (error) {
+    console.error('Error updating name:', error);
+    throw error;
+  }
+};
+
+export { logIn, signUp, signUpGoogle, signUpGithub, logOut, ensureUserProfileService, updateAuth };
