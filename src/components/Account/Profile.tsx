@@ -5,33 +5,36 @@ import type { RootState } from '../../store/store';
 import { buttonSx } from '../../styles/buttonSx';
 import { useState } from 'react';
 import { useFormik } from 'formik';
+import { useAppSelector } from '../../store/hooks';
+import { Loading } from '../Loading';
 
 export const Profile = () => {
   const theme = useTheme();
   const [isEditing, setIsEditing] = useState(false);
   // const { editProfile } = useUserProfile();
-  const account = useSelector((state: RootState) => state.userProfile.userProfile?.profile);
-  const userProfile = useSelector((state: RootState) => state.userProfile.userProfile);
+  const profile = useSelector((state: RootState) => state.userProfile.userProfile?.profile);
+  const { loading } = useAppSelector((state: RootState) => state.userProfile);
 
   const PROFILE = [
     {
       label: 'Name',
-      value: userProfile?.profile?.name ?? '',
-      field: 'firstName',
+      value: profile.name,
+      field: 'name',
     },
-    { label: 'Email', value: account?.email ?? '', field: 'email' },
+    { label: 'Email', value: profile.email, field: 'email' },
     {
       label: 'Phone',
-      value: userProfile?.profile?.phone ?? '',
+      value: profile?.phone ?? '',
       field: 'phone',
     },
   ];
 
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
-      name: '',
-      email: '',
-      phone: '',
+      name: profile.name,
+      email: profile.email,
+      phone: profile.phone,
     },
     // onSubmit: async (values: typeof userProfile.profile) => {
     //   editAccount.editProfile(values);
@@ -41,12 +44,6 @@ export const Profile = () => {
       setIsEditing(false);
     },
   });
-
-  // useEffect(() => {
-  //   if (userProfile?.profile) {
-  //     formik.setValues(userProfile.userProfile.profile);
-  //   }
-  // }, []);
 
   return (
     <WhitePaper>
@@ -59,68 +56,81 @@ export const Profile = () => {
             gap: '1.5rem',
           }}
         >
-          <Typography variant='h6' sx={{ color: theme.palette.secondary.main, textAlign: 'left' }}>
-            Edit Your Profile
-          </Typography>
-          <Grid container spacing='1.5rem'>
-            {PROFILE.map((item) => (
-              <Grid size={6}>
-                <Typography variant='subtitle1' sx={{ color: '#000', textAlign: 'left' }}>
-                  {item.label}
-                </Typography>
-                <TextField
-                  name={item.field}
-                  key={item.label}
-                  value={formik.values[item.field as keyof typeof formik.values]}
-                  variant={isEditing && item.field !== 'email' ? 'outlined' : 'filled'}
-                  fullWidth
-                  InputProps={
-                    isEditing && item.field !== 'email'
-                      ? { disableUnderline: true }
-                      : { readOnly: true, disableUnderline: true }
-                  }
-                  sx={{
-                    '& .MuiInputBase-input': {
-                      color: '#000',
-                      opacity: isEditing && item.field !== 'email' ? 1 : 0.5,
-                    },
-                    '& .MuiInputLabel-root': {
-                      color: '#000',
-                      opacity: isEditing && item.field !== 'email' ? 1 : 0.5,
-                    },
-                  }}
-                  onChange={formik.handleChange}
-                />
+          {loading ? (
+            <Loading />
+          ) : (
+            <>
+              <Typography
+                variant='h6'
+                sx={{ color: theme.palette.secondary.main, textAlign: 'left' }}
+              >
+                Edit Your Profile
+              </Typography>
+              <Grid container spacing='1.5rem'>
+                {PROFILE.map((item) => (
+                  <Grid size={6}>
+                    <Typography variant='subtitle1' sx={{ color: '#000', textAlign: 'left' }}>
+                      {item.label}
+                    </Typography>
+                    <TextField
+                      name={item.field}
+                      key={item.label}
+                      value={formik.values[item.field as keyof typeof formik.values]}
+                      variant={isEditing && item.field !== 'email' ? 'outlined' : 'filled'}
+                      fullWidth
+                      InputProps={
+                        isEditing && item.field !== 'email'
+                          ? { disableUnderline: true }
+                          : { readOnly: true, disableUnderline: true }
+                      }
+                      sx={{
+                        '& .MuiInputBase-input': {
+                          color: '#000',
+                          opacity: isEditing && item.field !== 'email' ? 1 : 0.5,
+                        },
+                        '& .MuiInputLabel-root': {
+                          color: '#000',
+                          opacity: isEditing && item.field !== 'email' ? 1 : 0.5,
+                        },
+                      }}
+                      onChange={formik.handleChange}
+                    />
+                  </Grid>
+                ))}
               </Grid>
-            ))}
-          </Grid>
-          <Box
-            sx={{
-              width: '100%',
-              display: 'flex',
-              justifyContent: 'flex-end',
-              gap: '1.5rem',
-            }}
-          >
-            {isEditing ? (
-              <>
-                <Button
-                  variant='outlined'
-                  sx={buttonSx.transparent}
-                  onClick={() => setIsEditing(false)}
-                >
-                  Cancel
-                </Button>
-                <Button type='submit' variant='contained' sx={buttonSx.default}>
-                  Save Changes
-                </Button>
-              </>
-            ) : (
-              <Button onClick={() => setIsEditing(true)} variant='contained' sx={buttonSx.default}>
-                Edit
-              </Button>
-            )}
-          </Box>
+              <Box
+                sx={{
+                  width: '100%',
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  gap: '1.5rem',
+                }}
+              >
+                {isEditing ? (
+                  <>
+                    <Button
+                      variant='outlined'
+                      sx={buttonSx.transparent}
+                      onClick={() => setIsEditing(false)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button type='submit' variant='contained' sx={buttonSx.default}>
+                      Save Changes
+                    </Button>
+                  </>
+                ) : (
+                  <Button
+                    onClick={() => setIsEditing(true)}
+                    variant='contained'
+                    sx={buttonSx.default}
+                  >
+                    Edit
+                  </Button>
+                )}
+              </Box>
+            </>
+          )}
         </Box>
       </form>
     </WhitePaper>
