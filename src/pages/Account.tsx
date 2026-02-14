@@ -10,7 +10,7 @@ import { getUserProfile } from '../store/userProfileAsyncAction';
 export const Account = () => {
   const [activeList, setActiveList] = useState('My Profile');
   const dispatch = useDispatch<AppDispatch>();
-  const account = useSelector((state: RootState) => state.userProfile.userProfile);
+  const account = useSelector((state: RootState) => state.auth.auth);
 
   const renderAccount = () => {
     switch (activeList) {
