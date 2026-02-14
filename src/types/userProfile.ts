@@ -11,9 +11,9 @@ export interface UserProfile {
 
 // Profile details'type
 export interface Profile {
-  name?: string;
-  email?: string;
-  phone?: string;
+  name: string;
+  email: string;
+  phone: string;
 }
 
 // Address book's type
