@@ -1,40 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getUserProfile } from './userProfileAsyncAction';
-import type { UserProfile, UserProfileState } from '../types/userProfile';
+import { getUserProfile, updateProfileAsyncAction } from './userProfileAsyncAction';
+import type { UserProfileState } from '../types/userProfile';
 
 const initialUserProfile: UserProfileState = {
   userProfile: {
     id: '',
     profile: {
-      name: '',
+      displayName: '',
       email: '',
       phone: '',
     },
-    addressBooks: [
-      {
-        id: Date.now().toString(),
-        name: '',
-        street: '',
-        city: '',
-        state: '',
-        zipCode: '',
-        country: '',
-      },
-    ],
-    orders: [
-      {
-        id: Date.now().toString(),
-        product_id: '',
-        total: 0,
-        createdAt: '',
-      },
-    ],
-    wishlist: [
-      {
-        productId: '',
-        addedAt: '',
-      },
-    ],
+    addressBooks: [],
+    orders: [],
+    wishlist: [],
   },
   loading: false,
   error: null,
@@ -46,40 +24,34 @@ const userProfileSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      // Get user profile by id
       .addCase(getUserProfile.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(getUserProfile.fulfilled, (state, action) => {
         state.loading = false;
-        const userProfile = action.payload as UserProfile | null;
-        const data = userProfile ?? {
-          id: 'not found',
-          profile: {
-            name: 'not found',
-            email: 'not found',
-            phone: 'not found',
-          },
-          addressBooks: [],
-          orders: [],
-          wishlist: [],
-        };
-        state.userProfile = {
-          id: data.id ?? 'not found',
-          profile: {
-            name: data.profile?.name ?? 'not found',
-            email: data.profile?.email ?? 'not found',
-            phone: data.profile?.phone ?? 'not found',
-          },
-          addressBooks: data.addressBooks ?? [],
-          orders: data.orders ?? [],
-          wishlist: data.wishlist ?? [],
-        };
+        state.userProfile = action.payload;
       })
       .addCase(getUserProfile.rejected, (state, action) => {
         state.loading = false;
         state.error =
           typeof action.payload === 'string' ? action.payload : 'Failed to fetch user profile';
+      })
+      // Update user profile by id
+      .addCase(updateProfileAsyncAction.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateProfileAsyncAction.rejected, (state, action) => {
+        state.loading = false;
+        state.error =
+          typeof action.payload === 'string' ? action.payload : 'Failed to update user profile';
+      })
+      .addCase(updateProfileAsyncAction.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.userProfile.profile = action.payload;
       });
   },
 });
