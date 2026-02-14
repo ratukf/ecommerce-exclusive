@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { User } from 'firebase/auth';
-import { createProfile } from './userProfileAsyncAction';
+import { ensureUserProfileService } from '../services/authService';
 
 // Sign in with email and password
 const signIn = createAsyncThunk<User, { email: string; password: string }, { rejectValue: string }>(
@@ -32,7 +32,6 @@ const signUp = createAsyncThunk<
     if (!user) {
       return rejectWithValue('Failed to create account');
     }
-    createProfile(user, name, email);
     return user;
   } catch (error) {
     console.error('Error signing up:', error);
@@ -50,7 +49,6 @@ const signUpGoogle = createAsyncThunk<User, void, { rejectValue: string }>(
       if (!user) {
         return rejectWithValue('Failed to sign up with Google');
       }
-      createProfile(user, user.displayName || '', user.email || '');
       return user;
     } catch (error) {
       console.error('Error signing up with Google:', error);
@@ -69,7 +67,6 @@ const signUpGithub = createAsyncThunk<User, void, { rejectValue: string }>(
       if (!user) {
         return rejectWithValue('Failed to sign up with GitHub');
       }
-      createProfile(user, user.displayName || '', user.email || '');
       return user;
     } catch (error) {
       console.error('Error signing up with GitHub:', error);
@@ -92,4 +89,17 @@ const logOut = createAsyncThunk<void, void, { rejectValue: string }>(
   },
 );
 
-export { createProfile, signIn, signUp, signUpGoogle, signUpGithub, logOut };
+// Create user profile when sucessfully sign up for the first time
+const ensureUserProfile = createAsyncThunk<void, User, { rejectValue: string }>(
+  'userProfile/ensureUserProfile',
+  async (user, { rejectWithValue }) => {
+    try {
+      await ensureUserProfileService(user);
+    } catch (error) {
+      console.error(error);
+      return rejectWithValue('Failed to ensure user profile');
+    }
+  },
+);
+
+export { signIn, signUp, signUpGoogle, signUpGithub, logOut, ensureUserProfile };
