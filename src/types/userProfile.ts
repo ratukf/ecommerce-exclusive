@@ -11,7 +11,7 @@ export interface UserProfile {
 
 // Profile details'type
 export interface Profile {
-  name: string;
+  displayName: string;
   email: string;
   phone: string;
 }
@@ -47,3 +47,12 @@ export interface UserProfileState {
   loading: boolean;
   error: string | null;
 }
+
+// Empty user profile
+export const emptyUserProfile: UserProfile = {
+  id: '',
+  profile: { displayName: '', email: '', phone: '' },
+  addressBooks: [],
+  orders: [],
+  wishlist: [],
+};
