@@ -9,18 +9,25 @@ import { useAppSelector } from '../../store/hooks';
 import { Loading } from '../Loading';
 import { useAuth } from '../../hooks/useAuth';
 import { useSnackBar } from '../../hooks/useSnackBar';
+import { useUserProfile } from '../../hooks/useUserProfile';
 
 export const ProfileSection = () => {
   const theme = useTheme();
   const [isEditing, setIsEditing] = useState(false);
+
+  // Hooks
   const { showSnackBar } = useSnackBar();
   const { useUpdateAuth } = useAuth(showSnackBar);
+  const { useUpdateUserProfile } = useUserProfile();
   const { loadingUpdateAuth, updateAuth } = useUpdateAuth;
-  // const { editProfile } = useUserProfile();
-  // const id = useSelector((state: RootState) => state.userProfile.userProfile?.id);
+  const { updateUserProfile } = useUpdateUserProfile;
+
+  // State
+  const id = useSelector((state: RootState) => state.userProfile.userProfile?.id);
   const profile = useSelector((state: RootState) => state.userProfile.userProfile?.profile);
   const { loading } = useAppSelector((state: RootState) => state.userProfile);
 
+  // Profile values
   const PROFILE = [
     {
       label: 'Name',
@@ -35,6 +42,7 @@ export const ProfileSection = () => {
     },
   ];
 
+  // Form handler
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
@@ -45,6 +53,7 @@ export const ProfileSection = () => {
     onSubmit: async () => {
       setIsEditing(false);
       updateAuth(formik.values.displayName);
+      updateUserProfile(id, formik.values);
     },
   });
 
