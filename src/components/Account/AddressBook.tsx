@@ -11,7 +11,7 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../store/store';
 import { buttonSx } from '../../styles/buttonSx';
@@ -76,10 +76,6 @@ export const AddressBook = () => {
         return 12;
     }
   };
-
-  useEffect(() => {
-    console.log('🚀 ~ userProfile.addressBooks:', userProfile.addressBooks);
-  }, [userProfile.addressBooks]);
 
   return (
     <WhitePaper>
