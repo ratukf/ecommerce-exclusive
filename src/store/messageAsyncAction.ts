@@ -1,4 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { mapFirebaseError } from '../utils/mapError';
+import { sendContactMessageService } from '../services/messageService';
 
 // Send contact message
 export const sendContactMessage = createAsyncThunk<
@@ -7,15 +9,9 @@ export const sendContactMessage = createAsyncThunk<
   { rejectValue: string }
 >('contact/sendContactMessage', async (data, { rejectWithValue }) => {
   try {
-    const result = await import('../services/messageService').then((module) =>
-      module.sendContactMessage(data),
-    );
-    if (!result) {
-      return rejectWithValue('Failed to send contact message');
-    }
+    await sendContactMessageService(data);
     return true;
   } catch (error) {
-    console.error('Error sending contact message:', error);
-    return rejectWithValue('Failed to send contact message');
+    return rejectWithValue(mapFirebaseError(error));
   }
 });
