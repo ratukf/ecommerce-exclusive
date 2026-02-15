@@ -1,18 +1,22 @@
-const errorMap: Record<string, string> = {
+const errorMapAuth: Record<string, string> = {
   'auth/user-not-found': 'User not found',
   'auth/wrong-password': 'Wrong password',
   'auth/invalid-email': 'Invalid email',
   'auth/too-many-requests': 'Too many attempts. Try again later',
+  'permission-denied': 'You do not have permission to access this data',
+  'not-found': 'Data not found',
+  'unavailable': 'Service unavailable. Try again later',
+  'already-exists': 'Data already exists',
 };
 
-export const mapFirebaseAuthError = (error: unknown): string => {
+export const mapFirebaseError = (error: unknown): string => {
   if (
     typeof error === 'object' &&
     error !== null &&
     'code' in error &&
     typeof (error as any).code === 'string'
   ) {
-    return errorMap[(error as any).code] ?? 'Authentication failed';
+    return errorMapAuth[(error as any).code] ?? 'Authentication failed';
   }
 
   return 'Something went wrong';
