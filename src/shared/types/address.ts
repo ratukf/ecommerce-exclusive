@@ -13,3 +13,15 @@ export interface Address {
   zipCode: string;
   country: string;
 }
+
+const emptyAddress: Address = {
+  id: Date.now().toString(),
+  name: '',
+  street: '',
+  city: '',
+  state: '',
+  zipCode: '',
+  country: '',
+};
+
+export { emptyAddress };
