@@ -1,6 +1,17 @@
-import { createSlice, isPending, isRejected, isFulfilled } from '@reduxjs/toolkit';
-import { getUserProfile, updateProfileAsyncAction } from './userProfileAsyncAction';
+import {
+  createSlice,
+  isPending,
+  isRejected,
+  isFulfilled,
+  type PayloadAction,
+} from '@reduxjs/toolkit';
+import {
+  getUserProfile,
+  saveAddressBooksAsyncAction,
+  updateProfileAsyncAction,
+} from './userProfileAsyncAction';
 import type { UserProfileState } from '../../../shared/types/userProfile';
+import { emptyAddress, type Address } from '../../../shared/types/address';
 
 // Initial state for user profile slice
 const initialUserProfile: UserProfileState = {
@@ -11,7 +22,7 @@ const initialUserProfile: UserProfileState = {
       email: '',
       phone: '',
     },
-    addressBooks: [],
+    addressBooks: [emptyAddress],
     orders: [],
     wishlist: [],
   },
@@ -22,7 +33,11 @@ const initialUserProfile: UserProfileState = {
 const userProfileSlice = createSlice({
   name: 'userProfile',
   initialState: initialUserProfile,
-  reducers: {},
+  reducers: {
+    saveAddressReducer: (state, action: PayloadAction<Address>) => {
+      state.userProfile.addressBooks.push(action.payload);
+    },
+  },
   extraReducers: (builder) => {
     builder
       // Get user profile by id
@@ -32,6 +47,10 @@ const userProfileSlice = createSlice({
       // Update user profile by id
       .addCase(updateProfileAsyncAction.fulfilled, (state, action) => {
         state.userProfile.profile = action.payload;
+      })
+      // Add new address
+      .addCase(saveAddressBooksAsyncAction.fulfilled, (state, action) => {
+        state.userProfile.addressBooks = action.payload;
       })
       .addMatcher(isPending(getUserProfile, updateProfileAsyncAction), (state) => {
         state.loading = true;
@@ -52,3 +71,4 @@ const userProfileSlice = createSlice({
 });
 
 export const userProfileReducer = userProfileSlice.reducer;
+export const { saveAddressReducer } = userProfileSlice.actions;
