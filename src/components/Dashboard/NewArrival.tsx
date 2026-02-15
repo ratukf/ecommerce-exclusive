@@ -1,5 +1,5 @@
 import { Box, Button, Grid, Typography } from '@mui/material';
-import { NEW_ARRIVAL } from '../../constants/newArrival';
+import { NEW_ARRIVAL } from '../../shared/constants/newArrival';
 
 interface OverlayBoxProps {
   label: string;

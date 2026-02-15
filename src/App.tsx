@@ -22,9 +22,9 @@ import { Contact } from './pages/Contact';
 import { About } from './pages/About';
 import { LogIn } from './pages/LogIn';
 import { SignUp } from './pages/SignUp';
-import { ProtectedRoute } from './components/ProtectedRoute';
+import { ProtectedRoute } from './shared/components/ProtectedRoute';
 import { Account } from './pages/Account';
-import ScrollToTop from './utils/scrollToTop';
+import ScrollToTop from './shared/utils/scrollToTop';
 
 function App() {
   useAuthListener();

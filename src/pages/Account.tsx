@@ -1,11 +1,11 @@
 import { Grid } from '@mui/material';
-import { ProfileSection } from '../components/Account/ProfileSection';
-import { SideBar } from '../components/Account/SideBar';
+import { ProfileSection } from '../features/userProfile/components/ProfileSection';
+import { SideBar } from '../features/userProfile/components/SideBar';
 import { useEffect, useState } from 'react';
-import { AddressBook } from '../components/Account/AddressBook';
+import { AddressBook } from '../features/userProfile/components/AddressBook';
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from '../store/store';
-import { getUserProfile } from '../store/userProfileAsyncAction';
+import { getUserProfile } from '../features/userProfile/store/userProfileAsyncAction';
 
 export const Account = () => {
   const [activeList, setActiveList] = useState('My Profile');

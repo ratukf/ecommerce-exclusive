@@ -1,9 +1,9 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { authReducer } from './auth.slice';
-import { userProfileReducer } from './userProfile.slice';
-import { productReducer } from './products.slice';
-import { messageReducer } from './message.slice';
-import { logOut } from './authAsyncAction.ts';
+import { authReducer } from '../features/auth/store/auth.slice.ts';
+import { userProfileReducer } from '../features/userProfile/store/userProfile.slice.ts';
+import { productReducer } from '../features/products/store/products.slice.ts';
+import { messageReducer } from '../features/message/store/message.slice.ts';
+import { logOutAsyncAction } from '../features/auth/store/authAsyncAction.ts';
 
 const appReducers = combineReducers({
   auth: authReducer,
@@ -13,7 +13,7 @@ const appReducers = combineReducers({
 });
 
 const rootReducer: typeof appReducers = (state, action) => {
-  if (action.type === logOut.fulfilled.type) {
+  if (action.type === logOutAsyncAction.fulfilled.type) {
     return appReducers(undefined, action);
   }
   return appReducers(state, action);

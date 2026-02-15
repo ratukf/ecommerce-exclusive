@@ -2,14 +2,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from '../store/store';
 import { Link, useParams } from 'react-router';
 import { useEffect, useState } from 'react';
-import { fetchProductById, fetchProducts } from '../store/productsAsyncAction';
+import { fetchProductById, fetchProducts } from '../features/products/store/productsAsyncAction';
 import { Box, Button, Divider, Grid, IconButton, Typography, useTheme } from '@mui/material';
-import { countStar, renderStars } from '../utils/rating';
+import { countStar, renderStars } from '../shared/utils/rating';
 import { Favorite, LocalShippingOutlined, LoopOutlined } from '@mui/icons-material';
 import { buttonSx } from '../styles/buttonSx';
 import { FW } from '../theme';
 import { DashboardSection } from '../components/Dashboard/DashboardSection';
-import { ProductsSection } from '../components/ProductsSection';
+import { ProductsSection } from '../shared/components/ProductsSection';
 
 export const ProductDetail = () => {
   const dispatch = useDispatch<AppDispatch>();

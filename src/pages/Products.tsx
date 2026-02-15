@@ -1,11 +1,11 @@
 import { Grid, Typography } from '@mui/material';
 import { SideBar } from '../components/Products/Sidebar';
-import { ProductsSection } from '../components/ProductsSection';
+import { ProductsSection } from '../shared/components/ProductsSection';
 import type { AppDispatch } from '../store/store';
 import type { RootState } from '../store/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { fetchProducts } from '../store/productsAsyncAction';
+import { fetchProducts } from '../features/products/store/productsAsyncAction';
 
 export const Products = () => {
   const dispatch = useDispatch<AppDispatch>();
