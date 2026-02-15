@@ -1,6 +1,6 @@
 import { createSlice, isPending, isRejected, isFulfilled } from '@reduxjs/toolkit';
 import { getUserProfile, updateProfileAsyncAction } from './userProfileAsyncAction';
-import type { UserProfileState } from '../types/userProfile';
+import type { UserProfileState } from '../../../shared/types/userProfile';
 
 // Initial state for user profile slice
 const initialUserProfile: UserProfileState = {

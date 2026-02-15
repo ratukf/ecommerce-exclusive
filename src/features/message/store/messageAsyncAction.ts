@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { mapFirebaseError } from '../utils/mapError';
-import { sendContactMessageService } from '../services/messageService';
+import { mapFirebaseError } from '../../../shared/utils/mapError';
+import { sendContactMessageService } from '../service/messageService';
 
 // Send contact message
 export const sendContactMessage = createAsyncThunk<

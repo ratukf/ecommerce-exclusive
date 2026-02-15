@@ -1,5 +1,5 @@
 import { Box, Grid, List, ListItemButton, ListItemText, Typography, useTheme } from '@mui/material';
-import { FW } from '../../theme';
+import { FW } from '../../../theme';
 
 const SIDE_BAR = [
   {

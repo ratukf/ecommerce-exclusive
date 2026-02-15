@@ -2,7 +2,7 @@ import { FavoriteBorderOutlined, RemoveRedEyeOutlined } from '@mui/icons-materia
 import { Box, Grid, IconButton, Typography, useTheme } from '@mui/material';
 import { type Product } from '../types/products';
 import { countStar, renderStars } from '../utils/rating';
-import { FW } from '../theme';
+import { FW } from '../../theme';
 import { useNavigate } from 'react-router';
 import { useState } from 'react';
 

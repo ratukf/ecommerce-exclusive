@@ -1,26 +1,22 @@
 import { Box, Button, Grid, TextField, Typography, useTheme } from '@mui/material';
-import { WhitePaper } from '../WhitePaper';
+import { WhitePaper } from '../../../shared/components/WhitePaper';
 import { useSelector } from 'react-redux';
-import type { RootState } from '../../store/store';
-import { buttonSx } from '../../styles/buttonSx';
+import type { RootState } from '../../../store/store';
+import { buttonSx } from '../../../styles/buttonSx';
 import { useState } from 'react';
 import { useFormik } from 'formik';
-import { useAppSelector } from '../../store/hooks';
-import { Loading } from '../Loading';
-import { useAuth } from '../../hooks/useAuth';
-import { useSnackBar } from '../../hooks/useSnackBar';
-import { useUserProfile } from '../../hooks/useUserProfile';
+import { useAppSelector } from '../../../store/hooks';
+import { Loading } from '../../../shared/components/Loading';
+import { useUpdateUserProfile } from '../hooks/useUpdateUserProfile';
+import { useUpdateAuth } from '../../auth/hooks/useUpdateAuth';
 
 export const ProfileSection = () => {
   const theme = useTheme();
   const [isEditing, setIsEditing] = useState(false);
 
   // Hooks
-  const { showSnackBar } = useSnackBar();
-  const { useUpdateAuth } = useAuth(showSnackBar);
-  const { useUpdateUserProfile } = useUserProfile();
-  const { loadingUpdateAuth, updateAuth } = useUpdateAuth;
-  const { updateUserProfile } = useUpdateUserProfile;
+  const { updateAuth } = useUpdateAuth();
+  const { updateUserProfile } = useUpdateUserProfile();
 
   // State
   const id = useSelector((state: RootState) => state.userProfile.userProfile?.id);
@@ -68,7 +64,7 @@ export const ProfileSection = () => {
             gap: '1.5rem',
           }}
         >
-          {loading || loadingUpdateAuth ? (
+          {loading ? (
             <Loading />
           ) : (
             <>

@@ -2,16 +2,21 @@ import { Box, Button, Grid, TextField, Typography } from '@mui/material';
 import { FW } from '../theme';
 import { buttonSx, linkSx } from '../styles/buttonSx';
 import { Link } from 'react-router';
-import { useSnackBar } from '../hooks/useSnackBar';
-import { SnackBar } from '../components/SnackBar';
-import { useAuth } from '../hooks/useAuth';
+import { useLogin } from '../features/auth/hooks/useLogin';
+import { useState } from 'react';
+import { useAppSelector } from '../store/hooks';
+import type { RootState } from '../store/store';
 
 export const LogIn = () => {
-  const { snackBar, showSnackBar, handleClose } = useSnackBar();
+  const { login } = useLogin();
+  const { loading } = useAppSelector((state: RootState) => state.auth);
 
-  const { useLogin } = useAuth(showSnackBar);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const { email, password, loading, handleEmailChange, handlePasswordChange, logIn } = useLogin;
+  const handleSubmit = () => {
+    login(email, password);
+  };
 
   return (
     <Grid
@@ -51,7 +56,7 @@ export const LogIn = () => {
             type='email'
             variant='standard'
             value={email}
-            onChange={handleEmailChange}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <TextField
             label='Password'
@@ -59,10 +64,10 @@ export const LogIn = () => {
             autoComplete='current-password'
             variant='standard'
             value={password}
-            onChange={handlePasswordChange}
+            onChange={(e) => setPassword(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
-                logIn();
+                handleSubmit();
               }
             }}
           />
@@ -76,7 +81,12 @@ export const LogIn = () => {
             gap: '2.5rem',
           }}
         >
-          <Button variant='contained' sx={buttonSx.default} onClick={logIn} disabled={loading}>
+          <Button
+            variant='contained'
+            sx={buttonSx.default}
+            onClick={handleSubmit}
+            disabled={loading}
+          >
             {loading ? 'Logging in...' : 'Log In'}
           </Button>
           <Link to='/register' style={linkSx.default}>
@@ -84,12 +94,6 @@ export const LogIn = () => {
           </Link>
         </Box>
       </Grid>
-      <SnackBar
-        open={snackBar.open}
-        message={snackBar.message}
-        severity={snackBar.severity}
-        onClose={handleClose}
-      />
     </Grid>
   );
 };

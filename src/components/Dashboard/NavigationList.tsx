@@ -1,5 +1,5 @@
 import { Box, Collapse, List, ListItemButton, ListItemText } from '@mui/material';
-import { NAV_LIST } from '../../constants/navigation';
+import { NAV_LIST } from '../../shared/constants/navigation';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 
 interface NavigationListProps {

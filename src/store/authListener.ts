@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { auth } from '../services/firebase';
-import { setAuth, resetAuth } from './auth.slice';
-import { ensureUserProfile } from './authAsyncAction';
+import { setAuth, resetAuth } from '../features/auth/store/auth.slice';
+import { ensureUserProfile } from '../features/auth/store/authAsyncAction';
 import { useAppDispatch } from './hooks';
 
 export function useAuthListener() {

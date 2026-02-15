@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Grid, Icon, Typography } from '@mui/material';
-import { CATEGORIES } from '../../constants/categories';
+import { CATEGORIES } from '../../shared/constants/categories';
 import {
   CameraAltOutlined,
   HeadphonesOutlined,

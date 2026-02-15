@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import type { Product } from '../types/products';
-import { getProductById, getProducts } from '../services/productService';
-import { mapFirebaseError } from '../utils/mapError';
+import type { Product } from '../../../shared/types/products';
+import { getProductById, getProducts } from '../service/productService';
+import { mapFirebaseError } from '../../../shared/utils/mapError';
 
 // Fetch all products
 const fetchProducts = createAsyncThunk<Product[], void, { rejectValue: string }>(

@@ -8,8 +8,8 @@ import {
   logOutService,
   ensureUserProfileService,
   updateAuthService,
-} from '../services/authService';
-import { mapFirebaseError } from '../utils/mapError';
+} from '../service/authService';
+import { mapFirebaseError } from '../../../shared/utils/mapError';
 
 // Sign in with email and password
 const signIn = createAsyncThunk<User, { email: string; password: string }, { rejectValue: string }>(
@@ -61,7 +61,7 @@ const signUpGithub = createAsyncThunk<User, void, { rejectValue: string }>(
 );
 
 // Logout
-const logOut = createAsyncThunk<void, void, { rejectValue: string }>(
+const logOutAsyncAction = createAsyncThunk<void, undefined, { rejectValue: string }>(
   'auth/logOut',
   async (_, { rejectWithValue }) => {
     try {
@@ -100,7 +100,7 @@ export {
   signUp,
   signUpGoogle,
   signUpGithub,
-  logOut,
+  logOutAsyncAction,
   ensureUserProfile,
   updateAuthAsyncAction,
 };

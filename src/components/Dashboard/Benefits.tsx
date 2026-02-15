@@ -1,5 +1,5 @@
 import { Grid, Typography } from '@mui/material';
-import { BENEFITS } from '../../constants/benefits';
+import { BENEFITS } from '../../shared/constants/benefits';
 import { FW } from '../../theme';
 
 export const Benefits = () => {

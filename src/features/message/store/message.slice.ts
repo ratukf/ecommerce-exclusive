@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import type { MessageState } from '../types/message';
+import type { MessageState } from '../../../shared/types/message';
 import { sendContactMessage } from './messageAsyncAction';
 
 // Initial state

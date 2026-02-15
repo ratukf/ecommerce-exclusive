@@ -3,29 +3,33 @@ import { FW } from '../theme';
 import { buttonSx, linkSx } from '../styles/buttonSx';
 import { Link } from 'react-router';
 import { FcGoogle } from 'react-icons/fc';
-import { useSnackBar } from '../hooks/useSnackBar';
-import { useAuth } from '../hooks/useAuth';
-import { SnackBar } from '../components/SnackBar';
 import { GitHub } from '@mui/icons-material';
+import { useState } from 'react';
+import { useAppSelector } from '../store/hooks';
+import type { RootState } from '../store/store';
+import { useOAuth } from '../features/auth/hooks/useOAuth';
+import { useSignup } from '../features/auth/hooks/useSignup';
 
 export const SignUp = () => {
-  const { snackBar, showSnackBar, handleClose } = useSnackBar();
+  const { loading } = useAppSelector((state: RootState) => state.auth);
+  const { signup } = useSignup();
+  const { loginGoogle, loginGithub } = useOAuth();
 
-  const { useSignup, useSignUpGoogle, useSignUpGithub } = useAuth(showSnackBar);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const {
-    name,
-    email,
-    password,
-    loading,
-    handleNameChange,
-    handleEmailChange,
-    handlePasswordChange,
-    signUp,
-  } = useSignup;
+  const handleSignUp = () => {
+    signup(name, email, password);
+  };
 
-  const { loading: googleLoading, signUpGoogle } = useSignUpGoogle;
-  const { loading: githubLoading, signUpGithub } = useSignUpGithub;
+  const handleLoginGoogle = () => {
+    loginGoogle();
+  };
+
+  const handleLoginGithub = () => {
+    loginGithub();
+  };
 
   return (
     <Grid
@@ -65,24 +69,24 @@ export const SignUp = () => {
             type='text'
             variant='standard'
             value={name}
-            onChange={handleNameChange}
+            onChange={(e) => setName(e.target.value)}
           />
           <TextField
             label='Email'
             type='email'
             variant='standard'
             value={email}
-            onChange={handleEmailChange}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <TextField
             label='Password'
             type='password'
             variant='standard'
             value={password}
-            onChange={handlePasswordChange}
+            onChange={(e) => setPassword(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
-                signUp();
+                handleSignUp();
               }
             }}
           />
@@ -98,7 +102,7 @@ export const SignUp = () => {
           }}
         >
           <Button
-            onClick={signUp}
+            onClick={handleSignUp}
             loading={loading}
             variant='contained'
             sx={{ ...buttonSx.default, width: '100%' }}
@@ -106,8 +110,8 @@ export const SignUp = () => {
             Create Account
           </Button>
           <Button
-            onClick={signUpGoogle}
-            loading={googleLoading}
+            onClick={handleLoginGoogle}
+            loading={loading}
             variant='outlined'
             sx={{ ...buttonSx.defaultOutlined, width: '100%' }}
           >
@@ -115,8 +119,8 @@ export const SignUp = () => {
             Sign up with Google
           </Button>
           <Button
-            onClick={signUpGithub}
-            loading={githubLoading}
+            onClick={handleLoginGithub}
+            loading={loading}
             variant='outlined'
             sx={{ ...buttonSx.defaultOutlined, width: '100%' }}
           >
@@ -133,12 +137,6 @@ export const SignUp = () => {
           </Box>
         </Box>
       </Grid>
-      <SnackBar
-        open={snackBar.open}
-        message={snackBar.message}
-        severity={snackBar.severity}
-        onClose={handleClose}
-      />
     </Grid>
   );
 };

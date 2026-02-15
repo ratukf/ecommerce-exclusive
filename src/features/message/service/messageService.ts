@@ -1,5 +1,5 @@
 import { collection, addDoc } from 'firebase/firestore';
-import { db } from './firebase';
+import { db } from '../../../services/firebase';
 
 // Send contact message to the ecommerce support
 const sendContactMessageService = async (data: {

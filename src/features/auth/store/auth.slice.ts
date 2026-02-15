@@ -1,7 +1,7 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import {
   ensureUserProfile,
-  logOut,
+  logOutAsyncAction,
   signIn,
   signUp,
   signUpGithub,
@@ -9,7 +9,7 @@ import {
   updateAuthAsyncAction,
 } from './authAsyncAction';
 import type { User } from 'firebase/auth';
-import type { Auth, AuthState } from '../types/auth';
+import type { Auth, AuthState } from '../../../shared/types/auth';
 import { isPending, isRejected, isFulfilled } from '@reduxjs/toolkit';
 
 // Helper function to set user profile from Firebase Auth user
@@ -55,7 +55,7 @@ const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       // Logout
-      .addCase(logOut.fulfilled, (state) => {
+      .addCase(logOutAsyncAction.fulfilled, (state) => {
         state.auth = initialStateAuth.auth;
       })
       .addMatcher(
@@ -64,7 +64,7 @@ const authSlice = createSlice({
           signUp,
           signUpGoogle,
           signUpGithub,
-          logOut,
+          logOutAsyncAction,
           ensureUserProfile,
           updateAuthAsyncAction,
         ),
@@ -79,7 +79,7 @@ const authSlice = createSlice({
           signUp,
           signUpGoogle,
           signUpGithub,
-          logOut,
+          logOutAsyncAction,
           ensureUserProfile,
           updateAuthAsyncAction,
         ),
@@ -97,7 +97,7 @@ const authSlice = createSlice({
           signUp,
           signUpGoogle,
           signUpGithub,
-          logOut,
+          logOutAsyncAction,
           ensureUserProfile,
           updateAuthAsyncAction,
         ),

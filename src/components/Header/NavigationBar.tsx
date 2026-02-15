@@ -13,12 +13,10 @@ import { useTheme } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router';
 import { FW } from '../../theme';
 import { useSelector } from 'react-redux';
-import { useAuth } from '../../hooks/useAuth';
-import { useSnackBar } from '../../hooks/useSnackBar';
-import { SnackBar } from '../SnackBar';
-import { AccountPopUp } from '../AccountPopUp';
+import { AccountPopUp } from '../../shared/components/AccountPopUp';
 import { useState } from 'react';
 import type { RootState } from '../../store/store';
+import { useLogout } from '../../features/auth/hooks/useLogout';
 
 export const NavigationBar = () => {
   const theme = useTheme();
@@ -35,9 +33,7 @@ export const NavigationBar = () => {
   ];
   const nav = useNavigate();
   const location = useLocation();
-  const { snackBar, showSnackBar, handleClose } = useSnackBar();
-  const { useLogOut } = useAuth(showSnackBar);
-  const { logOut } = useLogOut;
+  const { logout } = useLogout();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   return (
@@ -65,7 +61,7 @@ export const NavigationBar = () => {
               <Typography
                 onClick={() => {
                   if (item.label === 'Log Out') {
-                    logOut();
+                    logout();
                     nav(item.path);
                   } else {
                     nav(item.path);
@@ -156,12 +152,6 @@ export const NavigationBar = () => {
           opacity: 0.1,
           borderBottomWidth: 0.5,
         }}
-      />
-      <SnackBar
-        open={snackBar.open}
-        message={snackBar.message}
-        severity={snackBar.severity}
-        onClose={handleClose}
       />
     </>
   );

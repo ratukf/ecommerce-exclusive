@@ -1,5 +1,5 @@
 import { FieldArray, Formik, getIn } from 'formik';
-import { WhitePaper } from '../WhitePaper';
+import { WhitePaper } from '../../../shared/components/WhitePaper';
 import {
   Box,
   Button,
@@ -13,8 +13,8 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import type { RootState } from '../../store/store';
-import { buttonSx } from '../../styles/buttonSx';
+import type { RootState } from '../../../store/store';
+import { buttonSx } from '../../../styles/buttonSx';
 import { DeleteOutlineOutlined, EditOutlined } from '@mui/icons-material';
 // import { useUserProfile } from '../../hooks/useUserProfile';
 import * as yup from 'yup';

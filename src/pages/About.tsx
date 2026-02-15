@@ -1,6 +1,6 @@
 import { Box, Grid, IconButton, Typography, useTheme } from '@mui/material';
 import { Benefits } from '../components/Dashboard/Benefits';
-import { ACHIEVEMENTS, TEAM_MEMBERS } from '../constants/about';
+import { ACHIEVEMENTS, TEAM_MEMBERS } from '../shared/constants/about';
 import { Instagram, LinkedIn, Twitter } from '@mui/icons-material';
 
 export const About = () => {

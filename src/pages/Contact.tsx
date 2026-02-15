@@ -2,18 +2,18 @@ import { Email, Phone } from '@mui/icons-material';
 import { Box, Divider, Grid, TextField, Typography, useTheme } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import type { Theme } from '@mui/material';
-import { CONTACT, MESSAGE_FIELDS } from '../constants/contact';
+import { CONTACT, MESSAGE_FIELDS } from '../shared/constants/contact';
 import { FW } from '../theme';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import type { AppDispatch } from '../store/store';
 import { useDispatch } from 'react-redux';
-import { sendContactMessage } from '../store/messageAsyncAction';
+import { sendContactMessage } from '../features/message/store/messageAsyncAction';
 import { buttonSx } from '../styles/buttonSx';
 import { useCallback } from 'react';
-import { SnackBar } from '../components/SnackBar';
-import { useSnackBar } from '../hooks/useSnackBar';
-import { WhitePaper } from '../components/WhitePaper';
+import { SnackBar } from '../shared/components/SnackBar';
+import { useSnackBar } from '../shared/hooks/useSnackBar';
+import { WhitePaper } from '../shared/components/WhitePaper';
 
 const renderContact = (label: string, desc: string[], theme: Theme) => {
   return (

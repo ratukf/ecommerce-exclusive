@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { type Profile, type UserProfile } from '../types/userProfile';
-import { getUserService, updateProfileService } from '../services/userProfileService';
-import { mapFirebaseError } from '../utils/mapError';
+import { type Profile, type UserProfile } from '../../../shared/types/userProfile';
+import { getUserService, updateProfileService } from '../service/userProfileService';
+import { mapFirebaseError } from '../../../shared/utils/mapError';
 
 // Fetch user profile by id
 const getUserProfile = createAsyncThunk<UserProfile, string, { rejectValue: string }>(
