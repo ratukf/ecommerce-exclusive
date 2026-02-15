@@ -14,6 +14,7 @@ export interface Address {
   country: string;
 }
 
+// Empty address
 const emptyAddress: Address = {
   id: Date.now().toString(),
   name: '',
