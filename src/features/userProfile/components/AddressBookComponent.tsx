@@ -1,4 +1,4 @@
-import { FieldArray, Formik, getIn } from 'formik';
+import { FieldArray, Formik } from 'formik';
 import { WhitePaper } from '../../../shared/components/WhitePaper';
 import {
   Box,
@@ -12,53 +12,37 @@ import {
   useTheme,
 } from '@mui/material';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
-import type { RootState } from '../../../store/store';
 import { buttonSx } from '../../../styles/buttonSx';
 import { DeleteOutlineOutlined, EditOutlined } from '@mui/icons-material';
-// import { useUserProfile } from '../../hooks/useUserProfile';
 import * as yup from 'yup';
+import { useAddress } from '../hooks/useAddress';
+import { emptyAddress, type Address } from '../../../shared/types/address';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../../store/store';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { Loading } from '../../../shared/components/Loading';
+import { addEmptyAddressReducer } from '../store/userProfile.slice';
+import { getFieldProps } from '../../../shared/utils/fieldProps';
 
 export const AddressBookComponent = () => {
   const theme = useTheme();
-  const [isEditing, setIsEditing] = useState([{ id: '', status: false }]);
+  const dispatch = useAppDispatch();
+  const { addAddress } = useAddress();
   const userProfile = useSelector((state: RootState) => state.userProfile.userProfile);
-  const addressBooks = userProfile?.addressBooks ?? [];
-  // const { editAccount } = useUserProfile();
+  const { loading } = useAppSelector((state: RootState) => state.userProfile);
+
+  const [editingId, setEditingId] = useState('');
 
   const redStar = () => {
     return <span style={{ color: 'red' }}>*</span>;
   };
 
-  const formik = {
-    initialValues: {
-      addressBooks:
-        addressBooks.length > 0
-          ? addressBooks
-          : [
-              {
-                id: '',
-                name: '',
-                street: '',
-                city: '',
-                state: '',
-                zipCode: '',
-                country: '',
-              },
-            ],
-    },
-    validationSchema: yup.object({
-      addressBooks: yup.array().of(
-        yup.object({
-          name: yup.string().required('Address Name is required'),
-          street: yup.string().required('Street is required'),
-          city: yup.string().required('City is required'),
-          state: yup.string().required('State is required'),
-          zipCode: yup.number().typeError('Please insert number').required('Zip Code is required'),
-          country: yup.string().required('Country is required'),
-        }),
-      ),
-    }),
+  const handleSaveAddress = async (address: Address) => {
+    await addAddress(address);
+  };
+
+  const handleAddNewAddress = () => {
+    dispatch(addEmptyAddressReducer());
   };
 
   const getTextFieldWidth = (label: string) => {
@@ -80,41 +64,55 @@ export const AddressBookComponent = () => {
   return (
     <WhitePaper>
       <Formik
-        initialValues={formik.initialValues}
-        validationSchema={formik.validationSchema}
-        validateOnMount
-        onSubmit={() => {
-          console.log('halo');
-          // editAccount.editAddressBooks(values.addressBooks);
-          setIsEditing((prev) => prev.map((item) => ({ ...item, status: false })));
+        initialValues={{
+          addressBooks: userProfile.addressBooks?.length
+            ? userProfile.addressBooks
+            : [emptyAddress],
         }}
+        enableReinitialize
+        validationSchema={yup.object({
+          addressBooks: yup.array().of(
+            yup.object({
+              name: yup.string().required(),
+              street: yup.string().required(),
+              city: yup.string().required(),
+              state: yup.string().required(),
+              zipCode: yup.string().required(),
+              country: yup.string().required(),
+            }),
+          ),
+        })}
+        onSubmit={() => {}}
       >
         {(formik) => (
           <form onSubmit={formik.handleSubmit}>
-            <FieldArray name='addressBooks'>
-              {({ push, remove }) => (
-                <>
-                  <Box
-                    sx={{
-                      width: '100%',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: '1.5rem',
-                    }}
-                  >
-                    <Typography
-                      variant='h6'
-                      sx={{
-                        color: theme.palette.secondary.main,
-                        textAlign: 'left',
-                      }}
-                    >
-                      Edit Your Address Book
-                    </Typography>
-                    <Grid container spacing='1.5rem'>
-                      {formik.values.addressBooks.map((addressBook, idx) => (
-                        <>
-                          <Box key={addressBook.id ?? idx} sx={{ mb: 4 }}>
+            <Box
+              sx={{
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '1.5rem',
+              }}
+            >
+              <Typography
+                variant='h6'
+                sx={{
+                  color: theme.palette.secondary.main,
+                  textAlign: 'left',
+                }}
+              >
+                Edit Your Address Book
+              </Typography>
+              <Grid container spacing='1.5rem'>
+                {loading ? (
+                  <Loading />
+                ) : (
+                  <FieldArray
+                    name='addressBooks'
+                    render={({ push }) => (
+                      <>
+                        {formik.values.addressBooks.map((address, idx) => (
+                          <Box key={address.id ?? idx} sx={{ mb: 4 }}>
                             {idx > 0 && (
                               <Divider
                                 sx={{
@@ -125,6 +123,7 @@ export const AddressBookComponent = () => {
                               />
                             )}
                             <Grid container spacing='1.5rem'>
+                              {/* ====================================================== */}
                               {/* Address Name */}
                               <Grid
                                 size={getTextFieldWidth('Address Name')}
@@ -143,35 +142,12 @@ export const AddressBookComponent = () => {
                                   Address Name {redStar()}
                                 </Typography>
                                 <TextField
-                                  error={Boolean(
-                                    getIn(formik.touched, `addressBooks.${idx}.name`) &&
-                                      getIn(formik.errors, `addressBooks.${idx}.name`),
-                                  )}
-                                  helperText={
-                                    getIn(formik.touched, `addressBooks.${idx}.name`) &&
-                                    getIn(formik.errors, `addressBooks.${idx}.name`)
-                                  }
-                                  onBlur={formik.handleBlur}
-                                  variant='filled'
-                                  placeholder='Home/Office/Other'
-                                  name={`addressBooks.${idx}.name`}
-                                  value={getIn(formik.values, `addressBooks.${idx}.name`) ?? ''}
-                                  InputProps={{
-                                    readOnly: !isEditing[idx]?.status,
-                                    disableUnderline: !isEditing[idx]?.status,
-                                  }}
-                                  fullWidth
-                                  sx={{
-                                    '& .MuiInputBase-input': {
-                                      color: '#000',
-                                      opacity: isEditing[idx]?.status ? 1 : 0.5,
-                                    },
-                                    '& .MuiInputLabel-root': {
-                                      color: '#000',
-                                      opacity: isEditing[idx]?.status ? 1 : 0.5,
-                                    },
-                                  }}
-                                  onChange={formik.handleChange}
+                                  {...getFieldProps({
+                                    formik,
+                                    name: `addressBooks.${idx}.name`,
+                                    readOnly: !editingId,
+                                    placeholder: 'Home/Office/Other',
+                                  })}
                                 />
                                 <Divider
                                   sx={{
@@ -181,6 +157,9 @@ export const AddressBookComponent = () => {
                                   }}
                                 />
                               </Grid>
+
+                              {/* ====================================================== */}
+                              {/* Delete & Edit Button */}
                               <Grid
                                 size={getTextFieldWidth('Action')}
                                 sx={{
@@ -190,19 +169,10 @@ export const AddressBookComponent = () => {
                                   gap: '1rem',
                                 }}
                               >
-                                {!isEditing[idx]?.status ? (
+                                {!(editingId === address.id) ? (
                                   <IconButton
                                     sx={{
                                       color: theme.palette.secondary.main,
-                                    }}
-                                    onClick={() => {
-                                      formik.handleSubmit();
-                                      remove(idx);
-                                      setIsEditing((prev) => {
-                                        const newEditing = [...prev];
-                                        newEditing.splice(idx, 1);
-                                        return newEditing;
-                                      });
                                     }}
                                   >
                                     <Tooltip title='Delete'>
@@ -210,32 +180,31 @@ export const AddressBookComponent = () => {
                                     </Tooltip>
                                   </IconButton>
                                 ) : null}
-                                {isEditing[idx]?.status ? (
+                                {editingId === address.id ? (
                                   <Button
-                                    type='submit'
-                                    variant='contained'
+                                    onClick={() => {
+                                      const selectedAddress = formik.values.addressBooks.find(
+                                        (addr) => addr.id === editingId,
+                                      );
+                                      if (!selectedAddress) {
+                                        push({
+                                          ...emptyAddress,
+                                          id: Date.now().toString(),
+                                        });
+                                        return;
+                                      }
+                                      handleSaveAddress(selectedAddress);
+                                      setEditingId('');
+                                    }}
                                     sx={buttonSx.default}
-                                    disabled={!formik.isValid || formik.isSubmitting}
+                                    variant='contained'
                                   >
                                     Save
                                   </Button>
                                 ) : (
                                   <IconButton
                                     onClick={() => {
-                                      setIsEditing((prev) => {
-                                        const newEditingState = prev.map((item, i) =>
-                                          i === idx
-                                            ? {
-                                                ...item,
-                                                status: true,
-                                              }
-                                            : {
-                                                ...item,
-                                                status: false,
-                                              },
-                                        );
-                                        return newEditingState;
-                                      });
+                                      setEditingId(address.id);
                                     }}
                                     sx={{
                                       color: theme.palette.secondary.main,
@@ -247,7 +216,9 @@ export const AddressBookComponent = () => {
                                   </IconButton>
                                 )}
                               </Grid>
-                              {/* Address Fields */}
+
+                              {/* ====================================================== */}
+                              {/* Address's details field */}
                               {[
                                 { label: 'Street', field: 'street' },
                                 { label: 'City', field: 'city' },
@@ -273,87 +244,51 @@ export const AddressBookComponent = () => {
                                     {child.label} {redStar()}
                                   </Typography>
                                   <TextField
-                                    error={Boolean(
-                                      getIn(formik.touched, `addressBooks.${idx}.${child.field}`) &&
-                                        getIn(formik.errors, `addressBooks.${idx}.${child.field}`),
-                                    )}
-                                    helperText={
-                                      getIn(formik.touched, `addressBooks.${idx}.${child.field}`) &&
-                                      getIn(formik.errors, `addressBooks.${idx}.${child.field}`)
-                                    }
-                                    onBlur={formik.handleBlur}
-                                    variant='filled'
-                                    name={`addressBooks.${idx}.${child.field}`}
-                                    value={
-                                      getIn(formik.values, `addressBooks.${idx}.${child.field}`) ??
-                                      ''
-                                    }
-                                    InputProps={{
-                                      readOnly: !isEditing[idx]?.status,
-                                      disableUnderline: !isEditing[idx]?.status,
-                                    }}
-                                    fullWidth
-                                    sx={{
-                                      '& .MuiInputBase-input': {
-                                        color: '#000',
-                                        opacity: isEditing[idx]?.status ? 1 : 0.5,
-                                      },
-                                      '& .MuiInputLabel-root': {
-                                        color: '#000',
-                                        opacity: isEditing[idx]?.status ? 1 : 0.5,
-                                      },
-                                    }}
+                                    {...getFieldProps({
+                                      formik,
+                                      name: `addressBooks.${idx}.${child.field}`,
+                                      readOnly: !editingId,
+                                      placeholder: child.label,
+                                    })}
                                     multiline={child.label === 'Street'}
                                     rows={child.label === 'Street' ? 3 : 1}
-                                    onChange={formik.handleChange}
                                   />
                                 </Grid>
                               ))}
-                              {/* Action Buttons */}
                             </Grid>
                           </Box>
-                        </>
-                      ))}
+                        ))}
 
-                      <Box
-                        width='100%'
-                        sx={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          alignItems: 'center',
-                        }}
-                      >
-                        <Button
-                          variant='outlined'
-                          sx={buttonSx.defaultOutlined}
-                          onClick={() => {
-                            const newId = Date.now().toString();
-                            push({
-                              id: newId,
-                              name: '',
-                              street: '',
-                              city: '',
-                              state: '',
-                              zipCode: '',
-                              country: '',
-                            });
-                            setIsEditing((prev) => [
-                              ...prev.map((item) => ({
-                                ...item,
-                                status: false,
-                              })),
-                              { id: newId, status: true },
-                            ]);
+                        {/* ====================================================== */}
+                        {/* Action Button */}
+                        <Box
+                          width='100%'
+                          sx={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
                           }}
                         >
-                          Add New Address
-                        </Button>
-                      </Box>
-                    </Grid>
-                  </Box>
-                </>
-              )}
-            </FieldArray>
+                          <Button
+                            variant='outlined'
+                            sx={buttonSx.defaultOutlined}
+                            onClick={() => {
+                              handleAddNewAddress();
+                              push({
+                                ...emptyAddress,
+                                id: Date.now().toString(),
+                              });
+                            }}
+                          >
+                            Add New Address
+                          </Button>
+                        </Box>
+                      </>
+                    )}
+                  />
+                )}
+              </Grid>
+            </Box>
           </form>
         )}
       </Formik>
