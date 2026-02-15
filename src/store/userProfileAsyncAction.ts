@@ -1,17 +1,16 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { type Profile, type UserProfile } from '../types/userProfile';
+import { getUserService, updateProfileService } from '../services/userProfileService';
+import { mapFirebaseError } from '../utils/mapError';
 
 // Fetch user profile by id
 const getUserProfile = createAsyncThunk<UserProfile, string, { rejectValue: string }>(
   'user/getUserProfile',
   async (id, { rejectWithValue }) => {
     try {
-      const { getUser } = await import('../services/userProfileService');
-      const result = await getUser(id);
-      return result;
+      return await getUserService(id);
     } catch (error) {
-      console.error('Error fetching user profile:', error);
-      return rejectWithValue('Failed to fetch user profile');
+      return rejectWithValue(mapFirebaseError(error));
     }
   },
 );
@@ -23,12 +22,9 @@ const updateProfileAsyncAction = createAsyncThunk<
   { rejectValue: string }
 >('user/updateUserProfile', async ({ id, profile }, { rejectWithValue }) => {
   try {
-    const { updateProfile } = await import('../services/userProfileService');
-    const result = await updateProfile(id, profile);
-    return result;
+    return await updateProfileService(id, profile);
   } catch (error) {
-    console.error('Error updating user profile:', error);
-    return rejectWithValue('Failed to update user profile');
+    return rejectWithValue(mapFirebaseError(error));
   }
 });
 

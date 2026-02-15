@@ -1,7 +1,8 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, isPending, isRejected, isFulfilled } from '@reduxjs/toolkit';
 import { getUserProfile, updateProfileAsyncAction } from './userProfileAsyncAction';
 import type { UserProfileState } from '../types/userProfile';
 
+// Initial state for user profile slice
 const initialUserProfile: UserProfileState = {
   userProfile: {
     id: '',
@@ -25,33 +26,27 @@ const userProfileSlice = createSlice({
   extraReducers: (builder) => {
     builder
       // Get user profile by id
-      .addCase(getUserProfile.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
       .addCase(getUserProfile.fulfilled, (state, action) => {
-        state.loading = false;
         state.userProfile = action.payload;
       })
-      .addCase(getUserProfile.rejected, (state, action) => {
-        state.loading = false;
-        state.error =
-          typeof action.payload === 'string' ? action.payload : 'Failed to fetch user profile';
-      })
       // Update user profile by id
-      .addCase(updateProfileAsyncAction.pending, (state) => {
+      .addCase(updateProfileAsyncAction.fulfilled, (state, action) => {
+        state.userProfile.profile = action.payload;
+      })
+      .addMatcher(isPending(getUserProfile, updateProfileAsyncAction), (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(updateProfileAsyncAction.rejected, (state, action) => {
+      .addMatcher(isRejected(getUserProfile, updateProfileAsyncAction), (state, action) => {
         state.loading = false;
         state.error =
-          typeof action.payload === 'string' ? action.payload : 'Failed to update user profile';
+          typeof action.payload === 'string'
+            ? action.payload
+            : (action.error.message ?? 'Something went wrong');
       })
-      .addCase(updateProfileAsyncAction.fulfilled, (state, action) => {
+      .addMatcher(isFulfilled(getUserProfile, updateProfileAsyncAction), (state) => {
         state.loading = false;
         state.error = null;
-        state.userProfile.profile = action.payload;
       });
   },
 });
