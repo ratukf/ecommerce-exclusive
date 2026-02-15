@@ -5,11 +5,7 @@ import {
   isFulfilled,
   type PayloadAction,
 } from '@reduxjs/toolkit';
-import {
-  getUserProfile,
-  saveAddressBooksAsyncAction,
-  updateProfileAsyncAction,
-} from './userProfileAsyncAction';
+import { getUserProfile, updateProfileAsyncAction } from './userProfileAsyncAction';
 import type { UserProfileState } from '../../../shared/types/userProfile';
 import { emptyAddress, type Address } from '../../../shared/types/address';
 
@@ -47,10 +43,6 @@ const userProfileSlice = createSlice({
       // Update user profile by id
       .addCase(updateProfileAsyncAction.fulfilled, (state, action) => {
         state.userProfile.profile = action.payload;
-      })
-      // Add new address
-      .addCase(saveAddressBooksAsyncAction.fulfilled, (state, action) => {
-        state.userProfile.addressBooks = action.payload;
       })
       .addMatcher(isPending(getUserProfile, updateProfileAsyncAction), (state) => {
         state.loading = true;

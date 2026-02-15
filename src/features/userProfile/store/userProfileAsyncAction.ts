@@ -1,12 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { type Profile, type UserProfile } from '../../../shared/types/userProfile';
 import {
-  saveAddressBooksService,
   getUserService,
   updateProfileService,
+  addAddressService,
 } from '../service/userProfileService';
 import { mapFirebaseError } from '../../../shared/utils/mapError';
-import type { AddressBooks } from '../../../shared/types/address';
+import type { Address } from '../../../shared/types/address';
 
 // Fetch user profile by id
 const getUserProfile = createAsyncThunk<UserProfile, string, { rejectValue: string }>(
@@ -33,17 +33,16 @@ const updateProfileAsyncAction = createAsyncThunk<
   }
 });
 
-// Add adress
-const saveAddressBooksAsyncAction = createAsyncThunk<
-  AddressBooks,
-  { id: string; addressBooks: AddressBooks },
-  { rejectValue: string }
->('user/addAddress', async ({ id, addressBooks }, { rejectWithValue }) => {
-  try {
-    return await saveAddressBooksService(id, addressBooks);
-  } catch (error) {
-    return rejectWithValue(mapFirebaseError(error));
-  }
-});
+// Add address
+const addAddressAsyncAction = createAsyncThunk<Address, { newAddress: Address }>(
+  'user/addAddress',
+  async ({ newAddress }, { rejectWithValue }) => {
+    try {
+      return await addAddressService(newAddress);
+    } catch (error) {
+      return rejectWithValue(mapFirebaseError(error));
+    }
+  },
+);
 
-export { getUserProfile, updateProfileAsyncAction, saveAddressBooksAsyncAction };
+export { getUserProfile, updateProfileAsyncAction, addAddressAsyncAction };
