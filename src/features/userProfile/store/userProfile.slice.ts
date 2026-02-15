@@ -1,13 +1,7 @@
-import {
-  createSlice,
-  isPending,
-  isRejected,
-  isFulfilled,
-  type PayloadAction,
-} from '@reduxjs/toolkit';
+import { createSlice, isPending, isRejected, isFulfilled } from '@reduxjs/toolkit';
 import { getUserProfile, updateProfileAsyncAction } from './userProfileAsyncAction';
 import type { UserProfileState } from '../../../shared/types/userProfile';
-import { emptyAddress, type Address } from '../../../shared/types/address';
+import { emptyAddress } from '../../../shared/types/address';
 
 // Initial state for user profile slice
 const initialUserProfile: UserProfileState = {
@@ -30,8 +24,8 @@ const userProfileSlice = createSlice({
   name: 'userProfile',
   initialState: initialUserProfile,
   reducers: {
-    saveAddressReducer: (state, action: PayloadAction<Address>) => {
-      state.userProfile.addressBooks.push(action.payload);
+    addEmptyAddressReducer: (state) => {
+      state.userProfile.addressBooks.push(emptyAddress);
     },
   },
   extraReducers: (builder) => {
@@ -63,4 +57,4 @@ const userProfileSlice = createSlice({
 });
 
 export const userProfileReducer = userProfileSlice.reducer;
-export const { saveAddressReducer } = userProfileSlice.actions;
+export const { addEmptyAddressReducer } = userProfileSlice.actions;
