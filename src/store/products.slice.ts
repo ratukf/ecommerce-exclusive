@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, isFulfilled, isPending, isRejected } from '@reduxjs/toolkit';
 import { fetchProducts, fetchProductById } from './productsAsyncAction';
 import type { ProductState } from '../types/products';
 
@@ -18,32 +18,30 @@ const productSlice = createSlice({
   extraReducers: (builder) => {
     builder
       // Handle fetch products actions
-      .addCase(fetchProducts.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
       .addCase(fetchProducts.fulfilled, (state, action) => {
-        state.loading = false;
         state.products = action.payload;
       })
-      .addCase(fetchProducts.rejected, (state, action) => {
-        state.loading = false;
-        state.error =
-          typeof action.payload === 'string' ? action.payload : 'Failed to fetch products';
-      })
       // Handle fetch product by ID actions
+      .addCase(fetchProductById.fulfilled, (state, action) => {
+        state.productDetail = action.payload;
+      })
       .addCase(fetchProductById.pending, (state) => {
+        state.productDetail = null;
+      })
+      .addMatcher(isPending(fetchProducts, fetchProductById), (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchProductById.fulfilled, (state, action) => {
-        state.loading = false;
-        state.productDetail = action.payload;
-      })
-      .addCase(fetchProductById.rejected, (state, action) => {
+      .addMatcher(isRejected(fetchProducts, fetchProductById), (state, action) => {
         state.loading = false;
         state.error =
-          typeof action.payload === 'string' ? action.payload : 'Failed to fetch product';
+          typeof action.payload === 'string'
+            ? action.payload
+            : (action.error.message ?? 'Something went wrong');
+      })
+      .addMatcher(isFulfilled(fetchProducts, fetchProductById), (state) => {
+        state.loading = false;
+        state.error = null;
       });
   },
 });
