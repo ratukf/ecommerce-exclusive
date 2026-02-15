@@ -1,5 +1,9 @@
 import { createSlice, isPending, isRejected, isFulfilled } from '@reduxjs/toolkit';
-import { getUserProfile, updateProfileAsyncAction } from './userProfileAsyncAction';
+import {
+  addAddressAsyncAction,
+  getUserProfile,
+  updateProfileAsyncAction,
+} from './userProfileAsyncAction';
 import type { UserProfileState } from '../../../shared/types/userProfile';
 import { emptyAddress } from '../../../shared/types/address';
 
@@ -38,21 +42,30 @@ const userProfileSlice = createSlice({
       .addCase(updateProfileAsyncAction.fulfilled, (state, action) => {
         state.userProfile.profile = action.payload;
       })
-      .addMatcher(isPending(getUserProfile, updateProfileAsyncAction), (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addMatcher(isRejected(getUserProfile, updateProfileAsyncAction), (state, action) => {
-        state.loading = false;
-        state.error =
-          typeof action.payload === 'string'
-            ? action.payload
-            : (action.error.message ?? 'Something went wrong');
-      })
-      .addMatcher(isFulfilled(getUserProfile, updateProfileAsyncAction), (state) => {
-        state.loading = false;
-        state.error = null;
-      });
+      .addMatcher(
+        isPending(getUserProfile, updateProfileAsyncAction, addAddressAsyncAction),
+        (state) => {
+          state.loading = true;
+          state.error = null;
+        },
+      )
+      .addMatcher(
+        isRejected(getUserProfile, updateProfileAsyncAction, addAddressAsyncAction),
+        (state, action) => {
+          state.loading = false;
+          state.error =
+            typeof action.payload === 'string'
+              ? action.payload
+              : (action.error.message ?? 'Something went wrong');
+        },
+      )
+      .addMatcher(
+        isFulfilled(getUserProfile, updateProfileAsyncAction, addAddressAsyncAction),
+        (state) => {
+          state.loading = false;
+          state.error = null;
+        },
+      );
   },
 });
 
