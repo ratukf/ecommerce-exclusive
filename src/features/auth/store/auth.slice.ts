@@ -1,6 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import {
-  ensureUserProfile,
   logOutAsyncAction,
   signIn,
   signUp,
@@ -65,7 +64,6 @@ const authSlice = createSlice({
           signUpGoogle,
           signUpGithub,
           logOutAsyncAction,
-          ensureUserProfile,
           updateAuthAsyncAction,
         ),
         (state) => {
@@ -80,7 +78,6 @@ const authSlice = createSlice({
           signUpGoogle,
           signUpGithub,
           logOutAsyncAction,
-          ensureUserProfile,
           updateAuthAsyncAction,
         ),
         (state, action) => {
@@ -98,7 +95,6 @@ const authSlice = createSlice({
           signUpGoogle,
           signUpGithub,
           logOutAsyncAction,
-          ensureUserProfile,
           updateAuthAsyncAction,
         ),
         (state) => {
