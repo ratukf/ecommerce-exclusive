@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { auth } from '../services/firebase';
 import { setAuth, resetAuth } from '../features/auth/store/auth.slice';
-import { ensureUserProfile } from '../features/auth/store/authAsyncAction';
 import { useAppDispatch } from './hooks';
 
 export function useAuthListener() {
@@ -10,7 +9,6 @@ export function useAuthListener() {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
-        dispatch(ensureUserProfile(user));
         dispatch(
           setAuth({
             id: user.uid,

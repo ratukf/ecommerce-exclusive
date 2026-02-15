@@ -6,7 +6,6 @@ import {
   signUpGoogleService,
   signUpGithubService,
   logOutService,
-  ensureUserProfileService,
   updateAuthService,
 } from '../service/authService';
 import { mapFirebaseError } from '../../../shared/utils/mapError';
@@ -72,18 +71,6 @@ const logOutAsyncAction = createAsyncThunk<void, undefined, { rejectValue: strin
   },
 );
 
-// Create user profile when sucessfully sign up for the first time
-const ensureUserProfile = createAsyncThunk<void, User, { rejectValue: string }>(
-  'auth/ensureUserProfile',
-  async (user, { rejectWithValue }) => {
-    try {
-      return await ensureUserProfileService(user);
-    } catch (error: any) {
-      return rejectWithValue(mapFirebaseError(error));
-    }
-  },
-);
-
 const updateAuthAsyncAction = createAsyncThunk<void, string, { rejectValue: string }>(
   'auth/updateAuth',
   async (name, { rejectWithValue }) => {
@@ -95,12 +82,4 @@ const updateAuthAsyncAction = createAsyncThunk<void, string, { rejectValue: stri
   },
 );
 
-export {
-  signIn,
-  signUp,
-  signUpGoogle,
-  signUpGithub,
-  logOutAsyncAction,
-  ensureUserProfile,
-  updateAuthAsyncAction,
-};
+export { signIn, signUp, signUpGoogle, signUpGithub, logOutAsyncAction, updateAuthAsyncAction };
