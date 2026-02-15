@@ -19,7 +19,7 @@ import { DeleteOutlineOutlined, EditOutlined } from '@mui/icons-material';
 // import { useUserProfile } from '../../hooks/useUserProfile';
 import * as yup from 'yup';
 
-export const AddressBook = () => {
+export const AddressBookComponent = () => {
   const theme = useTheme();
   const [isEditing, setIsEditing] = useState([{ id: '', status: false }]);
   const userProfile = useSelector((state: RootState) => state.userProfile.userProfile);

@@ -10,7 +10,7 @@ import { Loading } from '../../../shared/components/Loading';
 import { useUpdateUserProfile } from '../hooks/useUpdateUserProfile';
 import { useUpdateAuth } from '../../auth/hooks/useUpdateAuth';
 
-export const ProfileSection = () => {
+export const ProfileComponent = () => {
   const theme = useTheme();
   const [isEditing, setIsEditing] = useState(false);
 
