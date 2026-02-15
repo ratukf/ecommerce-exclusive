@@ -1,8 +1,8 @@
 import { Grid } from '@mui/material';
-import { ProfileSection } from '../features/userProfile/components/ProfileSection';
+import { ProfileComponent } from '../features/userProfile/components/ProfileComponent';
 import { SideBar } from '../features/userProfile/components/SideBar';
 import { useEffect, useState } from 'react';
-import { AddressBook } from '../features/userProfile/components/AddressBook';
+import { AddressBookComponent } from '../features/userProfile/components/AddressBookComponent';
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from '../store/store';
 import { getUserProfile } from '../features/userProfile/store/userProfileAsyncAction';
@@ -15,11 +15,11 @@ export const Account = () => {
   const renderAccount = () => {
     switch (activeList) {
       case 'My Profile':
-        return <ProfileSection />;
+        return <ProfileComponent />;
       case 'Address Book':
-        return <AddressBook />;
+        return <AddressBookComponent />;
       default:
-        return <ProfileSection />;
+        return <ProfileComponent />;
     }
   };
 
