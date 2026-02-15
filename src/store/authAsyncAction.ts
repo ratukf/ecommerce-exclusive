@@ -9,7 +9,7 @@ import {
   ensureUserProfileService,
   updateAuthService,
 } from '../services/authService';
-import { mapFirebaseAuthError } from '../utils/mapError';
+import { mapFirebaseError } from '../utils/mapError';
 
 // Sign in with email and password
 const signIn = createAsyncThunk<User, { email: string; password: string }, { rejectValue: string }>(
@@ -18,7 +18,7 @@ const signIn = createAsyncThunk<User, { email: string; password: string }, { rej
     try {
       return await logInService(email, password);
     } catch (error) {
-      return rejectWithValue(mapFirebaseAuthError(error));
+      return rejectWithValue(mapFirebaseError(error));
     }
   },
 );
@@ -32,7 +32,7 @@ const signUp = createAsyncThunk<
   try {
     return await signUpService(name, email, password);
   } catch (error) {
-    return rejectWithValue(mapFirebaseAuthError(error));
+    return rejectWithValue(mapFirebaseError(error));
   }
 });
 
@@ -43,7 +43,7 @@ const signUpGoogle = createAsyncThunk<User, void, { rejectValue: string }>(
     try {
       return await signUpGoogleService();
     } catch (error) {
-      return rejectWithValue(mapFirebaseAuthError(error));
+      return rejectWithValue(mapFirebaseError(error));
     }
   },
 );
@@ -55,7 +55,7 @@ const signUpGithub = createAsyncThunk<User, void, { rejectValue: string }>(
     try {
       return await signUpGithubService();
     } catch (error) {
-      return rejectWithValue(mapFirebaseAuthError(error));
+      return rejectWithValue(mapFirebaseError(error));
     }
   },
 );
@@ -67,7 +67,7 @@ const logOut = createAsyncThunk<void, void, { rejectValue: string }>(
     try {
       return await logOutService();
     } catch (error) {
-      return rejectWithValue(mapFirebaseAuthError(error));
+      return rejectWithValue(mapFirebaseError(error));
     }
   },
 );
@@ -79,7 +79,7 @@ const ensureUserProfile = createAsyncThunk<void, User, { rejectValue: string }>(
     try {
       return await ensureUserProfileService(user);
     } catch (error: any) {
-      return rejectWithValue(mapFirebaseAuthError(error));
+      return rejectWithValue(mapFirebaseError(error));
     }
   },
 );
@@ -90,7 +90,7 @@ const updateAuthAsyncAction = createAsyncThunk<void, string, { rejectValue: stri
     try {
       await updateAuthService(name);
     } catch (error) {
-      return rejectWithValue(mapFirebaseAuthError(error));
+      return rejectWithValue(mapFirebaseError(error));
     }
   },
 );

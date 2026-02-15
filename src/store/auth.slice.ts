@@ -103,6 +103,7 @@ const authSlice = createSlice({
         ),
         (state) => {
           state.loading = false;
+          state.error = null;
         },
       )
       .addMatcher(isFulfilled(signIn, signUp, signUpGoogle, signUpGithub), (state, action) => {
