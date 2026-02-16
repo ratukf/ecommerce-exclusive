@@ -37,8 +37,13 @@ export interface Order {
 
 // Whishlists' item type
 export interface Wishlist {
+  id: string;
   productId: string;
+  name: string;
+  imageUrls: string;
+  price: number;
   addedAt: string;
+  description: string;
 }
 
 // User profile status type
