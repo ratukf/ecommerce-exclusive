@@ -3,6 +3,7 @@ import { WhitePaper } from '../../../shared/components/WhitePaper';
 import {
   Box,
   Button,
+  CircularProgress,
   Divider,
   Grid,
   IconButton,
@@ -169,7 +170,9 @@ export const AddressBookComponent = () => {
                                     {...getFieldProps({
                                       formik,
                                       name: `addressBooks.${idx}.name`,
-                                      readOnly: !(editingId || writingId),
+                                      readOnly: !(
+                                        editingId === address.id || writingId === address.id
+                                      ),
                                       placeholder: 'Home/Office/Other',
                                     })}
                                   />
@@ -193,8 +196,12 @@ export const AddressBookComponent = () => {
                                     gap: '1rem',
                                   }}
                                 >
-                                  {/* {!(writingId === address.id) ? ( */}
-                                  {!(editingId || writingId) ? (
+                                  {!(
+                                    editingId === address.id ||
+                                    !userProfile.addressBooks.some(
+                                      (addr) => addr.id === address.id && addr.name !== '',
+                                    )
+                                  ) ? (
                                     <IconButton
                                       onClick={() => setDeletingId(address.id)}
                                       sx={{
@@ -206,30 +213,47 @@ export const AddressBookComponent = () => {
                                       </Tooltip>
                                     </IconButton>
                                   ) : null}
-                                  {editingId || writingId ? (
-                                    <Button
-                                      // onClick={() => {
-                                      //   const selectedAddress = formik.values.addressBooks.find(
-                                      //     (addr) => addr.id === writingId,
-                                      //   );
-                                      //   if (!selectedAddress) {
-                                      //     push({
-                                      //       ...emptyAddress,
-                                      //       id: Date.now().toString(),
-                                      //     });
-                                      //     return;
-                                      //   }
-                                      //   handleSaveAddress(selectedAddress);
-                                      //   setWritingId('');
-                                      // }}
-                                      onClick={() => {
-                                        handleSaveAddress(address);
-                                      }}
-                                      sx={buttonSx.default}
-                                      variant='contained'
-                                    >
-                                      Save
-                                    </Button>
+                                  {editingId === address.id ||
+                                  !userProfile.addressBooks.some(
+                                    (addr) => addr.id === address.id && addr.name !== '',
+                                  ) ? (
+                                    <>
+                                      {asyncState.deleteAddress.status === 'loading' ? (
+                                        <IconButton>
+                                          <CircularProgress color='error' />
+                                        </IconButton>
+                                      ) : (
+                                        <Button
+                                          onClick={() => {
+                                            if (writingId) {
+                                              deleteAddress(address.id);
+                                            }
+                                            setEditingId('');
+                                            setWritingId('');
+                                          }}
+                                          sx={buttonSx.defaultOutlined}
+                                          variant='text'
+                                        >
+                                          Cancel
+                                        </Button>
+                                      )}
+                                      {asyncState.addAddress.status === 'loading' ||
+                                      asyncState.updateAddress.status === 'loading' ? (
+                                        <IconButton>
+                                          <CircularProgress color='error' />
+                                        </IconButton>
+                                      ) : (
+                                        <Button
+                                          onClick={() => {
+                                            handleSaveAddress(address);
+                                          }}
+                                          sx={buttonSx.default}
+                                          variant='contained'
+                                        >
+                                          Save
+                                        </Button>
+                                      )}
+                                    </>
                                   ) : (
                                     <IconButton
                                       onClick={() => {
@@ -277,7 +301,9 @@ export const AddressBookComponent = () => {
                                       {...getFieldProps({
                                         formik,
                                         name: `addressBooks.${idx}.${child.field}`,
-                                        readOnly: !(editingId || writingId),
+                                        readOnly: !(
+                                          editingId === address.id || writingId === address.id
+                                        ),
                                         placeholder: child.label,
                                       })}
                                       multiline={child.label === 'Street'}
