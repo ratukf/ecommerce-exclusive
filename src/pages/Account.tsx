@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from '../store/store';
 import { getUserProfile } from '../features/userProfile/store/userProfileAsyncAction';
 import { resetAsyncState } from '../features/userProfile/store/userProfile.slice';
+import { UserOrdersComponent } from '../features/orders/component/UserOrdersComponent';
+import { getOrdersAsyncAction } from '../features/orders/store/ordersAsyncActions';
 
 export const Account = () => {
   const [activeList, setActiveList] = useState('My Profile');
@@ -28,6 +30,8 @@ export const Account = () => {
         return <ProfileComponent />;
       case 'Address Book':
         return <AddressBookComponent />;
+      case 'My Orders':
+        return <UserOrdersComponent />;
       default:
         return <ProfileComponent />;
     }
@@ -35,9 +39,9 @@ export const Account = () => {
 
   // Fetch user profile
   useEffect(() => {
-    console.log('🚀 ~ Account ~ account:', account);
     if (account) {
       dispatch(getUserProfile(account.id));
+      dispatch(getOrdersAsyncAction());
     }
   }, [account, dispatch]);
 

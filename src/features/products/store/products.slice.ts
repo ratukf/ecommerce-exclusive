@@ -1,6 +1,6 @@
 import { createSlice, isFulfilled, isPending, isRejected } from '@reduxjs/toolkit';
 import { fetchProducts, fetchProductById } from './productsAsyncAction';
-import type { ProductState } from '../../../shared/types/products';
+import type { ProductState } from '../types';
 
 // Initial state
 const initialStateProduct: ProductState = {

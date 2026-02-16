@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { type Profile, type UserProfile } from '../../../shared/types/userProfile';
+import { type Profile, type UserProfile } from '../types';
 import {
   getUserService,
   updateProfileService,

@@ -1,6 +1,6 @@
 import { getDocs, collection, doc, getDoc } from 'firebase/firestore';
 import { db } from '../../../services/firebase';
-import type { Product } from '../../../shared/types/products';
+import type { Product } from '../types';
 
 // Fetch all products
 export const getProducts = async (): Promise<Product[]> => {

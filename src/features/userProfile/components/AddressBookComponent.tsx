@@ -160,7 +160,6 @@ export const AddressBookComponent = () => {
                                   <Typography
                                     variant='subtitle1'
                                     sx={{
-                                      color: '#000',
                                       textAlign: 'left',
                                     }}
                                   >
@@ -291,7 +290,6 @@ export const AddressBookComponent = () => {
                                     <Typography
                                       variant='subtitle1'
                                       sx={{
-                                        color: '#000',
                                         textAlign: 'left',
                                       }}
                                     >

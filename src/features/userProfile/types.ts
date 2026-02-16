@@ -1,6 +1,4 @@
-// --- Account Slice ---
-
-import type { AsyncState } from './asyncStatus';
+import type { AsyncState } from '../../shared/types/asyncStatus';
 
 // User profile's type
 export interface UserProfile {

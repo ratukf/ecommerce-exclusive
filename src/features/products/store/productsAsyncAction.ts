@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import type { Product } from '../../../shared/types/products';
+import type { Product } from '../types';
 import { getProductById, getProducts } from '../service/productService';
 import { mapFirebaseError } from '../../../shared/utils/mapError';
 
