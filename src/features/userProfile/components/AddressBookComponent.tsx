@@ -28,41 +28,46 @@ import { ConfirmationModal } from '../../../shared/components/ConfirmationModal'
 export const AddressBookComponent = () => {
   const theme = useTheme();
   const dispatch = useAppDispatch();
-  const { addAddress, deleteAddress, updateAddress } = useAddress();
+
+  // Reducer
   const userProfile = useSelector((state: RootState) => state.userProfile.userProfile);
-  const addressBooks = userProfile.addressBooks;
   const { loading } = useAppSelector((state: RootState) => state.userProfile);
 
+  // Hooks
+  const { addAddress, deleteAddress, updateAddress } = useAddress();
+
+  // State
   const [writingId, setWritingId] = useState('');
+  const [editingId, setEditingId] = useState('');
   const [deletingId, setDeletingId] = useState('');
 
   const redStar = () => {
     return <span style={{ color: 'red' }}>*</span>;
   };
 
+  // Add new empty address
   const handleAddNewAddress = () => {
     dispatch(addEmptyAddressReducer());
   };
 
+  // Save new or updated address
   const handleSaveAddress = async (address: Address) => {
-    const existingAddress = addressBooks.find((addr) => addr.id === writingId);
-    if (existingAddress) {
-      await handleUpdateAddress(address);
-      setWritingId('');
-    } else {
+    if (writingId) {
       await addAddress(address);
+    } else {
+      await updateAddress(editingId, address);
     }
+    setWritingId('');
+    setEditingId('');
   };
 
+  // Delete addres
   const handleDeleteAddress = async (deletingId: string) => {
     await deleteAddress(deletingId);
     setDeletingId('');
   };
 
-  const handleUpdateAddress = async (newAddress: Address) => {
-    await updateAddress(writingId, newAddress);
-  };
-
+  // Textfield width configuration
   const getTextFieldWidth = (label: string) => {
     switch (label) {
       case 'Street':
@@ -164,7 +169,7 @@ export const AddressBookComponent = () => {
                                     {...getFieldProps({
                                       formik,
                                       name: `addressBooks.${idx}.name`,
-                                      readOnly: !writingId,
+                                      readOnly: !(editingId || writingId),
                                       placeholder: 'Home/Office/Other',
                                     })}
                                   />
@@ -188,7 +193,8 @@ export const AddressBookComponent = () => {
                                     gap: '1rem',
                                   }}
                                 >
-                                  {!(writingId === address.id) ? (
+                                  {/* {!(writingId === address.id) ? ( */}
+                                  {!(editingId || writingId) ? (
                                     <IconButton
                                       onClick={() => setDeletingId(address.id)}
                                       sx={{
@@ -200,21 +206,24 @@ export const AddressBookComponent = () => {
                                       </Tooltip>
                                     </IconButton>
                                   ) : null}
-                                  {writingId === address.id ? (
+                                  {editingId || writingId ? (
                                     <Button
+                                      // onClick={() => {
+                                      //   const selectedAddress = formik.values.addressBooks.find(
+                                      //     (addr) => addr.id === writingId,
+                                      //   );
+                                      //   if (!selectedAddress) {
+                                      //     push({
+                                      //       ...emptyAddress,
+                                      //       id: Date.now().toString(),
+                                      //     });
+                                      //     return;
+                                      //   }
+                                      //   handleSaveAddress(selectedAddress);
+                                      //   setWritingId('');
+                                      // }}
                                       onClick={() => {
-                                        const selectedAddress = formik.values.addressBooks.find(
-                                          (addr) => addr.id === writingId,
-                                        );
-                                        if (!selectedAddress) {
-                                          push({
-                                            ...emptyAddress,
-                                            id: Date.now().toString(),
-                                          });
-                                          return;
-                                        }
-                                        handleSaveAddress(selectedAddress);
-                                        setWritingId('');
+                                        handleSaveAddress(address);
                                       }}
                                       sx={buttonSx.default}
                                       variant='contained'
@@ -224,7 +233,8 @@ export const AddressBookComponent = () => {
                                   ) : (
                                     <IconButton
                                       onClick={() => {
-                                        setWritingId(address.id);
+                                        setEditingId(address.id);
+                                        setWritingId('');
                                       }}
                                       sx={{
                                         color: theme.palette.secondary.main,
@@ -267,7 +277,7 @@ export const AddressBookComponent = () => {
                                       {...getFieldProps({
                                         formik,
                                         name: `addressBooks.${idx}.${child.field}`,
-                                        readOnly: !writingId,
+                                        readOnly: !(editingId || writingId),
                                         placeholder: child.label,
                                       })}
                                       multiline={child.label === 'Street'}
@@ -293,11 +303,13 @@ export const AddressBookComponent = () => {
                               variant='outlined'
                               sx={buttonSx.defaultOutlined}
                               onClick={() => {
+                                const id = Date.now().toString();
                                 handleAddNewAddress();
                                 push({
                                   ...emptyAddress,
-                                  id: Date.now().toString(),
+                                  id: id,
                                 });
+                                setWritingId(id);
                               }}
                             >
                               Add New Address
