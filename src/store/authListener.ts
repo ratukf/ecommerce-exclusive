@@ -2,10 +2,16 @@ import { useEffect } from 'react';
 import { auth } from '../services/firebase';
 import { setAuth, resetAuth } from '../features/auth/store/auth.slice';
 import { useAppDispatch } from './hooks';
+import { useSelector } from 'react-redux';
+import type { RootState } from './store';
+import { useGetUser } from '../features/userProfile/hooks/useGetUser';
 
 export function useAuthListener() {
   const dispatch = useAppDispatch();
+  const userProfile = useSelector((state: RootState) => state.userProfile.userProfile);
+  const { getUser } = useGetUser();
 
+  // Listen while log in / log out
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
@@ -19,10 +25,14 @@ export function useAuthListener() {
             photoUrl: user.photoURL ?? '',
           }),
         );
+        // Listen when user is logged in but userProfile state is empty
+        if (!userProfile.id) {
+          await getUser();
+        }
       } else {
         dispatch(resetAuth());
       }
     });
     return () => unsubscribe();
-  }, [dispatch]);
+  }, [dispatch, getUser, userProfile.id]);
 }
