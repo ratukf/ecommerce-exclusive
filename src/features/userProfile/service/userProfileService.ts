@@ -1,10 +1,14 @@
-import { arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore';
+import { arrayUnion, collection, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore';
 import { auth, db } from '../../../services/firebase';
-import { type Profile, type UserProfile } from '../types';
+import { type Profile, type UserProfile, type Wishlist } from '../types';
 import type { Address } from '../../../shared/types/address';
+import type { Product } from '../../products/types';
 
 // Get user profile by id
-const getUserService = async (id: string): Promise<UserProfile> => {
+const getUserService = async (): Promise<UserProfile> => {
+  const id = auth.currentUser?.uid;
+  if (!id) throw new Error('User no authenticated');
+
   const userRef = doc(db, 'userProfiles', id);
   const snapshot = await getDoc(userRef);
 
@@ -75,10 +79,53 @@ const updateAddressService = async (
   return updatedAddress;
 };
 
+// Toggle wishlist
+const toggleWishlistService = async (productId: string): Promise<Wishlist[]> => {
+  const uid = auth.currentUser?.uid;
+  if (!uid) throw new Error('User not authenticated');
+
+  const productsRef = collection(db, 'products');
+  const productsSnapshot = await getDocs(productsRef);
+  const productsData = productsSnapshot.docs.map((doc) => doc.data() as Product);
+  const selectedProduct = productsData.find((p) => p.id === productId);
+
+  if (!selectedProduct) {
+    throw new Error('product/not-found');
+  }
+
+  const userRef = doc(db, 'userProfiles', uid);
+  const userSnapshot = await getDoc(userRef);
+  if (!userSnapshot.exists()) throw new Error('user/not-found');
+
+  const currentWishlist: Wishlist[] = userSnapshot.data().wishlist || [];
+
+  const isWishlistExist = currentWishlist.some((item) => item.productId === productId);
+
+  const newWishlist = isWishlistExist
+    ? currentWishlist.filter((item) => item.productId !== productId)
+    : [
+        ...currentWishlist,
+        {
+          id: Date.now().toString(),
+          productId: selectedProduct.id,
+          name: selectedProduct.name,
+          imageUrls: selectedProduct.imageUrls[0],
+          price: selectedProduct.price,
+          addedAt: new Date().toISOString(),
+          description: selectedProduct.description,
+        },
+      ];
+
+  await updateDoc(userRef, { wishlist: newWishlist });
+
+  return newWishlist;
+};
+
 export {
   getUserService,
   updateProfileService,
   addAddressService,
   deleteAddressService,
   updateAddressService,
+  toggleWishlistService,
 };
