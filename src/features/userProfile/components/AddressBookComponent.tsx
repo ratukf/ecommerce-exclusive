@@ -23,15 +23,17 @@ import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { Loading } from '../../../shared/components/Loading';
 import { addEmptyAddressReducer } from '../store/userProfile.slice';
 import { getFieldProps } from '../../../shared/utils/fieldProps';
+import { ConfirmationModal } from '../../../shared/components/ConfirmationModal';
 
 export const AddressBookComponent = () => {
   const theme = useTheme();
   const dispatch = useAppDispatch();
-  const { addAddress } = useAddress();
+  const { addAddress, deleteAddress } = useAddress();
   const userProfile = useSelector((state: RootState) => state.userProfile.userProfile);
   const { loading } = useAppSelector((state: RootState) => state.userProfile);
 
   const [editingId, setEditingId] = useState('');
+  const [deletingId, setDeletingId] = useState('');
 
   const redStar = () => {
     return <span style={{ color: 'red' }}>*</span>;
@@ -43,6 +45,11 @@ export const AddressBookComponent = () => {
 
   const handleAddNewAddress = () => {
     dispatch(addEmptyAddressReducer());
+  };
+
+  const handleDeleteAddress = async (deletingId: string) => {
+    await deleteAddress(deletingId);
+    setDeletingId('');
   };
 
   const getTextFieldWidth = (label: string) => {
@@ -62,173 +69,72 @@ export const AddressBookComponent = () => {
   };
 
   return (
-    <WhitePaper>
-      <Formik
-        initialValues={{
-          addressBooks: userProfile.addressBooks?.length
-            ? userProfile.addressBooks
-            : [emptyAddress],
-        }}
-        enableReinitialize
-        validationSchema={yup.object({
-          addressBooks: yup.array().of(
-            yup.object({
-              name: yup.string().required(),
-              street: yup.string().required(),
-              city: yup.string().required(),
-              state: yup.string().required(),
-              zipCode: yup.string().required(),
-              country: yup.string().required(),
-            }),
-          ),
-        })}
-        onSubmit={() => {}}
-      >
-        {(formik) => (
-          <form onSubmit={formik.handleSubmit}>
-            <Box
-              sx={{
-                width: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '1.5rem',
-              }}
-            >
-              <Typography
-                variant='h6'
+    <>
+      <WhitePaper>
+        <Formik
+          initialValues={{
+            addressBooks: userProfile.addressBooks?.length
+              ? userProfile.addressBooks
+              : [emptyAddress],
+          }}
+          enableReinitialize
+          validationSchema={yup.object({
+            addressBooks: yup.array().of(
+              yup.object({
+                name: yup.string().required(),
+                street: yup.string().required(),
+                city: yup.string().required(),
+                state: yup.string().required(),
+                zipCode: yup.string().required(),
+                country: yup.string().required(),
+              }),
+            ),
+          })}
+          onSubmit={() => {}}
+        >
+          {(formik) => (
+            <form onSubmit={formik.handleSubmit}>
+              <Box
                 sx={{
-                  color: theme.palette.secondary.main,
-                  textAlign: 'left',
+                  width: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '1.5rem',
                 }}
               >
-                Edit Your Address Book
-              </Typography>
-              <Grid container spacing='1.5rem'>
-                {loading ? (
-                  <Loading />
-                ) : (
-                  <FieldArray
-                    name='addressBooks'
-                    render={({ push }) => (
-                      <>
-                        {formik.values.addressBooks.map((address, idx) => (
-                          <Box key={address.id ?? idx} sx={{ mb: 4 }}>
-                            {idx > 0 && (
-                              <Divider
-                                sx={{
-                                  marginY: '2rem',
-                                  backgroundColor: '#000',
-                                  opacity: 1,
-                                }}
-                              />
-                            )}
-                            <Grid container spacing='1.5rem'>
-                              {/* ====================================================== */}
-                              {/* Address Name */}
-                              <Grid
-                                size={getTextFieldWidth('Address Name')}
-                                sx={{
-                                  display: 'flex',
-                                  flexDirection: 'column',
-                                }}
-                              >
-                                <Typography
-                                  variant='subtitle1'
-                                  sx={{
-                                    color: '#000',
-                                    textAlign: 'left',
-                                  }}
-                                >
-                                  Address Name {redStar()}
-                                </Typography>
-                                <TextField
-                                  {...getFieldProps({
-                                    formik,
-                                    name: `addressBooks.${idx}.name`,
-                                    readOnly: !editingId,
-                                    placeholder: 'Home/Office/Other',
-                                  })}
-                                />
+                <Typography
+                  variant='h6'
+                  sx={{
+                    color: theme.palette.secondary.main,
+                    textAlign: 'left',
+                  }}
+                >
+                  Edit Your Address Book
+                </Typography>
+                <Grid container spacing='1.5rem'>
+                  {loading ? (
+                    <Loading />
+                  ) : (
+                    <FieldArray
+                      name='addressBooks'
+                      render={({ push }) => (
+                        <>
+                          {formik.values.addressBooks.map((address, idx) => (
+                            <Box key={address.id ?? idx} sx={{ mb: 4 }}>
+                              {idx > 0 && (
                                 <Divider
                                   sx={{
-                                    marginY: '1rem',
+                                    marginY: '2rem',
                                     backgroundColor: '#000',
-                                    opacity: 0.2,
+                                    opacity: 1,
                                   }}
                                 />
-                              </Grid>
-
-                              {/* ====================================================== */}
-                              {/* Delete & Edit Button */}
-                              <Grid
-                                size={getTextFieldWidth('Action')}
-                                sx={{
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  justifyContent: 'flex-end',
-                                  gap: '1rem',
-                                }}
-                              >
-                                {!(editingId === address.id) ? (
-                                  <IconButton
-                                    sx={{
-                                      color: theme.palette.secondary.main,
-                                    }}
-                                  >
-                                    <Tooltip title='Delete'>
-                                      <DeleteOutlineOutlined />
-                                    </Tooltip>
-                                  </IconButton>
-                                ) : null}
-                                {editingId === address.id ? (
-                                  <Button
-                                    onClick={() => {
-                                      const selectedAddress = formik.values.addressBooks.find(
-                                        (addr) => addr.id === editingId,
-                                      );
-                                      if (!selectedAddress) {
-                                        push({
-                                          ...emptyAddress,
-                                          id: Date.now().toString(),
-                                        });
-                                        return;
-                                      }
-                                      handleSaveAddress(selectedAddress);
-                                      setEditingId('');
-                                    }}
-                                    sx={buttonSx.default}
-                                    variant='contained'
-                                  >
-                                    Save
-                                  </Button>
-                                ) : (
-                                  <IconButton
-                                    onClick={() => {
-                                      setEditingId(address.id);
-                                    }}
-                                    sx={{
-                                      color: theme.palette.secondary.main,
-                                    }}
-                                  >
-                                    <Tooltip title='Edit'>
-                                      <EditOutlined />
-                                    </Tooltip>
-                                  </IconButton>
-                                )}
-                              </Grid>
-
-                              {/* ====================================================== */}
-                              {/* Address's details field */}
-                              {[
-                                { label: 'Street', field: 'street' },
-                                { label: 'City', field: 'city' },
-                                { label: 'State', field: 'state' },
-                                { label: 'Zip Code', field: 'zipCode' },
-                                { label: 'Country', field: 'country' },
-                              ].map((child) => (
+                              )}
+                              <Grid container spacing='1.5rem'>
+                                {/* ====================================================== */}
+                                {/* Address Name */}
                                 <Grid
-                                  size={getTextFieldWidth(child.label)}
-                                  key={child.field}
+                                  size={getTextFieldWidth('Address Name')}
                                   sx={{
                                     display: 'flex',
                                     flexDirection: 'column',
@@ -241,57 +147,169 @@ export const AddressBookComponent = () => {
                                       textAlign: 'left',
                                     }}
                                   >
-                                    {child.label} {redStar()}
+                                    Address Name {redStar()}
                                   </Typography>
                                   <TextField
                                     {...getFieldProps({
                                       formik,
-                                      name: `addressBooks.${idx}.${child.field}`,
+                                      name: `addressBooks.${idx}.name`,
                                       readOnly: !editingId,
-                                      placeholder: child.label,
+                                      placeholder: 'Home/Office/Other',
                                     })}
-                                    multiline={child.label === 'Street'}
-                                    rows={child.label === 'Street' ? 3 : 1}
+                                  />
+                                  <Divider
+                                    sx={{
+                                      marginY: '1rem',
+                                      backgroundColor: '#000',
+                                      opacity: 0.2,
+                                    }}
                                   />
                                 </Grid>
-                              ))}
-                            </Grid>
-                          </Box>
-                        ))}
 
-                        {/* ====================================================== */}
-                        {/* Action Button */}
-                        <Box
-                          width='100%'
-                          sx={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                          }}
-                        >
-                          <Button
-                            variant='outlined'
-                            sx={buttonSx.defaultOutlined}
-                            onClick={() => {
-                              handleAddNewAddress();
-                              push({
-                                ...emptyAddress,
-                                id: Date.now().toString(),
-                              });
+                                {/* ====================================================== */}
+                                {/* Delete & Edit Button */}
+                                <Grid
+                                  size={getTextFieldWidth('Action')}
+                                  sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'flex-end',
+                                    gap: '1rem',
+                                  }}
+                                >
+                                  {!(editingId === address.id) ? (
+                                    <IconButton
+                                      onClick={() => setDeletingId(address.id)}
+                                      sx={{
+                                        color: theme.palette.secondary.main,
+                                      }}
+                                    >
+                                      <Tooltip title='Delete'>
+                                        <DeleteOutlineOutlined />
+                                      </Tooltip>
+                                    </IconButton>
+                                  ) : null}
+                                  {editingId === address.id ? (
+                                    <Button
+                                      onClick={() => {
+                                        const selectedAddress = formik.values.addressBooks.find(
+                                          (addr) => addr.id === editingId,
+                                        );
+                                        if (!selectedAddress) {
+                                          push({
+                                            ...emptyAddress,
+                                            id: Date.now().toString(),
+                                          });
+                                          return;
+                                        }
+                                        handleSaveAddress(selectedAddress);
+                                        setEditingId('');
+                                      }}
+                                      sx={buttonSx.default}
+                                      variant='contained'
+                                    >
+                                      Save
+                                    </Button>
+                                  ) : (
+                                    <IconButton
+                                      onClick={() => {
+                                        setEditingId(address.id);
+                                      }}
+                                      sx={{
+                                        color: theme.palette.secondary.main,
+                                      }}
+                                    >
+                                      <Tooltip title='Edit'>
+                                        <EditOutlined />
+                                      </Tooltip>
+                                    </IconButton>
+                                  )}
+                                </Grid>
+
+                                {/* ====================================================== */}
+                                {/* Address's details field */}
+                                {[
+                                  { label: 'Street', field: 'street' },
+                                  { label: 'City', field: 'city' },
+                                  { label: 'State', field: 'state' },
+                                  { label: 'Zip Code', field: 'zipCode' },
+                                  { label: 'Country', field: 'country' },
+                                ].map((child) => (
+                                  <Grid
+                                    size={getTextFieldWidth(child.label)}
+                                    key={child.field}
+                                    sx={{
+                                      display: 'flex',
+                                      flexDirection: 'column',
+                                    }}
+                                  >
+                                    <Typography
+                                      variant='subtitle1'
+                                      sx={{
+                                        color: '#000',
+                                        textAlign: 'left',
+                                      }}
+                                    >
+                                      {child.label} {redStar()}
+                                    </Typography>
+                                    <TextField
+                                      {...getFieldProps({
+                                        formik,
+                                        name: `addressBooks.${idx}.${child.field}`,
+                                        readOnly: !editingId,
+                                        placeholder: child.label,
+                                      })}
+                                      multiline={child.label === 'Street'}
+                                      rows={child.label === 'Street' ? 3 : 1}
+                                    />
+                                  </Grid>
+                                ))}
+                              </Grid>
+                            </Box>
+                          ))}
+
+                          {/* ====================================================== */}
+                          {/* Action Button */}
+                          <Box
+                            width='100%'
+                            sx={{
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
                             }}
                           >
-                            Add New Address
-                          </Button>
-                        </Box>
-                      </>
-                    )}
-                  />
-                )}
-              </Grid>
-            </Box>
-          </form>
-        )}
-      </Formik>
-    </WhitePaper>
+                            <Button
+                              variant='outlined'
+                              sx={buttonSx.defaultOutlined}
+                              onClick={() => {
+                                handleAddNewAddress();
+                                push({
+                                  ...emptyAddress,
+                                  id: Date.now().toString(),
+                                });
+                              }}
+                            >
+                              Add New Address
+                            </Button>
+                          </Box>
+                        </>
+                      )}
+                    />
+                  )}
+                </Grid>
+              </Box>
+            </form>
+          )}
+        </Formik>
+      </WhitePaper>
+
+      {/* ====================================================== */}
+      {/* Pop up modal */}
+      <ConfirmationModal
+        open={deletingId ? true : false}
+        onClose={() => setDeletingId('')}
+        onSubmit={() => handleDeleteAddress(deletingId)}
+      />
+    </>
   );
 };
