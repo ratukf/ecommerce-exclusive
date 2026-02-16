@@ -3,26 +3,53 @@ import type { AppDispatch, RootState } from '../store/store';
 import { Link, useParams } from 'react-router';
 import { useEffect, useState } from 'react';
 import { fetchProductById, fetchProducts } from '../features/products/store/productsAsyncAction';
-import { Box, Button, Divider, Grid, IconButton, Typography, useTheme } from '@mui/material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Divider,
+  Grid,
+  IconButton,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import { countStar, renderStars } from '../shared/utils/rating';
 import { Favorite, LocalShippingOutlined, LoopOutlined } from '@mui/icons-material';
 import { buttonSx } from '../styles/buttonSx';
 import { FW } from '../theme';
 import { DashboardSection } from '../components/Dashboard/DashboardSection';
 import { ProductsSection } from '../shared/components/ProductsSection';
+import { useAppSelector } from '../store/hooks';
+import { useWishlist } from '../features/userProfile/hooks/useWishlist';
 
 export const ProductDetail = () => {
+  const theme = useTheme();
   const dispatch = useDispatch<AppDispatch>();
   const { id } = useParams<{ id: string }>();
+  const asyncState = useAppSelector((state: RootState) => state.userProfile.asyncState);
+
+  const { toggleWishlist } = useWishlist();
   const { products, productDetail } = useSelector((state: RootState) => state.products);
+  const isWishlist = useSelector((state: RootState) =>
+    state.userProfile.userProfile.wishlist.some((item) => item.productId === id),
+  );
   const { name, price, imageUrls, reviews, variants, description } = productDetail || {};
-  const theme = useTheme();
+
   const isStockExist = () => {
     return variants?.some((variant) => variant.stock > 0);
   };
+
   const [selectedVariant, setSelectedVariant] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [favorite, setFavorite] = useState(false);
+
+  const handleToggleWishlist = async () => {
+    if (id) {
+      await toggleWishlist(id);
+    } else {
+      return;
+    }
+  };
 
   useEffect(() => {
     if (id) {
@@ -216,13 +243,19 @@ export const ProductDetail = () => {
                 }}
                 onClick={() => setFavorite(!favorite)}
               >
-                <IconButton sx={{ height: '100%' }}>
-                  <Favorite
-                    sx={{
-                      color: favorite ? theme.palette.secondary.main : theme.palette.grey[400],
-                    }}
-                  />
-                </IconButton>
+                {asyncState.toggleWishlist.status === 'loading' ? (
+                  <IconButton>
+                    <CircularProgress color='error' />
+                  </IconButton>
+                ) : (
+                  <IconButton sx={{ height: '100%' }} onClick={handleToggleWishlist}>
+                    <Favorite
+                      sx={{
+                        color: isWishlist ? theme.palette.secondary.main : theme.palette.grey[400],
+                      }}
+                    />
+                  </IconButton>
+                )}
               </Box>
             </Box>
             <Box

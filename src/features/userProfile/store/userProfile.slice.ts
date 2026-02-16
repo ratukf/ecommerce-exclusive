@@ -3,6 +3,7 @@ import {
   addAddressAsyncAction,
   deleteAddressAsyncAction,
   getUserProfile,
+  toggleWishlistAsyncAction,
   updateAddressAsyncAction,
   updateProfileAsyncAction,
 } from './userProfileAsyncAction';
@@ -28,6 +29,7 @@ const initialUserProfile: UserProfileState = {
     addAddress: { status: 'idle', error: null },
     deleteAddress: { status: 'idle', error: null },
     updateAddress: { status: 'idle', error: null },
+    toggleWishlist: { status: 'idle', error: null },
   },
 };
 
@@ -142,6 +144,23 @@ const userProfileSlice = createSlice({
       .addCase(updateAddressAsyncAction.rejected, (state, action) => {
         state.asyncState.updateAddress.status = 'failed';
         state.asyncState.updateAddress.error = action.error.message ?? 'Something went wrong';
+      })
+      /*
+      =========================
+      UPDATE ADDRESS
+      =========================
+      */
+      .addCase(toggleWishlistAsyncAction.pending, (state) => {
+        state.asyncState.toggleWishlist.status = 'loading';
+        state.asyncState.toggleWishlist.error = null;
+      })
+      .addCase(toggleWishlistAsyncAction.fulfilled, (state, action) => {
+        state.userProfile.wishlist = action.payload;
+        state.asyncState.toggleWishlist.status = 'succeeded';
+      })
+      .addCase(toggleWishlistAsyncAction.rejected, (state, action) => {
+        state.asyncState.toggleWishlist.status = 'failed';
+        state.asyncState.toggleWishlist.error = action.error.message ?? 'Something went wrong';
       });
   },
 });

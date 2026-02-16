@@ -17,13 +17,13 @@ const WishListComponent = () => {
       >
         Whishlist
       </Typography>
-      <WhitePaper>
-        {whishlist.length === 0 ? (
-          <Typography variant='body2' color='text.secondary'>
-            No whishlist found
-          </Typography>
-        ) : (
-          whishlist.map((item) => (
+      {whishlist.length === 0 ? (
+        <Typography variant='body2' color='text.secondary'>
+          No whishlist found
+        </Typography>
+      ) : (
+        whishlist.map((item) => (
+          <WhitePaper>
             <Box
               onClick={() => nav(`/product/${item.productId}`)}
               key={item.id}
@@ -52,9 +52,9 @@ const WishListComponent = () => {
                 </Typography>
               </Box>
             </Box>
-          ))
-        )}
-      </WhitePaper>
+          </WhitePaper>
+        ))
+      )}
     </>
   );
 };
