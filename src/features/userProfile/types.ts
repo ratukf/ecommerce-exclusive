@@ -1,5 +1,3 @@
-// --- Account Slice ---
-
 import type { AsyncState } from '../../shared/types/asyncStatus';
 
 // User profile's type
