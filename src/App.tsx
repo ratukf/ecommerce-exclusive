@@ -46,7 +46,7 @@ function App() {
             </Routes>
             <ProtectedRoute>
               <Routes>
-                <Route path='/account' element={<Account />} />
+                <Route path='/account/*' element={<Account />} />
               </Routes>
             </ProtectedRoute>
           </Box>
