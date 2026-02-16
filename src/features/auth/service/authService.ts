@@ -61,24 +61,6 @@ const ensureUserProfileService = async (user: User) => {
       orders: [],
       wishlist: [],
     });
-  } else {
-    const data = snapshot.data();
-
-    await setDoc(
-      userRef,
-      {
-        id: data.id ?? user.uid,
-        profile: {
-          displayName: data.profile?.displayName ?? user.displayName ?? '',
-          email: data.profile?.email ?? user.email ?? '',
-          phone: data.profile?.phone ?? '',
-        },
-        addressBooks: data.addressBooks ?? [],
-        orders: data.orders ?? [],
-        wishlist: data.wishlist ?? [],
-      },
-      { merge: true },
-    );
   }
 };
 
