@@ -3,6 +3,7 @@ import {
   addAddressAsyncAction,
   deleteAddressAsyncAction,
   getUserProfile,
+  updateAddressAsyncAction,
   updateProfileAsyncAction,
 } from './userProfileAsyncAction';
 import type { UserProfileState } from '../../../shared/types/userProfile';
@@ -50,12 +51,20 @@ const userProfileSlice = createSlice({
           (a) => a.id !== action.payload,
         );
       })
+      // Update address
+      .addCase(updateAddressAsyncAction.fulfilled, (state, action) => {
+        const updatedAddress = action.payload;
+        state.userProfile.addressBooks = state.userProfile.addressBooks.map((address) =>
+          address.id === updatedAddress.id ? updatedAddress : address,
+        );
+      })
       .addMatcher(
         isPending(
           getUserProfile,
           updateProfileAsyncAction,
           addAddressAsyncAction,
           deleteAddressAsyncAction,
+          updateAddressAsyncAction,
         ),
         (state) => {
           state.loading = true;
@@ -68,6 +77,7 @@ const userProfileSlice = createSlice({
           updateProfileAsyncAction,
           addAddressAsyncAction,
           deleteAddressAsyncAction,
+          updateAddressAsyncAction,
         ),
         (state, action) => {
           state.loading = false;
@@ -83,6 +93,7 @@ const userProfileSlice = createSlice({
           updateProfileAsyncAction,
           addAddressAsyncAction,
           deleteAddressAsyncAction,
+          updateAddressAsyncAction,
         ),
         (state) => {
           state.loading = false;
