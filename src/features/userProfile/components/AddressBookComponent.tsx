@@ -97,12 +97,12 @@ export const AddressBookComponent = () => {
           validationSchema={yup.object({
             addressBooks: yup.array().of(
               yup.object({
-                name: yup.string().required(),
-                street: yup.string().required(),
-                city: yup.string().required(),
-                state: yup.string().required(),
-                zipCode: yup.string().required(),
-                country: yup.string().required(),
+                name: yup.string().required('Address Name is a required field'),
+                street: yup.string().required('Street is a required field'),
+                city: yup.string().required('City is a required field'),
+                state: yup.string().required('State is a required field'),
+                zipCode: yup.string().required('Zip Code is a required field'),
+                country: yup.string().required('Country is a required field'),
               }),
             ),
           })}
