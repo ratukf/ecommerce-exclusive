@@ -7,7 +7,7 @@ const SIDE_BAR = [
     children: [{ label: 'My Profile' }, { label: 'Address Book' }],
   },
   {
-    label: 'My Orders',
+    label: 'My Items',
     children: [{ label: 'My Orders' }, { label: 'My Wishlist' }],
   },
 ];
