@@ -1,7 +1,6 @@
 import { Box, Grid, List, ListItemButton, ListItemText, Typography, useTheme } from '@mui/material';
 import { FW } from '../../../theme';
 import { useNavigate, useParams } from 'react-router';
-import { useEffect } from 'react';
 
 const SIDE_BAR = [
   {
@@ -25,10 +24,6 @@ export const SideBar = () => {
   const nav = useNavigate();
   const param = useParams();
   const tab = param['*'];
-
-  useEffect(() => {
-    console.log('🚀 ~ SideBar ~ tab:', tab);
-  }, [tab]);
 
   return (
     <Grid size={3}>

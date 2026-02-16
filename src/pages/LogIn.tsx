@@ -1,7 +1,6 @@
 import { Box, Button, Grid, TextField, Typography } from '@mui/material';
 import { FW } from '../theme';
-import { buttonSx, linkSx } from '../styles/buttonSx';
-import { Link } from 'react-router';
+import { buttonSx } from '../styles/buttonSx';
 import { useLogin } from '../features/auth/hooks/useLogin';
 import { useState } from 'react';
 import { useAppSelector } from '../store/hooks';
@@ -89,9 +88,6 @@ export const LogIn = () => {
           >
             {loading ? 'Logging in...' : 'Log In'}
           </Button>
-          <Link to='/register' style={linkSx.default}>
-            Forgot Password?
-          </Link>
         </Box>
       </Grid>
     </Grid>
