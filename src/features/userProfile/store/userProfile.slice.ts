@@ -1,6 +1,7 @@
 import { createSlice, isPending, isRejected, isFulfilled } from '@reduxjs/toolkit';
 import {
   addAddressAsyncAction,
+  deleteAddressAsyncAction,
   getUserProfile,
   updateProfileAsyncAction,
 } from './userProfileAsyncAction';
@@ -42,15 +43,32 @@ const userProfileSlice = createSlice({
       .addCase(updateProfileAsyncAction.fulfilled, (state, action) => {
         state.userProfile.profile = action.payload;
       })
+      // Delete address
+      .addCase(deleteAddressAsyncAction.fulfilled, (state, action) => {
+        console.log('🚀 ~ deleteAddressAsyncAction.fulfilled:', deleteAddressAsyncAction.fulfilled);
+        state.userProfile.addressBooks = state.userProfile.addressBooks.filter(
+          (a) => a.id !== action.payload,
+        );
+      })
       .addMatcher(
-        isPending(getUserProfile, updateProfileAsyncAction, addAddressAsyncAction),
+        isPending(
+          getUserProfile,
+          updateProfileAsyncAction,
+          addAddressAsyncAction,
+          deleteAddressAsyncAction,
+        ),
         (state) => {
           state.loading = true;
           state.error = null;
         },
       )
       .addMatcher(
-        isRejected(getUserProfile, updateProfileAsyncAction, addAddressAsyncAction),
+        isRejected(
+          getUserProfile,
+          updateProfileAsyncAction,
+          addAddressAsyncAction,
+          deleteAddressAsyncAction,
+        ),
         (state, action) => {
           state.loading = false;
           state.error =
@@ -60,7 +78,12 @@ const userProfileSlice = createSlice({
         },
       )
       .addMatcher(
-        isFulfilled(getUserProfile, updateProfileAsyncAction, addAddressAsyncAction),
+        isFulfilled(
+          getUserProfile,
+          updateProfileAsyncAction,
+          addAddressAsyncAction,
+          deleteAddressAsyncAction,
+        ),
         (state) => {
           state.loading = false;
           state.error = null;

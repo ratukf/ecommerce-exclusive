@@ -32,4 +32,21 @@ const addAddressService = async (newAddress: Address): Promise<Address> => {
   return newAddress;
 };
 
-export { getUserService, updateProfileService, addAddressService };
+// Delete address
+const deleteAddressService = async (addressId: string): Promise<string> => {
+  const uid = auth.currentUser?.uid;
+  if (!uid) throw new Error('User not authenticated');
+
+  const userRef = doc(db, 'userProfiles', uid);
+  const snapshot = await getDoc(userRef);
+
+  if (!snapshot.exists()) throw new Error('user/not-found');
+
+  await updateDoc(userRef, {
+    addressBooks: snapshot.data().addressBooks.filter((a: any) => a.id !== addressId),
+  });
+
+  return addressId;
+};
+
+export { getUserService, updateProfileService, addAddressService, deleteAddressService };

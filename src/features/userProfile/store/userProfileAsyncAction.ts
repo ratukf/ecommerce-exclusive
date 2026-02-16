@@ -4,6 +4,7 @@ import {
   getUserService,
   updateProfileService,
   addAddressService,
+  deleteAddressService,
 } from '../service/userProfileService';
 import { mapFirebaseError } from '../../../shared/utils/mapError';
 import type { Address } from '../../../shared/types/address';
@@ -45,4 +46,21 @@ const addAddressAsyncAction = createAsyncThunk<Address, { newAddress: Address }>
   },
 );
 
-export { getUserProfile, updateProfileAsyncAction, addAddressAsyncAction };
+// Delete address
+const deleteAddressAsyncAction = createAsyncThunk<string, string, { rejectValue: string }>(
+  'user/deleteAddress',
+  async (addressId, { rejectWithValue }) => {
+    try {
+      return await deleteAddressService(addressId);
+    } catch (error) {
+      return rejectWithValue(mapFirebaseError(error));
+    }
+  },
+);
+
+export {
+  getUserProfile,
+  updateProfileAsyncAction,
+  addAddressAsyncAction,
+  deleteAddressAsyncAction,
+};
