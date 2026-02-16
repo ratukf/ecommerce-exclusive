@@ -1,5 +1,7 @@
 // --- Account Slice ---
 
+import type { AsyncState } from './asyncStatus';
+
 // User profile's type
 export interface UserProfile {
   id: string;
@@ -44,8 +46,13 @@ export interface Wishlist {
 // User profile status type
 export interface UserProfileState {
   userProfile: UserProfile;
-  loading: boolean;
-  error: string | null;
+  asyncState: {
+    getUserProfile: AsyncState;
+    updateProfile: AsyncState;
+    addAddress: AsyncState;
+    deleteAddress: AsyncState;
+    updateAddress: AsyncState;
+  };
 }
 
 // Empty user profile

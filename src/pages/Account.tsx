@@ -1,30 +1,41 @@
 import { Grid } from '@mui/material';
-import { ProfileSection } from '../features/userProfile/components/ProfileSection';
+import { ProfileComponent } from '../features/userProfile/components/ProfileComponent';
 import { SideBar } from '../features/userProfile/components/SideBar';
 import { useEffect, useState } from 'react';
-import { AddressBook } from '../features/userProfile/components/AddressBook';
+import { AddressBookComponent } from '../features/userProfile/components/AddressBookComponent';
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from '../store/store';
 import { getUserProfile } from '../features/userProfile/store/userProfileAsyncAction';
+import { resetAsyncState } from '../features/userProfile/store/userProfile.slice';
 
 export const Account = () => {
   const [activeList, setActiveList] = useState('My Profile');
   const dispatch = useDispatch<AppDispatch>();
   const account = useSelector((state: RootState) => state.auth.auth);
+  const status = useSelector(
+    (state: RootState) => state.userProfile.asyncState.deleteAddress.status,
+  );
+
+  useEffect(() => {
+    if (status === 'succeeded') {
+      dispatch(resetAsyncState('deleteAddress'));
+    }
+  }, [status]);
 
   const renderAccount = () => {
     switch (activeList) {
       case 'My Profile':
-        return <ProfileSection />;
+        return <ProfileComponent />;
       case 'Address Book':
-        return <AddressBook />;
+        return <AddressBookComponent />;
       default:
-        return <ProfileSection />;
+        return <ProfileComponent />;
     }
   };
 
   // Fetch user profile
   useEffect(() => {
+    console.log('🚀 ~ Account ~ account:', account);
     if (account) {
       dispatch(getUserProfile(account.id));
     }
