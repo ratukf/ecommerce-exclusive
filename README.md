@@ -1,27 +1,39 @@
-# E-Commerce Exclusive
+# Exclusive (E-commerce)
 
-An exclusive e-commerce web app for discovering and shopping premium products online.
+A shopping platform for discovering and shopping premium products online.
 
-## 💡About
+## About
 
 E-Commerce Exclusive is a modern e-commerce web app built with React, TypeScript, Vite, Material-UI
-(MUI), and Firebase for backend services. The UI is inspired by the
-[Full E-Commerce Website UI/UX Design](https://www.figma.com/community/file/1219312065205187851)
-from Figma by MD Rimel.
+(MUI), and Firebase for backend services.
 
-## 🚧 Project Status
+## **MVP** (Minimum Viable Product)
+
+- User authentication via email & password or OAuth
+- Cart management
+- Dummy product purchasing & payment
+- Viewing product purchase progress and payment status
+- User's data management such as:
+
+1. Editing name & phone number
+2. Viewing user's personal information, wishlist, and order history
+3. Adding new addresses in address book
+4. Editing & deleting addresses in address book
+5. Adding wishlisht
+
+## Project Status
 
 Ongoing project. Features, UI, and backend integration are under active development and may be
 incomplete.
 
-> **Current stage:** Working on `Account`
+> **Current stage:** Working on `Wishlist function`
 
-### 🔹 Base Layout
+### Base Layout
 
 - [x] Main layout (Header, Footer, Navbar, Container)
 - [x] Style configuration
 
-### 🔹 Public Pages
+### Public Pages
 
 - [x] Home (Hero, Promo, Categories, Best Selling, Products, Featured, Benefit)
 - [x] Product List
@@ -30,17 +42,17 @@ incomplete.
 - [x] About
 - [ ] Error page
 
-### 🔹 User Features
+### User Management Features
 
 - [x] Auth (Login, Register)
-- [ ] Account
+- [x] Account
 - [ ] Cart, Checkout, Wishlist
 
-### 🔹 UX Polish
+### UX Polish
 
 - [ ] UX Finishing (Form validation, skeleton screen, toast notif, responsive mobile)
 
-## 📋 Planned Features
+## Planned Features
 
 - [ ] Responsive design for desktop and mobile
 - [ ] Product listing with data from Firebase
@@ -49,7 +61,7 @@ incomplete.
 - [ ] User authentication (Firebase Auth)
 - [ ] Real-time updates and cloud storage (Firebase)
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - React
 - TypeScript
@@ -57,7 +69,7 @@ incomplete.
 - Material-UI (MUI)
 - Firebase (Auth, Firestore, Storage)
 
-## 🚀 Getting Started
+## Run Project
 
 ```bash
 # 1. Clone the repository
@@ -70,16 +82,16 @@ npm install
 npm run dev
 ```
 
-## 🎨 Figma
+## Figma
 
 The UI is based on this Figma file:
 [Full E-Commerce Website UI/UX Design](https://www.figma.com/design/mLGzNknh0Iljbq1Yoo4szo/Full-E-Commerce-Website-UI-UX-Design--Community-?node-id=1-3&p=f&t=vgZVno6XvZyh27CY-0)
 
-## 🧍Contributing
+## Contributing
 
 Contributions are welcome! Please open an issue or submit a pull request for improvements or new
 features.
 
-## 📄 License
+## License
 
 MIT

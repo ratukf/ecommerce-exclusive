@@ -1,0 +1,85 @@
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import type { User } from 'firebase/auth';
+import {
+  logInService,
+  signUpService,
+  signUpGoogleService,
+  signUpGithubService,
+  logOutService,
+  updateAuthService,
+} from '../service/authService';
+import { mapFirebaseError } from '../../../shared/utils/mapError';
+
+// Sign in with email and password
+const signIn = createAsyncThunk<User, { email: string; password: string }, { rejectValue: string }>(
+  'auth/signIn',
+  async ({ email, password }, { rejectWithValue }) => {
+    try {
+      return await logInService(email, password);
+    } catch (error) {
+      return rejectWithValue(mapFirebaseError(error));
+    }
+  },
+);
+
+// Sign up with email and password
+const signUp = createAsyncThunk<
+  User,
+  { name: string; email: string; password: string },
+  { rejectValue: string }
+>('auth/signUp', async ({ name, email, password }, { rejectWithValue }) => {
+  try {
+    return await signUpService(name, email, password);
+  } catch (error) {
+    return rejectWithValue(mapFirebaseError(error));
+  }
+});
+
+// Sign up / login with Google
+const signUpGoogle = createAsyncThunk<User, void, { rejectValue: string }>(
+  'auth/signUpGoogle',
+  async (_, { rejectWithValue }) => {
+    try {
+      return await signUpGoogleService();
+    } catch (error) {
+      return rejectWithValue(mapFirebaseError(error));
+    }
+  },
+);
+
+// Sign up / login with GitHub
+const signUpGithub = createAsyncThunk<User, void, { rejectValue: string }>(
+  'auth/signUpGithub',
+  async (_, { rejectWithValue }) => {
+    try {
+      return await signUpGithubService();
+    } catch (error) {
+      return rejectWithValue(mapFirebaseError(error));
+    }
+  },
+);
+
+// Logout
+const logOutAsyncAction = createAsyncThunk<void, undefined, { rejectValue: string }>(
+  'auth/logOut',
+  async (_, { rejectWithValue }) => {
+    try {
+      return await logOutService();
+    } catch (error) {
+      return rejectWithValue(mapFirebaseError(error));
+    }
+  },
+);
+
+const updateAuthAsyncAction = createAsyncThunk<void, string, { rejectValue: string }>(
+  'auth/updateAuth',
+  async (name, { rejectWithValue }) => {
+    try {
+      await updateAuthService(name);
+    } catch (error) {
+      return rejectWithValue(mapFirebaseError(error));
+    }
+  },
+);
+
+export { signIn, signUp, signUpGoogle, signUpGithub, logOutAsyncAction, updateAuthAsyncAction };

@@ -73,6 +73,12 @@ const theme = createTheme({
     // Products detail, categories header, banner header, imager slider header, navbar
     subtitle1: {
       fontFamily: 'Poppins, sans-serif',
+      color: '#000',
+    },
+    subtitle2: {
+      fontFamily: 'Poppins, sans-serif',
+      color: '#000',
+      fontSize: '0.8rem',
     },
     // Announcement bar, review count, product description, benefits description, breadcrumbs, contact us, variants
     body2: {

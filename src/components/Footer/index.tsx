@@ -95,7 +95,7 @@ export const Footer = () => {
             Support
           </Typography>
           {SUPPORT_LIST.map((item, index) => (
-            <Typography key={index} sx={{ ...listStyle }} variant='subtitle1'>
+            <Typography key={index} sx={{ ...listStyle }} variant='inherit'>
               {item.label}
             </Typography>
           ))}
@@ -106,7 +106,7 @@ export const Footer = () => {
             Account
           </Typography>
           {ACCOUNT_LIST.map((item, index) => (
-            <Typography key={index} sx={{ ...listStyle }} variant='subtitle1'>
+            <Typography key={index} sx={{ ...listStyle }} variant='inherit'>
               {item.label}
             </Typography>
           ))}
@@ -117,7 +117,7 @@ export const Footer = () => {
             Quick Link
           </Typography>
           {QUICK_LINK.map((item, index) => (
-            <Typography key={index} sx={{ ...listStyle }} variant='subtitle1'>
+            <Typography key={index} sx={{ ...listStyle }} variant='inherit'>
               {item.label}
             </Typography>
           ))}

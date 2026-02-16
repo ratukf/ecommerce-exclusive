@@ -1,18 +1,18 @@
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { auth } from '../services/firebase';
-import { setAccount, resetAccount } from './slice';
+import { setAuth, resetAuth } from '../features/auth/store/auth.slice';
+import { useAppDispatch } from './hooks';
 
 export function useAuthListener() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
         dispatch(
-          setAccount({
+          setAuth({
             id: user.uid,
-            name: user.displayName ?? '',
+            displayName: user.displayName ?? '',
             email: user.email ?? '',
             phone: user.phoneNumber ?? '',
             createdAt: user.metadata?.creationTime ?? '',
@@ -20,7 +20,7 @@ export function useAuthListener() {
           }),
         );
       } else {
-        dispatch(resetAccount());
+        dispatch(resetAuth());
       }
     });
     return () => unsubscribe();

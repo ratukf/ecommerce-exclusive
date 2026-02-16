@@ -1,25 +1,42 @@
 import { Grid } from '@mui/material';
-import { Profile } from '../components/Account/Profile';
-import { SideBar } from '../components/Account/SideBar';
+import { ProfileComponent } from '../features/userProfile/components/ProfileComponent';
+import { SideBar } from '../features/userProfile/components/SideBar';
 import { useEffect, useState } from 'react';
-import { AddressBook } from '../components/Account/AddressBook';
+import { AddressBookComponent } from '../features/userProfile/components/AddressBookComponent';
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from '../store/store';
-import { getUserProfile } from '../store/asyncAction';
+import { getUserProfile } from '../features/userProfile/store/userProfileAsyncAction';
+import { resetAsyncState } from '../features/userProfile/store/userProfile.slice';
+import { UserOrdersComponent } from '../features/orders/component/UserOrdersComponent';
+import { getOrdersAsyncAction } from '../features/orders/store/ordersAsyncActions';
+import { WishListComponent } from '../features/userProfile/components/WishListComponent';
 
 export const Account = () => {
   const [activeList, setActiveList] = useState('My Profile');
   const dispatch = useDispatch<AppDispatch>();
-  const account = useSelector((state: RootState) => state.account.account);
+  const account = useSelector((state: RootState) => state.auth.auth);
+  const status = useSelector(
+    (state: RootState) => state.userProfile.asyncState.deleteAddress.status,
+  );
+
+  useEffect(() => {
+    if (status === 'succeeded') {
+      dispatch(resetAsyncState('deleteAddress'));
+    }
+  }, [status]);
 
   const renderAccount = () => {
     switch (activeList) {
       case 'My Profile':
-        return <Profile />;
+        return <ProfileComponent />;
       case 'Address Book':
-        return <AddressBook />;
+        return <AddressBookComponent />;
+      case 'My Orders':
+        return <UserOrdersComponent />;
+      case 'My Wishlist':
+        return <WishListComponent />;
       default:
-        return <Profile />;
+        return <ProfileComponent />;
     }
   };
 
@@ -27,6 +44,7 @@ export const Account = () => {
   useEffect(() => {
     if (account) {
       dispatch(getUserProfile(account.id));
+      dispatch(getOrdersAsyncAction());
     }
   }, [account, dispatch]);
 
