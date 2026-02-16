@@ -9,6 +9,7 @@ import { getUserProfile } from '../features/userProfile/store/userProfileAsyncAc
 import { resetAsyncState } from '../features/userProfile/store/userProfile.slice';
 import { UserOrdersComponent } from '../features/orders/component/UserOrdersComponent';
 import { getOrdersAsyncAction } from '../features/orders/store/ordersAsyncActions';
+import { WishListComponent } from '../features/userProfile/components/WishListComponent';
 
 export const Account = () => {
   const [activeList, setActiveList] = useState('My Profile');
@@ -32,6 +33,8 @@ export const Account = () => {
         return <AddressBookComponent />;
       case 'My Orders':
         return <UserOrdersComponent />;
+      case 'My Wishlist':
+        return <WishListComponent />;
       default:
         return <ProfileComponent />;
     }
