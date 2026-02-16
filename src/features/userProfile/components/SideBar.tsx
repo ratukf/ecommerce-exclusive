@@ -1,24 +1,34 @@
 import { Box, Grid, List, ListItemButton, ListItemText, Typography, useTheme } from '@mui/material';
 import { FW } from '../../../theme';
+import { useNavigate, useParams } from 'react-router';
+import { useEffect } from 'react';
 
 const SIDE_BAR = [
   {
     label: 'Manage My Account',
-    children: [{ label: 'My Profile' }, { label: 'Address Book' }],
+    children: [
+      { label: 'My Profile', key: 'profile' },
+      { label: 'Address Book', key: 'address' },
+    ],
   },
   {
     label: 'My Items',
-    children: [{ label: 'My Orders' }, { label: 'My Wishlist' }],
+    children: [
+      { label: 'My Orders', key: 'orders' },
+      { label: 'My Wishlist', key: 'wishlist' },
+    ],
   },
 ];
 
-interface SideBarProps {
-  activeList: string;
-  setActiveList: (value: string) => void;
-}
-
-export const SideBar = ({ activeList, setActiveList }: SideBarProps) => {
+export const SideBar = () => {
   const theme = useTheme();
+  const nav = useNavigate();
+  const param = useParams();
+  const tab = param['*'];
+
+  useEffect(() => {
+    console.log('🚀 ~ SideBar ~ tab:', tab);
+  }, [tab]);
 
   return (
     <Grid size={3}>
@@ -44,13 +54,13 @@ export const SideBar = ({ activeList, setActiveList }: SideBarProps) => {
                   <ListItemButton
                     key={childIndex}
                     onClick={() => {
-                      setActiveList(child.label);
+                      nav(`/account/${child.key}`);
                     }}
                   >
                     <ListItemText
                       primary={child.label}
                       sx={{
-                        color: activeList === child.label ? theme.palette.secondary.main : '#000',
+                        color: tab === child.key ? theme.palette.secondary.main : '#000',
                       }}
                     />
                   </ListItemButton>
