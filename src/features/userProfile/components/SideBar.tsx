@@ -41,12 +41,14 @@ export const SideBar = ({ activeList, setActiveList }: SideBarProps) => {
               </Box>
               <List>
                 {item.children.map((child, childIndex) => (
-                  <ListItemButton key={childIndex}>
+                  <ListItemButton
+                    key={childIndex}
+                    onClick={() => {
+                      setActiveList(child.label);
+                    }}
+                  >
                     <ListItemText
                       primary={child.label}
-                      onClick={() => {
-                        setActiveList(child.label);
-                      }}
                       sx={{
                         color: activeList === child.label ? theme.palette.secondary.main : '#000',
                       }}
