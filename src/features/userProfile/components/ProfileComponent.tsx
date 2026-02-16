@@ -21,7 +21,7 @@ export const ProfileComponent = () => {
   // State
   const id = useSelector((state: RootState) => state.userProfile.userProfile?.id);
   const profile = useSelector((state: RootState) => state.userProfile.userProfile?.profile);
-  const { loading } = useAppSelector((state: RootState) => state.userProfile);
+  const { asyncState } = useAppSelector((state: RootState) => state.userProfile);
 
   // Profile values
   const PROFILE = [
@@ -64,7 +64,7 @@ export const ProfileComponent = () => {
             gap: '1.5rem',
           }}
         >
-          {loading ? (
+          {asyncState.getUserProfile.status === 'loading' ? (
             <Loading />
           ) : (
             <>
