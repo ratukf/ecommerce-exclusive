@@ -75,6 +75,11 @@ const theme = createTheme({
       fontFamily: 'Poppins, sans-serif',
       color: '#000',
     },
+    subtitle2: {
+      fontFamily: 'Poppins, sans-serif',
+      color: '#000',
+      fontSize: '0.8rem',
+    },
     // Announcement bar, review count, product description, benefits description, breadcrumbs, contact us, variants
     body2: {
       fontFamily: 'Poppins, sans-serif',
