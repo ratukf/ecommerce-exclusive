@@ -31,7 +31,7 @@ export const AddressBookComponent = () => {
 
   // Reducer
   const userProfile = useSelector((state: RootState) => state.userProfile.userProfile);
-  const { loading } = useAppSelector((state: RootState) => state.userProfile);
+  const { asyncState } = useAppSelector((state: RootState) => state.userProfile);
 
   // Hooks
   const { addAddress, deleteAddress, updateAddress } = useAddress();
@@ -128,7 +128,7 @@ export const AddressBookComponent = () => {
                   Edit Your Address Book
                 </Typography>
                 <Grid container spacing='1.5rem'>
-                  {loading ? (
+                  {asyncState.getUserProfile.status === 'loading' ? (
                     <Loading />
                   ) : (
                     <FieldArray
@@ -329,6 +329,7 @@ export const AddressBookComponent = () => {
       {/* ====================================================== */}
       {/* Pop up modal */}
       <ConfirmationModal
+        loading={asyncState.deleteAddress.status === 'loading'}
         open={deletingId ? true : false}
         onClose={() => setDeletingId('')}
         onSubmit={() => handleDeleteAddress(deletingId)}
