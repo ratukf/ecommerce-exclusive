@@ -5,6 +5,7 @@ import { useAppDispatch } from './hooks';
 import { useSelector } from 'react-redux';
 import type { RootState } from './store';
 import { useGetUser } from '../features/userProfile/hooks/useGetUser';
+import { ensureUserProfileService } from '../features/auth/service/authService';
 
 export function useAuthListener() {
   const dispatch = useAppDispatch();
@@ -25,6 +26,7 @@ export function useAuthListener() {
             photoUrl: user.photoURL ?? '',
           }),
         );
+        await ensureUserProfileService(user);
         // Listen when user is logged in but userProfile state is empty
         if (!userProfile.id) {
           await getUser();

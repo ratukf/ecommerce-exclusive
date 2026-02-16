@@ -8,7 +8,7 @@ import {
   GithubAuthProvider,
 } from 'firebase/auth';
 import type { User } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 // Login with email and password
 const logInService = async (email: string, password: string): Promise<User> => {
@@ -47,9 +47,10 @@ const logOutService = async (): Promise<void> => {
 // Create user profile when sucessfully sign up for the first time
 const ensureUserProfileService = async (user: User) => {
   const userRef = doc(db, 'userProfiles', user.uid);
-  await setDoc(
-    userRef,
-    {
+  const snapshot = await getDoc(userRef);
+
+  if (!snapshot.exists()) {
+    await setDoc(userRef, {
       id: user.uid,
       profile: {
         displayName: user.displayName ?? '',
@@ -59,9 +60,26 @@ const ensureUserProfileService = async (user: User) => {
       addressBooks: [],
       orders: [],
       wishlist: [],
-    },
-    { merge: true },
-  );
+    });
+  } else {
+    const data = snapshot.data();
+
+    await setDoc(
+      userRef,
+      {
+        id: data.id ?? user.uid,
+        profile: {
+          displayName: data.profile?.displayName ?? user.displayName ?? '',
+          email: data.profile?.email ?? user.email ?? '',
+          phone: data.profile?.phone ?? '',
+        },
+        addressBooks: data.addressBooks ?? [],
+        orders: data.orders ?? [],
+        wishlist: data.wishlist ?? [],
+      },
+      { merge: true },
+    );
+  }
 };
 
 // Update user data
