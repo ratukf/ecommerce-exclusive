@@ -3,6 +3,7 @@ import { authReducer } from '../features/auth/store/auth.slice.ts';
 import { userProfileReducer } from '../features/userProfile/store/userProfile.slice.ts';
 import { productReducer } from '../features/products/store/products.slice.ts';
 import { messageReducer } from '../features/message/store/message.slice.ts';
+import { orderReducer } from '../features/orders/store/orders.slice.ts';
 import { logOutAsyncAction } from '../features/auth/store/authAsyncAction.ts';
 
 const appReducers = combineReducers({
@@ -10,6 +11,7 @@ const appReducers = combineReducers({
   userProfile: userProfileReducer,
   products: productReducer,
   message: messageReducer,
+  orders: orderReducer,
 });
 
 const rootReducer: typeof appReducers = (state, action) => {
