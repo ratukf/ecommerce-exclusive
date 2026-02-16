@@ -8,7 +8,7 @@ import {
   updateAuthAsyncAction,
 } from './authAsyncAction';
 import type { User } from 'firebase/auth';
-import type { Auth, AuthState } from '../../../shared/types/auth';
+import type { Auth, AuthState } from '../types';
 import { isPending, isRejected, isFulfilled } from '@reduxjs/toolkit';
 
 // Helper function to set user profile from Firebase Auth user

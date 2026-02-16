@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useAppDispatch } from '../../../store/hooks';
-import type { Profile } from '../../../shared/types/userProfile';
+import type { Profile } from '../types';
 import { updateProfileAsyncAction } from '../store/userProfileAsyncAction';
 
 const useUpdateUserProfile = () => {

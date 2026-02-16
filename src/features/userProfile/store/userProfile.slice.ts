@@ -6,7 +6,7 @@ import {
   updateAddressAsyncAction,
   updateProfileAsyncAction,
 } from './userProfileAsyncAction';
-import type { UserProfileState } from '../../../shared/types/userProfile';
+import type { UserProfileState } from '../types';
 import { emptyAddress } from '../../../shared/types/address';
 
 // Initial state for user profile slice

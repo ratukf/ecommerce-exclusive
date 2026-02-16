@@ -1,6 +1,6 @@
 import { arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { auth, db } from '../../../services/firebase';
-import { type Profile, type UserProfile } from '../../../shared/types/userProfile';
+import { type Profile, type UserProfile } from '../types';
 import type { Address } from '../../../shared/types/address';
 
 // Get user profile by id
