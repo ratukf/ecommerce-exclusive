@@ -1,3 +1,5 @@
+import type { AsyncState } from '../../shared/types/asyncStatus';
+
 //  Order's type
 export interface Orders {
   id: string;
@@ -22,7 +24,10 @@ export interface OrderItem {
 
 // Order's status type
 export interface OrdersState {
-  orders: Orders;
+  orders: Orders[];
+  asyncState: {
+    getOrders: AsyncState;
+  };
 }
 
 // Empty orders
