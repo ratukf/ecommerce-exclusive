@@ -28,28 +28,39 @@ import { ConfirmationModal } from '../../../shared/components/ConfirmationModal'
 export const AddressBookComponent = () => {
   const theme = useTheme();
   const dispatch = useAppDispatch();
-  const { addAddress, deleteAddress } = useAddress();
+  const { addAddress, deleteAddress, updateAddress } = useAddress();
   const userProfile = useSelector((state: RootState) => state.userProfile.userProfile);
+  const addressBooks = userProfile.addressBooks;
   const { loading } = useAppSelector((state: RootState) => state.userProfile);
 
-  const [editingId, setEditingId] = useState('');
+  const [writingId, setWritingId] = useState('');
   const [deletingId, setDeletingId] = useState('');
 
   const redStar = () => {
     return <span style={{ color: 'red' }}>*</span>;
   };
 
-  const handleSaveAddress = async (address: Address) => {
-    await addAddress(address);
-  };
-
   const handleAddNewAddress = () => {
     dispatch(addEmptyAddressReducer());
+  };
+
+  const handleSaveAddress = async (address: Address) => {
+    const existingAddress = addressBooks.find((addr) => addr.id === writingId);
+    if (existingAddress) {
+      await handleUpdateAddress(address);
+      setWritingId('');
+    } else {
+      await addAddress(address);
+    }
   };
 
   const handleDeleteAddress = async (deletingId: string) => {
     await deleteAddress(deletingId);
     setDeletingId('');
+  };
+
+  const handleUpdateAddress = async (newAddress: Address) => {
+    await updateAddress(writingId, newAddress);
   };
 
   const getTextFieldWidth = (label: string) => {
@@ -153,7 +164,7 @@ export const AddressBookComponent = () => {
                                     {...getFieldProps({
                                       formik,
                                       name: `addressBooks.${idx}.name`,
-                                      readOnly: !editingId,
+                                      readOnly: !writingId,
                                       placeholder: 'Home/Office/Other',
                                     })}
                                   />
@@ -177,7 +188,7 @@ export const AddressBookComponent = () => {
                                     gap: '1rem',
                                   }}
                                 >
-                                  {!(editingId === address.id) ? (
+                                  {!(writingId === address.id) ? (
                                     <IconButton
                                       onClick={() => setDeletingId(address.id)}
                                       sx={{
@@ -189,11 +200,11 @@ export const AddressBookComponent = () => {
                                       </Tooltip>
                                     </IconButton>
                                   ) : null}
-                                  {editingId === address.id ? (
+                                  {writingId === address.id ? (
                                     <Button
                                       onClick={() => {
                                         const selectedAddress = formik.values.addressBooks.find(
-                                          (addr) => addr.id === editingId,
+                                          (addr) => addr.id === writingId,
                                         );
                                         if (!selectedAddress) {
                                           push({
@@ -203,7 +214,7 @@ export const AddressBookComponent = () => {
                                           return;
                                         }
                                         handleSaveAddress(selectedAddress);
-                                        setEditingId('');
+                                        setWritingId('');
                                       }}
                                       sx={buttonSx.default}
                                       variant='contained'
@@ -213,7 +224,7 @@ export const AddressBookComponent = () => {
                                   ) : (
                                     <IconButton
                                       onClick={() => {
-                                        setEditingId(address.id);
+                                        setWritingId(address.id);
                                       }}
                                       sx={{
                                         color: theme.palette.secondary.main,
@@ -256,7 +267,7 @@ export const AddressBookComponent = () => {
                                       {...getFieldProps({
                                         formik,
                                         name: `addressBooks.${idx}.${child.field}`,
-                                        readOnly: !editingId,
+                                        readOnly: !writingId,
                                         placeholder: child.label,
                                       })}
                                       multiline={child.label === 'Street'}
