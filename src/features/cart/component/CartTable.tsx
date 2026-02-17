@@ -5,12 +5,13 @@ import { useMemo, useState, useRef, useEffect } from 'react';
 import { useAddCart } from '../hooks/useAddCart';
 import type { Item } from '../type';
 import { auth } from '../../../services/firebase';
+import { Loading } from '../../../shared/components/Loading';
 
 const CartTable = () => {
   const uid = auth.currentUser?.uid;
   const products = useSelector((state: RootState) => state.products.products, shallowEqual);
-
   const cartItems = useSelector((state: RootState) => state.cart.cart?.item ?? [], shallowEqual);
+  const cartStatus = useSelector((state: RootState) => state.cart.asyncState.addCart.status);
   const { addItem } = useAddCart();
 
   const [localQuantities, setLocalQuantities] = useState<Record<string, number>>(() =>
@@ -122,7 +123,9 @@ const CartTable = () => {
         const productId = params.row.id;
         const quantity = localQuantities[productId] ?? params.value;
 
-        return (
+        return cartStatus === 'loading' ? (
+          <Loading />
+        ) : (
           <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
             <button onClick={() => handleQuantityChange(productId, -1)}>-</button>
             <span>{quantity}</span>

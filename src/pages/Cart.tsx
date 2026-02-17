@@ -5,7 +5,6 @@ import { fetchProducts } from '../features/products/store/productsAsyncAction';
 import { useAppDispatch } from '../store/hooks';
 import type { RootState } from '../store/store';
 import { CartComponents } from '../features/cart';
-import { WhitePaper } from '../shared/components/WhitePaper';
 
 const Cart = () => {
   const dispatch = useAppDispatch();
@@ -22,11 +21,7 @@ const Cart = () => {
   if (status === 'loading') return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
-  return (
-    <WhitePaper>
-      <CartComponents />
-    </WhitePaper>
-  );
+  return <CartComponents />;
 };
 
 export { Cart };
