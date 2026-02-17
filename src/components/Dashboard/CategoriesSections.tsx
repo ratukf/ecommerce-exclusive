@@ -9,6 +9,7 @@ import {
   SportsEsportsOutlined,
   WatchOutlined,
 } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 
 const categoryIcons: Record<string, React.ReactNode> = {
   Phones: <SmartphoneOutlined sx={{ fontSize: '2rem' }} />,
@@ -20,11 +21,14 @@ const categoryIcons: Record<string, React.ReactNode> = {
 };
 
 export const CategoriesSection = () => {
+  const navigate = useNavigate();
+
   return (
     <>
       {CATEGORIES.map((category) => (
         <Grid size={2} key={category.label}>
           <Box
+            onClick={() => navigate(category.path)}
             sx={{
               display: 'flex',
               flexDirection: 'column',
@@ -32,7 +36,13 @@ export const CategoriesSection = () => {
               border: '1px solid rgba(0,0,0,0.2)',
               paddingY: '5rem',
               borderRadius: '4px',
-              '&:hover': { cursor: 'pointer' },
+              cursor: 'pointer',
+              transition: 'background-color 0.2s, color 0.2s',
+              '&:hover': {
+                backgroundColor: '#DB4444',
+                color: '#fff',
+                '& .MuiSvgIcon-root': { color: '#fff' },
+              },
             }}
           >
             <Icon sx={{ width: '100%', height: '100%' }}>
