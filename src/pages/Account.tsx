@@ -8,7 +8,6 @@ import type { AppDispatch, RootState } from '../store/store';
 import { getUserProfile } from '../features/userProfile/store/userProfileAsyncAction';
 import { resetAsyncState } from '../features/userProfile/store/userProfile.slice';
 import { UserOrdersComponent } from '../features/orders/component/UserOrdersComponent';
-import { getOrdersAsyncAction } from '../features/orders/store/ordersAsyncActions';
 import { WishListComponent } from '../features/userProfile/components/WishListComponent';
 import { useParams } from 'react-router';
 
@@ -46,7 +45,6 @@ export const Account = () => {
   useEffect(() => {
     if (account) {
       dispatch(getUserProfile());
-      dispatch(getOrdersAsyncAction());
     }
   }, [account, dispatch]);
 

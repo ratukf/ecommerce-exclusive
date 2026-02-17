@@ -3,7 +3,7 @@ import { authReducer } from '../features/auth/store/auth.slice.ts';
 import { userProfileReducer } from '../features/userProfile/store/userProfile.slice.ts';
 import { productReducer } from '../features/products/store/products.slice.ts';
 import { messageReducer } from '../features/message/store/message.slice.ts';
-import { orderReducer } from '../features/orders/store/orders.slice.ts';
+// import { orderReducer } from '../features/orders/store/orders.slice.ts';
 import { logOutAsyncAction } from '../features/auth/store/authAsyncAction.ts';
 import { cartReducer } from '../features/cart/store/cart.slice.ts';
 import { paymentReducer } from '../features/payment/store/paymentSlice.ts';
@@ -13,7 +13,7 @@ const appReducers = combineReducers({
   userProfile: userProfileReducer,
   products: productReducer,
   message: messageReducer,
-  orders: orderReducer,
+  // orders: orderReducer,
   cart: cartReducer,
   payment: paymentReducer,
 });
