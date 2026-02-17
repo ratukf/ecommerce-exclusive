@@ -46,7 +46,7 @@ export const AddressBookComponent = () => {
   // Save new or updated address
   const handleSaveAddress = async (address: Address) => {
     if (!editingId) {
-      await addAddress(address);
+      await addAddress({ ...address, id: Date.now().toString() });
     } else {
       await updateAddress(editingId, address);
     }
@@ -128,7 +128,7 @@ export const AddressBookComponent = () => {
                       render={({ push }) => (
                         <>
                           {formik.values.addressBooks.map((address, idx) => (
-                            <Box key={address.id ?? idx} sx={{ mb: 4 }}>
+                            <Box key={address.id} sx={{ mb: 4 }}>
                               {idx > 0 && (
                                 <Divider
                                   sx={{
@@ -217,12 +217,31 @@ export const AddressBookComponent = () => {
                                         </IconButton>
                                       ) : (
                                         <Button
-                                          onClick={() => {
-                                            const newAddress = {
-                                              ...address,
-                                              id: Date.now().toString(),
-                                            };
-                                            handleSaveAddress(newAddress);
+                                          type='button'
+                                          onClick={async () => {
+                                            const newAddress = address;
+                                            const errors = await formik.validateForm();
+                                            if (Object.keys(errors).length === 0) {
+                                              handleSaveAddress(newAddress);
+                                            } else {
+                                              const touchedFields = {
+                                                ...formik.touched,
+                                                addressBooks: formik.values.addressBooks.map(
+                                                  (addr, i) =>
+                                                    i === idx
+                                                      ? {
+                                                          name: true,
+                                                          street: true,
+                                                          city: true,
+                                                          state: true,
+                                                          zipCode: true,
+                                                          country: true,
+                                                        }
+                                                      : formik.touched.addressBooks?.[i] || {},
+                                                ),
+                                              };
+                                              formik.setTouched(touchedFields, true);
+                                            }
                                           }}
                                           sx={buttonSx.default}
                                           variant='contained'
@@ -301,9 +320,7 @@ export const AddressBookComponent = () => {
                               variant='outlined'
                               sx={buttonSx.defaultOutlined}
                               onClick={() => {
-                                push({
-                                  emptyAddress,
-                                });
+                                push(emptyAddress);
                               }}
                             >
                               Add New Address
