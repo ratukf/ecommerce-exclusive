@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Box, Typography, Grid, Button, Divider, CircularProgress, Alert } from '@mui/material';
 import { useSelector, shallowEqual } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import type { RootState } from '../../store/store';
 import { auth } from '../../services/firebase';
 import type { PaymentMethod, ShippingAddress } from './type';
@@ -15,7 +14,6 @@ type CheckoutStep = 'form' | 'confirmed';
 
 const CheckoutPage = () => {
   const uid = auth.currentUser?.uid;
-  const navigate = useNavigate();
 
   const cartItems = useSelector((state: RootState) => state.cart.cart?.item ?? [], shallowEqual);
   const products = useSelector((state: RootState) => state.products.products, shallowEqual);
@@ -43,12 +41,6 @@ const CheckoutPage = () => {
 
   const shippingCost = 0;
   const totalAmount = subtotal + shippingCost;
-
-  useEffect(() => {
-    if (cartItems.length === 0 && step === 'form') {
-      navigate('/cart');
-    }
-  }, [cartItems, step]);
 
   const selectedAddress = addressBooks.find((a) => a.id === selectedAddressId);
 
