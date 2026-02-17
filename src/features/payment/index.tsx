@@ -85,6 +85,7 @@ const CheckoutPage = () => {
       totalAmount,
       method: paymentMethod,
       shippingAddress,
+      fromCart: !isBuyNow,
     });
 
     setStep('confirmed');
