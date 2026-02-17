@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Box, Typography, Grid, Button, Divider, CircularProgress, Alert } from '@mui/material';
 import { useSelector, shallowEqual } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import type { RootState } from '../../store/store';
 import { auth } from '../../services/firebase';
 import type { PaymentMethod, ShippingAddress } from './type';
@@ -10,12 +10,18 @@ import { OrderSummary } from './component/OrderSummary';
 import { AddressSelector } from './component/AddressSelector';
 import { PaymentMethodSelector } from './component/PaymentMethodSelector';
 import { CheckoutConfirmation } from './component/CheckoutConfirmation';
+import type { OrderItem } from '../orders/types';
 
 type CheckoutStep = 'form' | 'confirmed';
 
+export interface BuyNowState {
+  buyNow: true;
+  item: OrderItem;
+}
+
 const CheckoutPage = () => {
   const uid = auth.currentUser?.uid;
-  const navigate = useNavigate();
+  const location = useLocation();
 
   const cartItems = useSelector((state: RootState) => state.cart.cart?.item ?? [], shallowEqual);
   const products = useSelector((state: RootState) => state.products.products, shallowEqual);
@@ -30,25 +36,31 @@ const CheckoutPage = () => {
   const [selectedAddressId, setSelectedAddressId] = useState<string>('');
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('bank_transfer');
 
+  const buyNowState = location.state as BuyNowState | null;
+  const isBuyNow = !!buyNowState?.buyNow;
+
+  const orderItems: OrderItem[] = isBuyNow
+    ? [buyNowState.item]
+    : cartItems.map((item) => {
+        const product = products.find((p) => p.id === item.productId);
+        return {
+          productId: item.productId,
+          name: item.name,
+          price: product?.price ?? 0,
+          quantity: item.quantity,
+          imageUrls: item.imageUrls,
+        };
+      });
+
+  const subtotal = orderItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const shippingCost = 0;
+  const totalAmount = subtotal + shippingCost;
+
   useEffect(() => {
     if (addressBooks.length > 0 && !selectedAddressId) {
       setSelectedAddressId(addressBooks[0].id);
     }
   }, [addressBooks]);
-
-  const subtotal = cartItems.reduce((acc, item) => {
-    const product = products.find((p) => p.id === item.productId);
-    return acc + (product?.price ?? 0) * item.quantity;
-  }, 0);
-
-  const shippingCost = 0;
-  const totalAmount = subtotal + shippingCost;
-
-  useEffect(() => {
-    if (cartItems.length === 0 && step === 'form') {
-      navigate('/cart');
-    }
-  }, [cartItems, step]);
 
   const selectedAddress = addressBooks.find((a) => a.id === selectedAddressId);
 
@@ -63,17 +75,6 @@ const CheckoutPage = () => {
       zipCode: selectedAddress.zipCode,
       country: selectedAddress.country,
     };
-
-    const orderItems = cartItems.map((item) => {
-      const product = products.find((p) => p.id === item.productId);
-      return {
-        productId: item.productId,
-        name: item.name,
-        price: product?.price ?? 0,
-        quantity: item.quantity,
-        imageUrls: item.imageUrls,
-      };
-    });
 
     await submitPayment({
       userId: uid,
@@ -102,23 +103,24 @@ const CheckoutPage = () => {
       <Grid container spacing={4}>
         {/* Left: Form */}
         <Grid size={{ xs: 12, md: 7 }}>
-          {/* Choose Address */}
           <AddressSelector
             addressBooks={addressBooks}
             selectedAddressId={selectedAddressId}
             onSelect={setSelectedAddressId}
           />
-
           <Divider sx={{ my: 3 }} />
-
-          {/* Choose payment method */}
           <PaymentMethodSelector method={paymentMethod} onChange={setPaymentMethod} />
         </Grid>
 
         {/* Right: Order Summary */}
         <Grid size={{ xs: 12, md: 5 }}>
           <OrderSummary
-            cartItems={cartItems}
+            cartItems={orderItems.map((i) => ({
+              productId: i.productId,
+              name: i.name,
+              quantity: i.quantity,
+              imageUrls: i.imageUrls,
+            }))}
             products={products}
             subtotal={subtotal}
             shippingCost={shippingCost}

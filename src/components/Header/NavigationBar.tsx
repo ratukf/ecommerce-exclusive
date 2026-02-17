@@ -43,17 +43,21 @@ export const NavigationBar = () => {
       path: isLoggedIn ? '/' : '/signup',
     },
   ];
+
   const nav = useNavigate();
   const location = useLocation();
   const { logout } = useLogout();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const handleOpenWishlist = () => {
-    nav('/account/wishlist');
+  const handleSearch = () => {
+    const trimmed = searchQuery.trim();
+    if (!trimmed) return;
+    nav(`/products?search=${encodeURIComponent(trimmed)}`);
   };
 
-  const handleOpenCart = () => {
-    nav('/cart');
+  const handleSearchKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') handleSearch();
   };
 
   return (
@@ -69,14 +73,7 @@ export const NavigationBar = () => {
               Exclusive
             </Typography>
           </Grid>
-          <Grid
-            size={6}
-            sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
+          <Grid size={6} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             {NAVIGATION_LIST.map((item: { label: string; path: string }, index: number) => (
               <Typography
                 onClick={() => {
@@ -105,21 +102,21 @@ export const NavigationBar = () => {
           </Grid>
           <Grid
             size={3}
-            sx={{
-              display: 'flex',
-              justifyContent: 'flex-end',
-              alignItems: 'center',
-              gap: 2,
-            }}
+            sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 2 }}
           >
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <TextField
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={handleSearchKeyDown}
                 InputProps={{
                   disableUnderline: true,
                   sx: { color: theme.palette.text.secondary, fontSize: '12px' },
                   endAdornment: (
                     <InputAdornment position='end'>
-                      <SearchOutlined sx={{ fontSize: 20 }} />
+                      <IconButton onClick={handleSearch} size='small' sx={{ p: 0 }}>
+                        <SearchOutlined sx={{ fontSize: 20 }} />
+                      </IconButton>
                     </InputAdornment>
                   ),
                 }}
@@ -140,12 +137,12 @@ export const NavigationBar = () => {
                 }}
               />
               <Badge badgeContent={wishlist?.length || 0} color='error' overlap='circular'>
-                <IconButton onClick={() => handleOpenWishlist()}>
+                <IconButton onClick={() => nav('/account/wishlist')}>
                   <FavoriteBorderOutlined sx={{ fontSize: 30, color: '#000000' }} />
                 </IconButton>
               </Badge>
               <Badge badgeContent={itemQuantity() || 0} color='error' overlap='circular'>
-                <IconButton onClick={() => handleOpenCart()}>
+                <IconButton onClick={() => nav('/cart')}>
                   <ShoppingCartOutlined sx={{ fontSize: 30, color: '#000000' }} />
                 </IconButton>
               </Badge>
@@ -170,13 +167,7 @@ export const NavigationBar = () => {
           </Grid>
         </Grid>
       </Box>
-      <Divider
-        sx={{
-          backgroundColor: '#000000',
-          opacity: 0.1,
-          borderBottomWidth: 0.5,
-        }}
-      />
+      <Divider sx={{ backgroundColor: '#000000', opacity: 0.1, borderBottomWidth: 0.5 }} />
     </>
   );
 };

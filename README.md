@@ -33,7 +33,7 @@ E-Commerce Exclusive is a modern e-commerce web app built with React, TypeScript
 Ongoing project. Features, UI, and backend integration are under active development and may be
 incomplete.
 
-> **Current stage:** Working on `Bug fixing in orders and payment flow`
+> **Current stage:** Working on `Responsive design for desktop and mobile` (0% progress)
 
 ### Base Layout
 
@@ -62,8 +62,8 @@ incomplete.
 ## Planned Features
 
 - [ ] Responsive design for desktop and mobile
-- [ ] Product listing with data from Firebase
-- [ ] Category navigation
+- [x] Product listing with data from Firebase
+- [x] Category navigation
 - [x] Shopping cart UI
 - [x] User authentication (Firebase Auth)
 - [ ] Real-time updates and cloud storage (Firebase)

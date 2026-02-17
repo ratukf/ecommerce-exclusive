@@ -35,7 +35,7 @@ const CheckoutConfirmation = ({ payment }: CheckoutConfirmationProps) => {
         Order Placed!
       </Typography>
       <Typography color='text.secondary' mb={4} textAlign='center'>
-        Terima kasih! Pesananmu sedang diproses.
+        Thanks! Your order is being processed.
       </Typography>
 
       {/* Order Detail */}
@@ -127,7 +127,7 @@ const CheckoutConfirmation = ({ payment }: CheckoutConfirmationProps) => {
         </Button>
         <Button
           variant='contained'
-          onClick={() => navigate('/account/order')}
+          onClick={() => navigate('/account/orders')}
           sx={{
             textTransform: 'none',
             backgroundColor: '#DB4444',
