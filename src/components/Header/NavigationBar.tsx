@@ -24,6 +24,13 @@ export const NavigationBar = () => {
   const account = useSelector((state: RootState) => state.auth.auth);
   const wishlist = useSelector((state: RootState) => state.userProfile.userProfile.wishlist);
   const cartItem = useSelector((state: RootState) => state.cart.cart?.item);
+  const itemQuantity = () => {
+    let qty = 0;
+    cartItem?.forEach((item) => {
+      qty += item.quantity;
+    });
+    return qty;
+  };
 
   const isLoggedIn = account && account.id && account.email;
 
@@ -137,7 +144,7 @@ export const NavigationBar = () => {
                   <FavoriteBorderOutlined sx={{ fontSize: 30, color: '#000000' }} />
                 </IconButton>
               </Badge>
-              <Badge badgeContent={cartItem?.length || 0} color='error' overlap='circular'>
+              <Badge badgeContent={itemQuantity() || 0} color='error' overlap='circular'>
                 <IconButton onClick={() => handleOpenCart()}>
                   <ShoppingCartOutlined sx={{ fontSize: 30, color: '#000000' }} />
                 </IconButton>
