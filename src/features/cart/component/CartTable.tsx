@@ -1,15 +1,16 @@
 import { DataGrid, type GridColDef } from '@mui/x-data-grid';
-import { useSelector } from 'react-redux';
+import { useSelector, shallowEqual } from 'react-redux';
 import type { RootState } from '../../../store/store';
-import { useMemo, useState, useRef, useEffect, useCallback } from 'react';
+import { useMemo, useState, useRef, useEffect } from 'react';
 import { useAddCart } from '../hooks/useAddCart';
 import type { Item } from '../type';
 import { auth } from '../../../services/firebase';
 
 const CartTable = () => {
   const uid = auth.currentUser?.uid;
-  const products = useSelector((state: RootState) => state.products.products);
-  const cartItems = useSelector((state: RootState) => state.cart.cart?.item ?? []);
+  const products = useSelector((state: RootState) => state.products.products, shallowEqual);
+
+  const cartItems = useSelector((state: RootState) => state.cart.cart?.item ?? [], shallowEqual);
   const { addItem } = useAddCart();
 
   const [localQuantities, setLocalQuantities] = useState<Record<string, number>>(() =>
@@ -66,84 +67,78 @@ const CartTable = () => {
     });
   }, [cartItems, products, localQuantities]);
 
-  const handleQuantityChange = useCallback(
-    (productId: string, delta: number) => {
-      setLocalQuantities((prev) => {
-        const newQuantity = Math.max((prev[productId] ?? 0) + delta, 0);
-        return { ...prev, [productId]: newQuantity };
-      });
+  const handleQuantityChange = (productId: string, delta: number) => {
+    setLocalQuantities((prev) => {
+      const newQuantity = Math.max((prev[productId] ?? 0) + delta, 0);
+      return { ...prev, [productId]: newQuantity };
+    });
 
-      if (debounceRefs.current[productId]) clearTimeout(debounceRefs.current[productId]);
-      debounceRefs.current[productId] = setTimeout(() => {
-        const product = products.find((p) => p.id === productId);
-        if (!product || !uid) return;
+    if (debounceRefs.current[productId]) clearTimeout(debounceRefs.current[productId]);
+    debounceRefs.current[productId] = setTimeout(() => {
+      const product = products.find((p) => p.id === productId);
+      if (!product || !uid) return;
 
-        const quantity = localQuantitiesRef.current[productId] ?? 0;
+      const quantity = localQuantitiesRef.current[productId] ?? 0;
 
-        const item: Item = {
-          productId,
-          quantity,
-          name: product.name,
-          imageUrls: product.imageUrls[0] ?? '',
-        };
+      const item: Item = {
+        productId,
+        quantity,
+        name: product.name,
+        imageUrls: product.imageUrls[0] ?? '',
+      };
 
-        addItem(uid, item).catch(console.error);
-      }, 500);
+      addItem(uid, item).catch(console.error);
+    }, 500);
+  };
+
+  const columns: GridColDef[] = [
+    {
+      field: 'product',
+      headerName: 'Product',
+      flex: 1,
+      renderCell: (params: any) => (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <img
+            src={params.value.image}
+            alt={params.value.name}
+            style={{ width: 50, height: 50, objectFit: 'cover', borderRadius: 4 }}
+          />
+          <span>{params.value.name}</span>
+        </div>
+      ),
     },
-    [products, uid, addItem],
-  );
+    {
+      field: 'price',
+      headerName: 'Price',
+      flex: 0.5,
+      type: 'number',
+      renderCell: (params: any) => <>${params.value}</>,
+    },
+    {
+      field: 'quantity',
+      headerName: 'Quantity',
+      flex: 0.5,
+      renderCell: (params: any) => {
+        const productId = params.row.id;
+        const quantity = localQuantities[productId] ?? params.value;
 
-  const columns: GridColDef[] = useMemo(
-    () => [
-      {
-        field: 'product',
-        headerName: 'Product',
-        flex: 1,
-        renderCell: (params: any) => (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <img
-              src={params.value.image}
-              alt={params.value.name}
-              style={{ width: 50, height: 50, objectFit: 'cover', borderRadius: 4 }}
-            />
-            <span>{params.value.name}</span>
+        return (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+            <button onClick={() => handleQuantityChange(productId, -1)}>-</button>
+            <span>{quantity}</span>
+            <button onClick={() => handleQuantityChange(productId, 1)}>+</button>
           </div>
-        ),
+        );
       },
-      {
-        field: 'price',
-        headerName: 'Price',
-        flex: 0.5,
-        type: 'number',
-        renderCell: (params: any) => <>${params.value}</>,
-      },
-      {
-        field: 'quantity',
-        headerName: 'Quantity',
-        flex: 0.5,
-        renderCell: (params: any) => {
-          const productId = params.row.id;
-          const quantity = localQuantities[productId] ?? params.value;
-
-          return (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-              <button onClick={() => handleQuantityChange(productId, -1)}>-</button>
-              <span>{quantity}</span>
-              <button onClick={() => handleQuantityChange(productId, 1)}>+</button>
-            </div>
-          );
-        },
-      },
-      {
-        field: 'subtotal',
-        headerName: 'Subtotal',
-        flex: 0.5,
-        type: 'number',
-        renderCell: (params: any) => <>${params.value}</>,
-      },
-    ],
-    [localQuantities, handleQuantityChange],
-  );
+    },
+    {
+      field: 'subtotal',
+      headerName: 'Subtotal',
+      flex: 0.5,
+      type: 'number',
+      renderCell: (params: any) => <>${params.value}</>,
+    },
+  ];
 
   return (
     <div style={{ height: 400, width: '100%' }}>
