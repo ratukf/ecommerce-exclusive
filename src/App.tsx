@@ -1,5 +1,6 @@
 import { ThemeProvider } from '@mui/material/styles';
 import { BrowserRouter as Router, Routes, Route } from 'react-router';
+import ScrollToTop from './shared/utils/scrollToTop';
 import theme from './theme';
 import './App.css';
 import '@fontsource/poppins/700.css';
@@ -24,7 +25,7 @@ import { LogIn } from './pages/LogIn';
 import { SignUp } from './pages/SignUp';
 import { ProtectedRoute } from './shared/components/ProtectedRoute';
 import { Account } from './pages/Account';
-import ScrollToTop from './shared/utils/scrollToTop';
+import { Cart } from './pages/Cart';
 
 function AuthListenerWrapper() {
   useAuthListener();
@@ -48,6 +49,7 @@ function App() {
               <Route path='/about' element={<About />} />
               <Route path='/login' element={<LogIn />} />
               <Route path='/signup' element={<SignUp />} />
+              <Route path='/cart' element={<Cart />} />
             </Routes>
             <ProtectedRoute>
               <Routes>
