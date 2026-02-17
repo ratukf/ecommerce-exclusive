@@ -26,6 +26,7 @@ import { SignUp } from './pages/SignUp';
 import { ProtectedRoute } from './shared/components/ProtectedRoute';
 import { Account } from './pages/Account';
 import { Cart } from './pages/Cart';
+import { Checkout } from './pages/Checkout';
 
 function AuthListenerWrapper() {
   useAuthListener();
@@ -50,6 +51,7 @@ function App() {
               <Route path='/login' element={<LogIn />} />
               <Route path='/signup' element={<SignUp />} />
               <Route path='/cart' element={<Cart />} />
+              <Route path='/checkout' element={<Checkout />} />
             </Routes>
             <ProtectedRoute>
               <Routes>
