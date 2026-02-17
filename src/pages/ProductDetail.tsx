@@ -48,7 +48,6 @@ export const ProductDetail = () => {
 
   const [selectedVariant, setSelectedVariant] = useState(0);
   const [quantity, setQuantity] = useState(1);
-  const [favorite, setFavorite] = useState(false);
 
   const handleToggleWishlist = async () => {
     if (id) {
@@ -281,7 +280,6 @@ export const ProductDetail = () => {
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}
-                onClick={() => setFavorite(!favorite)}
               >
                 {asyncState.toggleWishlist.status === 'loading' ? (
                   <IconButton>

@@ -28,7 +28,9 @@ export interface ShippingAddress {
   country: string;
 }
 
-export type PaymentInput = Omit<Payment, 'id' | 'status' | 'createdAt'>;
+export type PaymentInput = Omit<Payment, 'id' | 'status' | 'createdAt'> & {
+  fromCart?: boolean;
+};
 
 export interface PaymentState {
   payments: Payment[];

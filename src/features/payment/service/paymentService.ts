@@ -41,8 +41,10 @@ export const createPaymentService = async (input: PaymentInput): Promise<Payment
     });
   }
 
-  const cartRef = doc(db, 'cart', input.userId);
-  await setDoc(cartRef, { userId: input.userId, item: [] });
+  if (input.fromCart) {
+    const cartRef = doc(db, 'cart', input.userId);
+    await setDoc(cartRef, { userId: input.userId, item: [] });
+  }
 
   return payment;
 };

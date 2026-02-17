@@ -12,7 +12,9 @@ export const createPayment = createAsyncThunk<Payment, PaymentInput>(
   async (input, { rejectWithValue, dispatch }) => {
     try {
       const data = await createPaymentService(input);
-      dispatch(clearCart());
+      if (input.fromCart) {
+        dispatch(clearCart());
+      }
       return data;
     } catch (err) {
       return rejectWithValue((err as Error).message);
