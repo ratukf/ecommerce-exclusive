@@ -1,5 +1,12 @@
 # Exclusive (E-commerce)
 
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+![MaterialUI](https://img.shields.io/badge/Material%20UI-%23FFFFFF?style=for-the-badge&logo=MUI&logoColor=#007FFF)
+![Redux](https://img.shields.io/badge/redux-%23593d88.svg?style=for-the-badge&logo=redux&logoColor=white)
+![Firebase](https://img.shields.io/badge/firebase-a08021?style=for-the-badge&logo=firebase&logoColor=ffcd34)
+![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+
 A shopping platform for discovering and shopping premium products online.
 
 ## About
@@ -46,7 +53,7 @@ incomplete.
 
 - [x] Auth (Login, Register)
 - [x] Account
-- [ ] Cart, Checkout, Wishlist
+- [x] Cart, Checkout, Wishlist
 
 ### UX Polish
 
@@ -57,8 +64,8 @@ incomplete.
 - [ ] Responsive design for desktop and mobile
 - [ ] Product listing with data from Firebase
 - [ ] Category navigation
-- [ ] Shopping cart UI
-- [ ] User authentication (Firebase Auth)
+- [x] Shopping cart UI
+- [x] User authentication (Firebase Auth)
 - [ ] Real-time updates and cloud storage (Firebase)
 
 ## Tech Stack
