@@ -127,7 +127,7 @@ const CheckoutConfirmation = ({ payment }: CheckoutConfirmationProps) => {
         </Button>
         <Button
           variant='contained'
-          onClick={() => navigate('/account/order')}
+          onClick={() => navigate('/account/orders')}
           sx={{
             textTransform: 'none',
             backgroundColor: '#DB4444',
