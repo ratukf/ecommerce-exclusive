@@ -55,6 +55,7 @@ export interface UserProfileState {
     addAddress: AsyncState;
     deleteAddress: AsyncState;
     updateAddress: AsyncState;
+    toggleWishlist: AsyncState;
   };
 }
 

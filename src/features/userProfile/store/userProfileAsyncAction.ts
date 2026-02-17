@@ -1,21 +1,22 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { type Profile, type UserProfile } from '../types';
+import { type Profile, type UserProfile, type Wishlist } from '../types';
 import {
   getUserService,
   updateProfileService,
   addAddressService,
   deleteAddressService,
   updateAddressService,
+  toggleWishlistService,
 } from '../service/userProfileService';
 import { mapFirebaseError } from '../../../shared/utils/mapError';
 import type { Address } from '../../../shared/types/address';
 
 // Fetch user profile by id
-const getUserProfile = createAsyncThunk<UserProfile, string, { rejectValue: string }>(
+const getUserProfile = createAsyncThunk<UserProfile, void, { rejectValue: string }>(
   'user/getUserProfile',
-  async (id, { rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
-      return await getUserService(id);
+      return await getUserService();
     } catch (error) {
       return rejectWithValue(mapFirebaseError(error));
     }
@@ -72,10 +73,23 @@ const updateAddressAsyncAction = createAsyncThunk<
   }
 });
 
+// Toggle wishlist
+const toggleWishlistAsyncAction = createAsyncThunk<Wishlist[], string, { rejectValue: string }>(
+  'user/wishlist',
+  async (productId: string, { rejectWithValue }) => {
+    try {
+      return await toggleWishlistService(productId);
+    } catch (error) {
+      return rejectWithValue(mapFirebaseError(error));
+    }
+  },
+);
+
 export {
   getUserProfile,
   updateProfileAsyncAction,
   addAddressAsyncAction,
   deleteAddressAsyncAction,
   updateAddressAsyncAction,
+  toggleWishlistAsyncAction,
 };

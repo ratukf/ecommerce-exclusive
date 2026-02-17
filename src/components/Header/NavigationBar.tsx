@@ -1,6 +1,7 @@
 import { FavoriteBorderOutlined, SearchOutlined, ShoppingCartOutlined } from '@mui/icons-material';
 import {
   Avatar,
+  Badge,
   Box,
   Divider,
   Grid,
@@ -21,7 +22,10 @@ import { useLogout } from '../../features/auth/hooks/useLogout';
 export const NavigationBar = () => {
   const theme = useTheme();
   const account = useSelector((state: RootState) => state.auth.auth);
+  const wishlist = useSelector((state: RootState) => state.userProfile.userProfile.wishlist);
+
   const isLoggedIn = account && account.id && account.email;
+
   const NAVIGATION_LIST = [
     { label: 'Home', path: '/' },
     { label: 'Contact', path: '/contact' },
@@ -35,6 +39,10 @@ export const NavigationBar = () => {
   const location = useLocation();
   const { logout } = useLogout();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const handleOpenWishlist = () => {
+    nav('/account/wishlist');
+  };
 
   return (
     <>
@@ -119,9 +127,15 @@ export const NavigationBar = () => {
                   minWidth: 180,
                 }}
               />
-              <IconButton>
-                <FavoriteBorderOutlined sx={{ fontSize: 30, color: '#000000' }} />
-              </IconButton>
+              <Badge
+                badgeContent={wishlist?.length || 0} // panjang array
+                color='error' // merah default
+                overlap='circular'
+              >
+                <IconButton onClick={() => handleOpenWishlist()}>
+                  <FavoriteBorderOutlined sx={{ fontSize: 30, color: '#000000' }} />
+                </IconButton>
+              </Badge>
               <IconButton>
                 <ShoppingCartOutlined sx={{ fontSize: 30, color: '#000000' }} />
               </IconButton>

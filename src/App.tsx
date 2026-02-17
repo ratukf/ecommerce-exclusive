@@ -26,12 +26,17 @@ import { ProtectedRoute } from './shared/components/ProtectedRoute';
 import { Account } from './pages/Account';
 import ScrollToTop from './shared/utils/scrollToTop';
 
-function App() {
+function AuthListenerWrapper() {
   useAuthListener();
+  return null;
+}
+
+function App() {
   return (
     <>
       <ThemeProvider theme={theme}>
         <Router>
+          <AuthListenerWrapper />
           <ScrollToTop />
           <Header />
           <Box className='main-content' sx={{ textAlign: 'center' }}>
@@ -46,7 +51,7 @@ function App() {
             </Routes>
             <ProtectedRoute>
               <Routes>
-                <Route path='/account' element={<Account />} />
+                <Route path='/account/*' element={<Account />} />
               </Routes>
             </ProtectedRoute>
           </Box>

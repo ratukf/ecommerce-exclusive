@@ -6,6 +6,7 @@ export const WhitePaper = ({ children }: { children: React.ReactNode }) => {
     <Paper
       elevation={1}
       sx={{
+        my: 2,
         padding: '2rem',
         borderRadius: '4px',
         boxShadow: '0px 10px 10px rgba(0, 0, 0, 0.1)',
