@@ -84,7 +84,14 @@ export const Products = () => {
               label='Clear filter'
               size='small'
               onDelete={() => setSearchParams({})}
-              sx={{ ml: 1 }}
+              sx={{
+                ml: 1,
+                color: 'green',
+                '& .MuiChip-deleteIcon': {
+                  color: 'green',
+                  '&:hover': { color: 'darkgreen' },
+                },
+              }}
             />
           )}
         </Box>
