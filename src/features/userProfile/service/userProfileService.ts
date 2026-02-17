@@ -1,4 +1,4 @@
-import { arrayUnion, collection, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore';
+import { arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { auth, db } from '../../../services/firebase';
 import { type Profile, type UserProfile, type Wishlist } from '../types';
 import type { Address } from '../../../shared/types/address';
@@ -84,10 +84,10 @@ const toggleWishlistService = async (productId: string): Promise<Wishlist[]> => 
   const uid = auth.currentUser?.uid;
   if (!uid) throw new Error('User not authenticated');
 
-  const productsRef = collection(db, 'products');
-  const productsSnapshot = await getDocs(productsRef);
-  const productsData = productsSnapshot.docs.map((doc) => doc.data() as Product);
-  const selectedProduct = productsData.find((p) => p.id === productId);
+  const productRef = doc(db, 'products', productId);
+  const productSnapshot = await getDoc(productRef);
+  if (!productSnapshot.exists()) throw new Error('product/not-found');
+  const selectedProduct = productSnapshot.data() as Product;
 
   if (!selectedProduct) {
     throw new Error('product/not-found');
