@@ -9,7 +9,6 @@ import {
   Typography,
 } from '@mui/material';
 import { useTheme } from '@mui/material';
-import { AppStoreButton, GooglePlayButton } from 'react-mobile-app-button';
 import { FW } from '../../theme';
 
 export const Footer = () => {
@@ -132,8 +131,72 @@ export const Footer = () => {
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-              <GooglePlayButton url='/' theme='dark' />
-              <AppStoreButton url='/' theme='dark' />
+              <Box
+                component='a'
+                href='/'
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1.5,
+                  backgroundColor: '#000',
+                  border: '1px solid #fff',
+                  borderRadius: 1.5,
+                  px: 2,
+                  py: 1,
+                  textDecoration: 'none',
+                  color: '#fff',
+                  width: 160,
+                  '&:hover': { backgroundColor: '#1a1a1a' },
+                }}
+              >
+                <img
+                  src='https://upload.wikimedia.org/wikipedia/commons/d/d0/Google_Play_Arrow_logo.svg'
+                  alt='Google Play'
+                  style={{ width: 24, height: 24 }}
+                />
+                <Box>
+                  <Typography sx={{ fontSize: 9, opacity: 0.8, lineHeight: 1 }}>
+                    GET IT ON
+                  </Typography>
+                  <Typography sx={{ fontSize: 13, fontWeight: 600, lineHeight: 1.3 }}>
+                    Google Play
+                  </Typography>
+                </Box>
+              </Box>
+
+              {/* App Store Button */}
+              <Box
+                component='a'
+                href='/'
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1.5,
+                  backgroundColor: '#000',
+                  border: '1px solid #fff',
+                  borderRadius: 1.5,
+                  px: 2,
+                  py: 1,
+                  textDecoration: 'none',
+                  color: '#fff',
+                  width: 160,
+                  '&:hover': { backgroundColor: '#1a1a1a' },
+                }}
+              >
+                <img
+                  src='https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg'
+                  alt='App Store'
+                  style={{ width: 20, height: 24, filter: 'invert(1)' }}
+                />
+                <Box>
+                  <Typography sx={{ fontSize: 9, opacity: 0.8, lineHeight: 1 }}>
+                    Download on the
+                  </Typography>
+                  <Typography sx={{ fontSize: 13, fontWeight: 600, lineHeight: 1.3 }}>
+                    App Store
+                  </Typography>
+                </Box>
+              </Box>
             </Box>
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
