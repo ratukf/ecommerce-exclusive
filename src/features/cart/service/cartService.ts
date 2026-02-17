@@ -1,19 +1,35 @@
-import { arrayUnion, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
-import { auth, db } from '../../../services/firebase';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { db } from '../../../services/firebase';
 import type { Cart, Item } from '../type';
 
 // Add product to cart
 export const addCartService = async (userId: string, item: Item): Promise<Cart> => {
-  const uid = auth.currentUser?.uid;
-  if (!uid) throw new Error('User not authenticated');
-
   const docRef = doc(db, 'cart', userId);
   const docSnap = await getDoc(docRef);
 
+  let updatedItems: Item[] = [];
+
   if (docSnap.exists()) {
-    await updateDoc(docRef, { item: arrayUnion(item) });
-  } else {
-    await setDoc(docRef, { userId, item: [item] });
+    const data = docSnap.data();
+    const existingItems: Item[] = data?.item ?? [];
+
+    const index = existingItems.findIndex((i) => i.productId === item.productId);
+    if (index >= 0) {
+      const newQuantity = item.quantity;
+      if (newQuantity <= 0) {
+        existingItems.splice(index, 1);
+      } else {
+        existingItems[index] = { ...existingItems[index], quantity: newQuantity };
+      }
+    } else if (item.quantity > 0) {
+      existingItems.push(item);
+    }
+
+    updatedItems = existingItems;
+    await setDoc(docRef, { userId, item: updatedItems });
+  } else if (item.quantity > 0) {
+    updatedItems = [item];
+    await setDoc(docRef, { userId, item: updatedItems });
   }
 
   const updatedSnap = await getDoc(docRef);
