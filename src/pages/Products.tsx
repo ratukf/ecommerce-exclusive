@@ -21,7 +21,14 @@ export const Products = () => {
   const filteredProducts = useMemo(() => {
     if (!activeCategory) return products;
     return products.filter((p) =>
-      p.categories.map((c) => c.toLowerCase()).includes(activeCategory.toLowerCase()),
+      p.categories
+        .map((c) =>
+          c
+            .toLowerCase()
+            .replace(/\s+&\s+/g, '-')
+            .replace(/\s+/g, '-'),
+        )
+        .includes(activeCategory.toLowerCase()),
     );
   }, [products, activeCategory]);
 
