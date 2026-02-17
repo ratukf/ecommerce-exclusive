@@ -9,6 +9,7 @@ import { useAppSelector } from '../../../store/hooks';
 import { Loading } from '../../../shared/components/Loading';
 import { useUpdateUserProfile } from '../hooks/useUpdateUserProfile';
 import { useUpdateAuth } from '../../auth/hooks/useUpdateAuth';
+import * as yup from 'yup';
 
 export const ProfileComponent = () => {
   const theme = useTheme();
@@ -38,6 +39,10 @@ export const ProfileComponent = () => {
     },
   ];
 
+  const redStar = () => {
+    return <span style={{ color: 'red' }}>*</span>;
+  };
+
   // Form handler
   const formik = useFormik({
     enableReinitialize: true,
@@ -46,6 +51,9 @@ export const ProfileComponent = () => {
       email: profile.email,
       phone: profile.phone,
     },
+    validationSchema: yup.object({
+      displayName: yup.string().required('Name is required'),
+    }),
     onSubmit: async () => {
       setIsEditing(false);
       updateAuth(formik.values.displayName);
@@ -79,6 +87,7 @@ export const ProfileComponent = () => {
                   <Grid size={6}>
                     <Typography variant='subtitle1' sx={{ color: '#000', textAlign: 'left' }}>
                       {item.label}
+                      {item.field === 'displayName' && redStar()}
                     </Typography>
                     <TextField
                       name={item.field}
@@ -102,6 +111,15 @@ export const ProfileComponent = () => {
                         },
                       }}
                       onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      error={
+                        formik.touched[item.field as keyof typeof formik.touched] &&
+                        Boolean(formik.errors[item.field as keyof typeof formik.errors])
+                      }
+                      helperText={
+                        formik.touched[item.field as keyof typeof formik.touched] &&
+                        formik.errors[item.field as keyof typeof formik.errors]
+                      }
                     />
                   </Grid>
                 ))}

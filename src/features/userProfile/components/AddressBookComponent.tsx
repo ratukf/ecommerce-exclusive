@@ -227,7 +227,7 @@ export const AddressBookComponent = () => {
                                               const touchedFields = {
                                                 ...formik.touched,
                                                 addressBooks: formik.values.addressBooks.map(
-                                                  (addr, i) =>
+                                                  (_, i) =>
                                                     i === idx
                                                       ? {
                                                           name: true,
