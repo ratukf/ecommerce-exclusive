@@ -324,7 +324,7 @@ export const ProductDetail = () => {
                   }}
                 >
                   <Typography sx={{ fontWeight: FW.medium }} variant='subtitle1'>
-                    Free Delivery
+                    Cheap Delivery
                   </Typography>
                   <Typography variant='caption' sx={{ fontWeight: FW.medium }}>
                     <Link to='#' style={{ textDecoration: 'underline', color: '#000' }}>
