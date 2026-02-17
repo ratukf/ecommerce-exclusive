@@ -76,10 +76,14 @@ const PaymentMethodSelector = ({ method, onChange }: PaymentMethodSelectorProps)
                     <Radio sx={{ color: '#DB4444', '&.Mui-checked': { color: '#DB4444' } }} />
                   }
                   label={
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                    <Box
+                      sx={{ display: 'flex', alignItems: 'center', gap: 1.5, textAlign: 'left' }}
+                    >
                       {option.icon}
                       <Box>
-                        <Typography fontWeight={600}>{option.label}</Typography>
+                        <Typography fontWeight={600} sx={{ color: 'black' }}>
+                          {option.label}
+                        </Typography>
                         <Typography variant='body2' color='text.secondary'>
                           {option.description}
                         </Typography>

@@ -71,7 +71,9 @@ const AddressSelector = ({ addressBooks, selectedAddressId, onSelect }: AddressS
                     }
                     label={
                       <Box>
-                        <Typography fontWeight={600}>{address.name}</Typography>
+                        <Typography fontWeight={600} sx={{ color: 'black' }} textAlign={'left'}>
+                          {address.name}
+                        </Typography>
                         <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 0.5, mt: 0.5 }}>
                           <LocationOn sx={{ fontSize: 16, color: 'text.secondary', mt: 0.2 }} />
                           <Typography variant='body2' color='text.secondary'>

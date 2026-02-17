@@ -1,15 +1,26 @@
-import { Typography, useTheme, Box, Stack } from '@mui/material';
+import { Typography, useTheme, Box, Stack, Divider } from '@mui/material';
 import dayjs from 'dayjs';
 import { WhitePaper } from '../../../shared/components/WhitePaper';
 import { useAppSelector } from '../../../store/hooks';
 import type { RootState } from '../../../store/store';
+import { auth } from '../../../services/firebase';
+import { useEffect } from 'react';
+import { useFetchPayments } from '../../payment/hooks/useFetchPayments';
 import { orderStatus } from '../constant/orderStatus';
 
 const UserOrdersComponent = () => {
+  const uid = auth.currentUser?.uid;
   const theme = useTheme();
-  const { asyncState, orders } = useAppSelector((state: RootState) => state.orders);
+  const { fetchPayments } = useFetchPayments();
+  const asyncState = useAppSelector((state: RootState) => state.payment.asyncState.getPayments);
+  const orders = useAppSelector((state: RootState) => state.payment.payments);
 
-  if (asyncState.getOrders.status === 'loading')
+  useEffect(() => {
+    if (!uid) return;
+    fetchPayments(uid);
+  }, [fetchPayments]);
+
+  if (asyncState.status === 'loading')
     return (
       <WhitePaper>
         <Typography variant='body1' color='text.secondary'>
@@ -18,11 +29,11 @@ const UserOrdersComponent = () => {
       </WhitePaper>
     );
 
-  if (asyncState.getOrders.error)
+  if (asyncState.error)
     return (
       <WhitePaper>
         <Typography variant='body1' color='error'>
-          {asyncState.getOrders.error}
+          {asyncState.error}
         </Typography>
       </WhitePaper>
     );
@@ -87,6 +98,7 @@ const UserOrdersComponent = () => {
                         Total: <strong>${order.totalAmount.toFixed(2)}</strong>
                       </Typography>
                     </Box>
+                    <Divider sx={{ mb: 3 }} />
                   </>
                 ))}
               </Stack>

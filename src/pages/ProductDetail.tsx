@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from '../store/store';
-import { Link, useParams } from 'react-router';
+import { Link, useNavigate, useParams } from 'react-router';
 import { useEffect, useState } from 'react';
 import { fetchProductById, fetchProducts } from '../features/products/store/productsAsyncAction';
 import {
@@ -28,6 +28,7 @@ import { Loading } from '../shared/components/Loading';
 export const ProductDetail = () => {
   const uid = auth.currentUser?.uid;
   const theme = useTheme();
+  const nav = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const { id } = useParams<{ id: string }>();
   const asyncState = useAppSelector((state: RootState) => state.userProfile.asyncState);
@@ -243,6 +244,21 @@ export const ProductDetail = () => {
                 </Button>
               </Box>
               <Button
+                onClick={() => {
+                  if (!productDetail) return;
+                  nav('/checkout', {
+                    state: {
+                      buyNow: true,
+                      item: {
+                        productId: productDetail.id,
+                        name: productDetail.name,
+                        price: variants?.[selectedVariant]?.price ?? productDetail.price,
+                        quantity: quantity,
+                        imageUrls: productDetail.imageUrls?.[0] ?? '',
+                      },
+                    },
+                  });
+                }}
                 variant='contained'
                 color='primary'
                 sx={{

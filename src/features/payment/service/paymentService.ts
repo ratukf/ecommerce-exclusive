@@ -1,4 +1,14 @@
-import { collection, addDoc, getDocs, query, where, doc, updateDoc } from 'firebase/firestore';
+import {
+  collection,
+  addDoc,
+  getDocs,
+  query,
+  where,
+  doc,
+  updateDoc,
+  setDoc,
+  getDoc,
+} from 'firebase/firestore';
 import { db } from '../../../services/firebase';
 import type { Payment, PaymentInput } from '../type';
 
@@ -10,11 +20,31 @@ export const createPaymentService = async (input: PaymentInput): Promise<Payment
   };
 
   const docRef = await addDoc(collection(db, 'payments'), payload);
+  const payment: Payment = { id: docRef.id, ...payload };
 
-  return {
-    id: docRef.id,
-    ...payload,
-  };
+  const userProfileRef = doc(db, 'userProfiles', input.userId);
+  const userProfileSnap = await getDoc(userProfileRef);
+
+  if (userProfileSnap.exists()) {
+    const existingData = userProfileSnap.data();
+    const existingOrders = existingData?.orders ?? [];
+
+    const newOrder = {
+      id: payment.id,
+      product_id: input.items.map((i) => i.productId).join(','),
+      total: input.totalAmount,
+      createdAt: payment.createdAt,
+    };
+
+    await updateDoc(userProfileRef, {
+      orders: [...existingOrders, newOrder],
+    });
+  }
+
+  const cartRef = doc(db, 'cart', input.userId);
+  await setDoc(cartRef, { userId: input.userId, item: [] });
+
+  return payment;
 };
 
 export const getPaymentsByUserService = async (userId: string): Promise<Payment[]> => {

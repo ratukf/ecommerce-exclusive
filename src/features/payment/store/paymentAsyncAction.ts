@@ -1,16 +1,18 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import type { Payment, PaymentInput } from '../type';
 import {
   createPaymentService,
   getPaymentsByUserService,
   updatePaymentStatusService,
 } from '../service/paymentService';
+import type { Payment, PaymentInput } from '../type';
+import { clearCart } from '../../cart/store/cart.slice';
 
 export const createPayment = createAsyncThunk<Payment, PaymentInput>(
   'payment/createPayment',
-  async (input, { rejectWithValue }) => {
+  async (input, { rejectWithValue, dispatch }) => {
     try {
       const data = await createPaymentService(input);
+      dispatch(clearCart());
       return data;
     } catch (err) {
       return rejectWithValue((err as Error).message);
@@ -18,7 +20,6 @@ export const createPayment = createAsyncThunk<Payment, PaymentInput>(
   },
 );
 
-// Ambil semua payment milik user
 export const fetchPaymentsByUser = createAsyncThunk<Payment[], string>(
   'payment/fetchPaymentsByUser',
   async (userId, { rejectWithValue }) => {
@@ -31,7 +32,6 @@ export const fetchPaymentsByUser = createAsyncThunk<Payment[], string>(
   },
 );
 
-// Update status payment
 export const updatePaymentStatus = createAsyncThunk<
   { paymentId: string; status: Payment['status'] },
   { paymentId: string; status: Payment['status'] }
