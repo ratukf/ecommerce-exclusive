@@ -23,6 +23,7 @@ export const NavigationBar = () => {
   const theme = useTheme();
   const account = useSelector((state: RootState) => state.auth.auth);
   const wishlist = useSelector((state: RootState) => state.userProfile.userProfile.wishlist);
+  const cartItem = useSelector((state: RootState) => state.cart.cart?.item);
 
   const isLoggedIn = account && account.id && account.email;
 
@@ -42,6 +43,10 @@ export const NavigationBar = () => {
 
   const handleOpenWishlist = () => {
     nav('/account/wishlist');
+  };
+
+  const handleOpenCart = () => {
+    nav('/cart');
   };
 
   return (
@@ -127,18 +132,16 @@ export const NavigationBar = () => {
                   minWidth: 180,
                 }}
               />
-              <Badge
-                badgeContent={wishlist?.length || 0} // panjang array
-                color='error' // merah default
-                overlap='circular'
-              >
+              <Badge badgeContent={wishlist?.length || 0} color='error' overlap='circular'>
                 <IconButton onClick={() => handleOpenWishlist()}>
                   <FavoriteBorderOutlined sx={{ fontSize: 30, color: '#000000' }} />
                 </IconButton>
               </Badge>
-              <IconButton>
-                <ShoppingCartOutlined sx={{ fontSize: 30, color: '#000000' }} />
-              </IconButton>
+              <Badge badgeContent={cartItem?.length || 0} color='error' overlap='circular'>
+                <IconButton onClick={() => handleOpenCart()}>
+                  <ShoppingCartOutlined sx={{ fontSize: 30, color: '#000000' }} />
+                </IconButton>
+              </Badge>
               {isLoggedIn && (
                 <>
                   <Avatar
