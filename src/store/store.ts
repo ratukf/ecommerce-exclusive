@@ -5,6 +5,7 @@ import { productReducer } from '../features/products/store/products.slice.ts';
 import { messageReducer } from '../features/message/store/message.slice.ts';
 import { orderReducer } from '../features/orders/store/orders.slice.ts';
 import { logOutAsyncAction } from '../features/auth/store/authAsyncAction.ts';
+import { cartReducer } from '../features/cart/store/cart.slice.ts';
 
 const appReducers = combineReducers({
   auth: authReducer,
@@ -12,6 +13,7 @@ const appReducers = combineReducers({
   products: productReducer,
   message: messageReducer,
   orders: orderReducer,
+  cart: cartReducer,
 });
 
 const rootReducer: typeof appReducers = (state, action) => {
