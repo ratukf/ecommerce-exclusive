@@ -1,12 +1,7 @@
 import { List, ListItemButton, ListItemIcon, ListItemText, Popover } from '@mui/material';
 import { ACCOUNT } from '../constants/account';
 import { useNavigate } from 'react-router';
-import {
-  CancelOutlined,
-  PersonOutlineOutlined,
-  ShopOutlined,
-  StarBorderOutlined,
-} from '@mui/icons-material';
+import { PersonOutlineOutlined, ShopOutlined } from '@mui/icons-material';
 
 interface AccountPopUpProps {
   anchorEl: HTMLElement | null;
@@ -30,18 +25,18 @@ export const AccountPopUp: React.FC<AccountPopUpProps> = ({ anchorEl, setAnchorE
             <ShopOutlined sx={{ color: '#fff' }} />
           </ListItemIcon>
         );
-      case 'My Cancellations':
-        return (
-          <ListItemIcon>
-            <CancelOutlined sx={{ color: '#fff' }} />
-          </ListItemIcon>
-        );
-      case 'My Reviews':
-        return (
-          <ListItemIcon>
-            <StarBorderOutlined sx={{ color: '#fff' }} />
-          </ListItemIcon>
-        );
+      // case 'My Cancellations':
+      //   return (
+      //     <ListItemIcon>
+      //       <CancelOutlined sx={{ color: '#fff' }} />
+      //     </ListItemIcon>
+      //   );
+      // case 'My Reviews':
+      //   return (
+      //     <ListItemIcon>
+      //       <StarBorderOutlined sx={{ color: '#fff' }} />
+      //     </ListItemIcon>
+      //   );
       default:
         return null;
     }
