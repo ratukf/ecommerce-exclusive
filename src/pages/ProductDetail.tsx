@@ -21,12 +21,17 @@ import { DashboardSection } from '../components/Dashboard/DashboardSection';
 import { ProductsSection } from '../shared/components/ProductsSection';
 import { useAppSelector } from '../store/hooks';
 import { useWishlist } from '../features/userProfile/hooks/useWishlist';
+import { auth } from '../services/firebase';
+import { useAddCart } from '../features/cart/hooks/useAddCart';
+import { Loading } from '../shared/components/Loading';
 
 export const ProductDetail = () => {
+  const uid = auth.currentUser?.uid;
   const theme = useTheme();
   const dispatch = useDispatch<AppDispatch>();
   const { id } = useParams<{ id: string }>();
   const asyncState = useAppSelector((state: RootState) => state.userProfile.asyncState);
+  const cart = useSelector((state: RootState) => state.cart);
 
   const { toggleWishlist } = useWishlist();
   const { products, productDetail } = useSelector((state: RootState) => state.products);
@@ -34,6 +39,7 @@ export const ProductDetail = () => {
     state.userProfile.userProfile.wishlist.some((item) => item.productId === id),
   );
   const { name, price, imageUrls, reviews, variants, description } = productDetail || {};
+  const { addItem } = useAddCart();
 
   const isStockExist = () => {
     return variants?.some((variant) => variant.stock > 0);
@@ -49,6 +55,24 @@ export const ProductDetail = () => {
     } else {
       return;
     }
+  };
+
+  const handleAddCart = async () => {
+    if (
+      !uid ||
+      !productDetail ||
+      !productDetail.id ||
+      !productDetail.name ||
+      !productDetail.imageUrls?.[0]
+    ) {
+      return;
+    }
+    await addItem(uid, {
+      productId: productDetail.id,
+      name: productDetail?.name,
+      quantity: quantity,
+      imageUrls: productDetail?.imageUrls[0],
+    });
   };
 
   useEffect(() => {
@@ -258,6 +282,19 @@ export const ProductDetail = () => {
                 )}
               </Box>
             </Box>
+            {cart.asyncState.addCart.status === 'loading' ? (
+              <Box width='100%' display={'flex'} justifyContent={'center'}>
+                <Loading />
+              </Box>
+            ) : (
+              <Button
+                variant='outlined'
+                sx={{ ...buttonSx.defaultOutlined, width: '100%' }}
+                onClick={handleAddCart}
+              >
+                Add to cart
+              </Button>
+            )}
             <Box
               sx={{
                 border: '1px solid #ccc',
@@ -287,7 +324,7 @@ export const ProductDetail = () => {
                   }}
                 >
                   <Typography sx={{ fontWeight: FW.medium }} variant='subtitle1'>
-                    Free Delivery
+                    Cheap Delivery
                   </Typography>
                   <Typography variant='caption' sx={{ fontWeight: FW.medium }}>
                     <Link to='#' style={{ textDecoration: 'underline', color: '#000' }}>
