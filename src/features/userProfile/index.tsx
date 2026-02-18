@@ -7,7 +7,7 @@ import type { RootState } from '../../store/store';
 import { resetAsyncState } from './store/userProfile.slice';
 import { ProfileComponent } from './components/ProfileComponent';
 import { AddressBookComponent } from './components/AddressBookComponent';
-import { UserOrdersComponent } from '../orders/component/UserOrdersComponent';
+import { UserOrdersComponent } from './components/UserOrdersComponent';
 import { WishListComponent } from './components/WishListComponent';
 import { getUserProfile } from './store/userProfileAsyncAction';
 import { SideBar } from './components/SideBar';
@@ -25,7 +25,7 @@ export const UserProfileFeature = () => {
     if (status === 'succeeded') {
       dispatch(resetAsyncState('deleteAddress'));
     }
-  }, [status]);
+  }, [dispatch, status]);
 
   const renderAccount = () => {
     switch (activeList) {
