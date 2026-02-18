@@ -66,7 +66,7 @@ const redStar = () => {
   return <span style={{ color: 'red' }}>*</span>;
 };
 
-export const Contact = () => {
+export const ContactPage = () => {
   const theme = useTheme();
   const dispatch = useDispatch<AppDispatch>();
   const { snackBar, showSnackBar, handleClose } = useSnackBar();

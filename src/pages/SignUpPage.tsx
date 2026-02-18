@@ -10,7 +10,7 @@ import type { RootState } from '../store/store';
 import { useOAuth } from '../features/auth/hooks/useOAuth';
 import { useSignup } from '../features/auth/hooks/useSignup';
 
-export const SignUp = () => {
+export const SignUpPage = () => {
   const { loading } = useAppSelector((state: RootState) => state.auth);
   const { signup } = useSignup();
   const { loginGoogle, loginGithub } = useOAuth();

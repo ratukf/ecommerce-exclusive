@@ -16,17 +16,17 @@ import { useAuthListener } from './store/authListener';
 import { Box } from '@mui/material';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
-import { Dashboard } from './pages/Dashboard';
 import { ProductDetail } from './pages/ProductDetail';
-import { Contact } from './pages/Contact';
-import { About } from './pages/About';
-import { LogIn } from './pages/LogIn';
-import { SignUp } from './pages/SignUp';
 import { ProtectedRoute } from './shared/components/ProtectedRoute';
 import { AccountPage } from './pages/AccountPage';
 import { Cart } from './pages/Cart';
 import { Checkout } from './pages/Checkout';
 import { ProductsPage } from './pages/ProductsPage';
+import { AboutPage } from './pages/AboutPage';
+import { ContactPage } from './pages/ContactPage';
+import { DashboardPage } from './pages/DashboardPage';
+import { LogInPage } from './pages/LogInPage';
+import { SignUpPage } from './pages/SignUpPage';
 
 function AuthListenerWrapper() {
   useAuthListener();
@@ -43,13 +43,13 @@ function App() {
           <Header />
           <Box className='main-content' sx={{ textAlign: 'center' }}>
             <Routes>
-              <Route path='/' element={<Dashboard />} />
+              <Route path='/' element={<DashboardPage />} />
               <Route path='/products' element={<ProductsPage />} />
               <Route path='/product/:id' element={<ProductDetail />} />
-              <Route path='/contact' element={<Contact />} />
-              <Route path='/about' element={<About />} />
-              <Route path='/login' element={<LogIn />} />
-              <Route path='/signup' element={<SignUp />} />
+              <Route path='/contact' element={<ContactPage />} />
+              <Route path='/about' element={<AboutPage />} />
+              <Route path='/login' element={<LogInPage />} />
+              <Route path='/signup' element={<SignUpPage />} />
               <Route path='/cart' element={<Cart />} />
               <Route path='/checkout' element={<Checkout />} />
             </Routes>

@@ -18,7 +18,7 @@ import { Benefits } from '../components/Dashboard/Benefits';
 import { useNavigate } from 'react-router';
 import { buttonSx } from '../styles/buttonSx';
 
-export const Dashboard = () => {
+export const DashboardPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const products = useSelector((state: RootState) => state.products.products);
 

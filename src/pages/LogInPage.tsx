@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { useAppSelector } from '../store/hooks';
 import type { RootState } from '../store/store';
 
-export const LogIn = () => {
+export const LogInPage = () => {
   const { login } = useLogin();
   const { loading } = useAppSelector((state: RootState) => state.auth);
 
