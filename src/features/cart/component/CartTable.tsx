@@ -127,7 +127,9 @@ const CartTable = () => {
           <Loading />
         ) : (
           <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-            <button onClick={() => handleQuantityChange(productId, -1)}>-</button>
+            <button onClick={() => handleQuantityChange(productId, -1)} disabled={quantity <= 0}>
+              -
+            </button>
             <span>{quantity}</span>
             <button onClick={() => handleQuantityChange(productId, 1)}>+</button>
           </div>
