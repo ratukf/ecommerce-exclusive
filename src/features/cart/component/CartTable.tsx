@@ -6,6 +6,8 @@ import { useAddCart } from '../hooks/useAddCart';
 import type { Item } from '../type';
 import { auth } from '../../../services/firebase';
 import { Loading } from '../../../shared/components/Loading';
+import { Button } from '@mui/material';
+import { buttonSx } from '../../../styles/buttonSx';
 
 const CartTable = () => {
   const uid = auth.currentUser?.uid;
@@ -127,11 +129,24 @@ const CartTable = () => {
           <Loading />
         ) : (
           <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-            <button onClick={() => handleQuantityChange(productId, -1)} disabled={quantity <= 0}>
-              -
-            </button>
-            <span>{quantity}</span>
-            <button onClick={() => handleQuantityChange(productId, 1)}>+</button>
+            <Button
+              variant='contained'
+              onClick={() => handleQuantityChange(productId, -1)}
+              disabled={quantity <= 0}
+              sx={buttonSx.incrementDecrement}
+            >
+              −
+            </Button>
+            <span>
+              <strong>{quantity}</strong>
+            </span>
+            <Button
+              variant='contained'
+              onClick={() => handleQuantityChange(productId, 1)}
+              sx={buttonSx.incrementDecrement}
+            >
+              +
+            </Button>
           </div>
         );
       },
