@@ -1,5 +1,5 @@
-import { useDispatch, useSelector } from 'react-redux';
-import type { AppDispatch, RootState } from '../store/store';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../store/store';
 import { Link, useNavigate, useParams } from 'react-router';
 import { useEffect, useState } from 'react';
 import { fetchProductById, fetchProducts } from '../features/products/store/productsAsyncAction';
@@ -19,7 +19,7 @@ import { buttonSx } from '../styles/buttonSx';
 import { FW } from '../theme';
 import { DashboardSection } from '../components/Dashboard/DashboardSection';
 import { ProductsSection } from '../shared/components/ProductsSection';
-import { useAppSelector } from '../store/hooks';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { useWishlist } from '../features/userProfile/hooks/useWishlist';
 import { auth } from '../services/firebase';
 import { useAddCart } from '../features/cart/hooks/useAddCart';
@@ -29,7 +29,7 @@ export const ProductDetailPage = () => {
   const uid = auth.currentUser?.uid;
   const theme = useTheme();
   const nav = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
   const asyncState = useAppSelector((state: RootState) => state.userProfile.asyncState);
   const cart = useSelector((state: RootState) => state.cart);

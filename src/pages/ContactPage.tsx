@@ -6,14 +6,13 @@ import { CONTACT, MESSAGE_FIELDS } from '../shared/constants/contact';
 import { FW } from '../theme';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import type { AppDispatch } from '../store/store';
-import { useDispatch } from 'react-redux';
 import { sendContactMessage } from '../features/message/store/messageAsyncAction';
 import { buttonSx } from '../styles/buttonSx';
 import { useCallback } from 'react';
 import { SnackBar } from '../shared/components/SnackBar';
 import { useSnackBar } from '../shared/hooks/useSnackBar';
 import { WhitePaper } from '../shared/components/WhitePaper';
+import { useAppDispatch } from '../store/hooks';
 
 const renderContact = (label: string, desc: string[], theme: Theme) => {
   return (
@@ -68,7 +67,7 @@ const redStar = () => {
 
 export const ContactPage = () => {
   const theme = useTheme();
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const { snackBar, showSnackBar, handleClose } = useSnackBar();
 
   const formik = useFormik({
