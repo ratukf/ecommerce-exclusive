@@ -1,5 +1,4 @@
 import type { AsyncState } from '../../shared/types/asyncStatus';
-import type { OrderItem } from '../orders/types';
 
 export type PaymentMethod = 'bank_transfer' | 'credit_card' | 'e_wallet' | 'cod';
 
@@ -40,6 +39,14 @@ export interface PaymentState {
     getPayments: AsyncState;
     updatePaymentStatus: AsyncState;
   };
+}
+
+export interface OrderItem {
+  productId: string;
+  name: string;
+  price: number;
+  quantity: number;
+  imageUrls: string;
 }
 
 export const emptyPayment: Payment = {
