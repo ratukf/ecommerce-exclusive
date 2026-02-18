@@ -1,11 +1,12 @@
 import { Grid, Typography, Chip, Box } from '@mui/material';
-import { SideBar } from '../components/Products/Sidebar';
-import { ProductsSection } from '../shared/components/ProductsSection';
-import type { AppDispatch, RootState } from '../store/store';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { fetchProducts } from '../features/products/store/productsAsyncAction';
+import { useAppDispatch } from '../../store/hooks';
+import type { RootState } from '../../store/store';
+import { fetchProducts } from './store/productsAsyncAction';
+import { SideBar } from '../../components/Products/Sidebar';
+import { ProductsSection } from '../../shared/components/ProductsSection';
 
 const normalize = (str: string) =>
   str
@@ -13,8 +14,8 @@ const normalize = (str: string) =>
     .replace(/\s+&\s+/g, '-')
     .replace(/\s+/g, '-');
 
-export const Products = () => {
-  const dispatch = useDispatch<AppDispatch>();
+export const ProductsFeature = () => {
+  const dispatch = useAppDispatch();
   const products = useSelector((state: RootState) => state.products.products);
   const [searchParams, setSearchParams] = useSearchParams();
 

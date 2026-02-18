@@ -17,7 +17,6 @@ import { Box } from '@mui/material';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { Dashboard } from './pages/Dashboard';
-import { Products } from './pages/Products';
 import { ProductDetail } from './pages/ProductDetail';
 import { Contact } from './pages/Contact';
 import { About } from './pages/About';
@@ -27,6 +26,7 @@ import { ProtectedRoute } from './shared/components/ProtectedRoute';
 import { AccountPage } from './pages/AccountPage';
 import { Cart } from './pages/Cart';
 import { Checkout } from './pages/Checkout';
+import { ProductsPage } from './pages/ProductsPage';
 
 function AuthListenerWrapper() {
   useAuthListener();
@@ -44,7 +44,7 @@ function App() {
           <Box className='main-content' sx={{ textAlign: 'center' }}>
             <Routes>
               <Route path='/' element={<Dashboard />} />
-              <Route path='/products' element={<Products />} />
+              <Route path='/products' element={<ProductsPage />} />
               <Route path='/product/:id' element={<ProductDetail />} />
               <Route path='/contact' element={<Contact />} />
               <Route path='/about' element={<About />} />
