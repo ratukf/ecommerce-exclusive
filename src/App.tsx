@@ -16,17 +16,17 @@ import { useAuthListener } from './store/authListener';
 import { Box } from '@mui/material';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
-import { Dashboard } from './pages/Dashboard';
-import { Products } from './pages/Products';
-import { ProductDetail } from './pages/ProductDetail';
-import { Contact } from './pages/Contact';
-import { About } from './pages/About';
-import { LogIn } from './pages/LogIn';
-import { SignUp } from './pages/SignUp';
-import { ProtectedRoute } from './shared/components/ProtectedRoute';
+import { RequireAuth } from './shared/components/ProtectedRoute';
 import { AccountPage } from './pages/AccountPage';
-import { Cart } from './pages/Cart';
-import { Checkout } from './pages/Checkout';
+import { ProductsPage } from './pages/ProductsPage';
+import { AboutPage } from './pages/AboutPage';
+import { ContactPage } from './pages/ContactPage';
+import { DashboardPage } from './pages/DashboardPage';
+import { LogInPage } from './pages/LogInPage';
+import { SignUpPage } from './pages/SignUpPage';
+import { ProductDetailPage } from './pages/ProductDetailPage';
+import { CheckoutPage } from './pages/CheckoutPage';
+import { CartPage } from './pages/CartPage';
 
 function AuthListenerWrapper() {
   useAuthListener();
@@ -35,34 +35,51 @@ function AuthListenerWrapper() {
 
 function App() {
   return (
-    <>
-      <ThemeProvider theme={theme}>
-        <Router>
-          <AuthListenerWrapper />
-          <ScrollToTop />
-          <Header />
-          <Box className='main-content' sx={{ textAlign: 'center' }}>
-            <Routes>
-              <Route path='/' element={<Dashboard />} />
-              <Route path='/products' element={<Products />} />
-              <Route path='/product/:id' element={<ProductDetail />} />
-              <Route path='/contact' element={<Contact />} />
-              <Route path='/about' element={<About />} />
-              <Route path='/login' element={<LogIn />} />
-              <Route path='/signup' element={<SignUp />} />
-              <Route path='/cart' element={<Cart />} />
-              <Route path='/checkout' element={<Checkout />} />
-            </Routes>
-            <ProtectedRoute>
-              <Routes>
-                <Route path='/account/*' element={<AccountPage />} />
-              </Routes>
-            </ProtectedRoute>
-          </Box>
-          <Footer />
-        </Router>
-      </ThemeProvider>
-    </>
+    <ThemeProvider theme={theme}>
+      <Router>
+        <AuthListenerWrapper />
+        <ScrollToTop />
+        <Header />
+        <Box className='main-content' sx={{ textAlign: 'center' }}>
+          <Routes>
+            <Route path='/' element={<DashboardPage />} />
+            <Route path='/products' element={<ProductsPage />} />
+            <Route path='/product/:id' element={<ProductDetailPage />} />
+            <Route path='/contact' element={<ContactPage />} />
+            <Route path='/about' element={<AboutPage />} />
+            <Route path='/login' element={<LogInPage />} />
+            <Route path='/signup' element={<SignUpPage />} />
+
+            {/* Auth only */}
+            <Route
+              path='/cart'
+              element={
+                <RequireAuth>
+                  <CartPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path='/checkout'
+              element={
+                <RequireAuth>
+                  <CheckoutPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path='/account/*'
+              element={
+                <RequireAuth>
+                  <AccountPage />
+                </RequireAuth>
+              }
+            />
+          </Routes>
+        </Box>
+        <Footer />
+      </Router>
+    </ThemeProvider>
   );
 }
 

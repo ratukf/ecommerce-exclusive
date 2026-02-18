@@ -6,7 +6,7 @@ import { useAppDispatch } from '../store/hooks';
 import type { RootState } from '../store/store';
 import { CartComponents } from '../features/cart';
 
-const Cart = () => {
+const CartPage = () => {
   const dispatch = useAppDispatch();
   const { error, status } = useCart();
   const { products } = useSelector((state: RootState) => state.products);
@@ -24,4 +24,4 @@ const Cart = () => {
   return <CartComponents />;
 };
 
-export { Cart };
+export { CartPage };

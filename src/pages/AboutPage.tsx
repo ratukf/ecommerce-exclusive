@@ -3,7 +3,7 @@ import { Benefits } from '../components/Dashboard/Benefits';
 import { ACHIEVEMENTS, TEAM_MEMBERS } from '../shared/constants/about';
 import { Instagram, LinkedIn, Twitter } from '@mui/icons-material';
 
-export const About = () => {
+export const AboutPage = () => {
   const theme = useTheme();
 
   const boxSx = {

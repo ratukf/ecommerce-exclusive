@@ -18,7 +18,7 @@ const UserOrdersComponent = () => {
   useEffect(() => {
     if (!uid) return;
     fetchPayments(uid);
-  }, [fetchPayments]);
+  }, [uid, fetchPayments]);
 
   if (asyncState.status === 'loading')
     return (

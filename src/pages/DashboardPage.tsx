@@ -1,9 +1,8 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Button, Grid } from '@mui/material';
 import { DashboardSection } from '../components/Dashboard/DashboardSection';
 import { fetchProducts } from '../features/products/store/productsAsyncAction';
-import type { AppDispatch } from '../store/store';
 import type { RootState } from '../store/store';
 import { SLIDER } from '../shared/constants/slider';
 import { ArrowButton } from '../shared/components/ArrowButton';
@@ -17,9 +16,10 @@ import { NewArrival } from '../components/Dashboard/NewArrival';
 import { Benefits } from '../components/Dashboard/Benefits';
 import { useNavigate } from 'react-router';
 import { buttonSx } from '../styles/buttonSx';
+import { useAppDispatch } from '../store/hooks';
 
-export const Dashboard = () => {
-  const dispatch = useDispatch<AppDispatch>();
+export const DashboardPage = () => {
+  const dispatch = useAppDispatch();
   const products = useSelector((state: RootState) => state.products.products);
 
   const [openIndex, setOpenIndex] = useState<number | null>(null);

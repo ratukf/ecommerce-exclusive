@@ -1,35 +1,42 @@
 import { Box, Button, Grid, TextField, Typography } from '@mui/material';
 import { FW } from '../theme';
-import { buttonSx, linkSx } from '../styles/buttonSx';
-import { Link } from 'react-router';
-import { FcGoogle } from 'react-icons/fc';
-import { GitHub } from '@mui/icons-material';
+import { buttonSx } from '../styles/buttonSx';
+import { useLogin } from '../features/auth/hooks/useLogin';
 import { useState } from 'react';
 import { useAppSelector } from '../store/hooks';
 import type { RootState } from '../store/store';
-import { useOAuth } from '../features/auth/hooks/useOAuth';
-import { useSignup } from '../features/auth/hooks/useSignup';
+import { useNavigate } from 'react-router';
+import { auth } from '../services/firebase';
 
-export const SignUp = () => {
+export const LogInPage = () => {
+  const { login } = useLogin();
   const { loading } = useAppSelector((state: RootState) => state.auth);
-  const { signup } = useSignup();
-  const { loginGoogle, loginGithub } = useOAuth();
+  const user = auth.currentUser;
+  const nav = useNavigate();
 
-  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSignUp = () => {
-    signup(name, email, password);
+  const handleSubmit = () => {
+    login(email, password);
   };
 
-  const handleLoginGoogle = () => {
-    loginGoogle();
-  };
-
-  const handleLoginGithub = () => {
-    loginGithub();
-  };
+  if (user) {
+    return (
+      <Box sx={{ textAlign: 'center', mt: 10, mb: 10 }}>
+        <Typography variant='h6' fontFamily='Poppins, sans-serif'>
+          You're already logged in.
+        </Typography>
+        <Button
+          variant='outlined'
+          sx={{ mt: 2, ...buttonSx.defaultOutlined }}
+          onClick={() => nav('/')}
+        >
+          Back to Home
+        </Button>
+      </Box>
+    );
+  }
 
   return (
     <Grid
@@ -59,18 +66,11 @@ export const SignUp = () => {
       >
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           <Typography variant='h4' sx={{ fontWeight: FW.medium }}>
-            Create an account
+            Log in to Exclusive
           </Typography>
           <Typography variant='subtitle1'>Enter your details below</Typography>
         </Box>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
-          <TextField
-            label='Name'
-            type='text'
-            variant='standard'
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
           <TextField
             label='Email'
             type='email'
@@ -81,60 +81,34 @@ export const SignUp = () => {
           <TextField
             label='Password'
             type='password'
+            autoComplete='current-password'
             variant='standard'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
-                handleSignUp();
+                handleSubmit();
               }
             }}
           />
         </Box>
         <Box
           sx={{
-            justifyContent: 'center',
+            justifyContent: 'space-between',
             display: 'flex',
-            flexDirection: 'column',
             width: '100%',
             alignItems: 'center',
-            gap: '1rem',
+            gap: '2.5rem',
           }}
         >
           <Button
-            onClick={handleSignUp}
-            loading={loading}
             variant='contained'
-            sx={{ ...buttonSx.default, width: '100%' }}
+            sx={buttonSx.default}
+            onClick={handleSubmit}
+            disabled={loading}
           >
-            Create Account
+            {loading ? 'Logging in...' : 'Log In'}
           </Button>
-          <Button
-            onClick={handleLoginGoogle}
-            loading={loading}
-            variant='outlined'
-            sx={{ ...buttonSx.defaultOutlined, width: '100%' }}
-          >
-            <FcGoogle style={{ fontSize: '1.5rem', marginRight: '8px' }} />
-            Sign up with Google
-          </Button>
-          <Button
-            onClick={handleLoginGithub}
-            loading={loading}
-            variant='outlined'
-            sx={{ ...buttonSx.defaultOutlined, width: '100%' }}
-          >
-            <GitHub style={{ fontSize: '1.5rem', marginRight: '8px' }} />
-            Sign up with Github
-          </Button>
-          <Box sx={{ textAlign: 'center', marginTop: '1rem' }}>
-            <Typography variant='subtitle1'>
-              Already have an account?{' '}
-              <Link to='/login' style={linkSx.default}>
-                Log in
-              </Link>
-            </Typography>
-          </Box>
         </Box>
       </Grid>
     </Grid>

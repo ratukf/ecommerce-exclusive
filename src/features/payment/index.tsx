@@ -4,13 +4,12 @@ import { useSelector, shallowEqual } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import type { RootState } from '../../store/store';
 import { auth } from '../../services/firebase';
-import type { PaymentMethod, ShippingAddress } from './type';
+import type { OrderItem, PaymentMethod, ShippingAddress } from './type';
 import { useCreatePayment } from './hooks/useCreatePayment';
 import { OrderSummary } from './component/OrderSummary';
 import { AddressSelector } from './component/AddressSelector';
 import { PaymentMethodSelector } from './component/PaymentMethodSelector';
 import { CheckoutConfirmation } from './component/CheckoutConfirmation';
-import type { OrderItem } from '../orders/types';
 
 type CheckoutStep = 'form' | 'confirmed';
 
@@ -19,7 +18,7 @@ export interface BuyNowState {
   item: OrderItem;
 }
 
-const CheckoutPage = () => {
+const CheckoutFeature = () => {
   const uid = auth.currentUser?.uid;
   const location = useLocation();
 
@@ -60,7 +59,7 @@ const CheckoutPage = () => {
     if (addressBooks.length > 0 && !selectedAddressId) {
       setSelectedAddressId(addressBooks[0].id);
     }
-  }, [addressBooks]);
+  }, [addressBooks, selectedAddressId]);
 
   const selectedAddress = addressBooks.find((a) => a.id === selectedAddressId);
 
@@ -162,4 +161,4 @@ const CheckoutPage = () => {
   );
 };
 
-export { CheckoutPage };
+export { CheckoutFeature };

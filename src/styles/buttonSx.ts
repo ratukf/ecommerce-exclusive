@@ -41,6 +41,27 @@ export const buttonSx = {
     backgroundColor: 'transparent',
     fontSize: '1rem',
   },
+  incrementDecrement: {
+    color: '#black',
+    padding: '0px',
+    backgroundColor: 'transparent',
+    fontSize: '1rem',
+    minWidth: '28px',
+    width: '28px',
+    height: '28px',
+    borderRadius: '4px',
+    border: '1.5px solid rgba(0,0,0,0.2)',
+    transition: 'all 0.2s ease',
+    '&:hover': {
+      borderColor: '#DB4444',
+      color: '#DB4444',
+      backgroundColor: 'transparent',
+    },
+    '&.Mui-disabled': {
+      borderColor: 'rgba(0,0,0,0.1)',
+      color: 'rgba(0,0,0,0.2)',
+    },
+  },
 };
 
 export const linkSx = {
