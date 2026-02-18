@@ -1,7 +1,7 @@
 import { Box, Button, Grid, TextField, Typography } from '@mui/material';
 import { FW } from '../theme';
 import { buttonSx, linkSx } from '../styles/buttonSx';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { FcGoogle } from 'react-icons/fc';
 import { GitHub } from '@mui/icons-material';
 import { useState } from 'react';
@@ -9,11 +9,14 @@ import { useAppSelector } from '../store/hooks';
 import type { RootState } from '../store/store';
 import { useOAuth } from '../features/auth/hooks/useOAuth';
 import { useSignup } from '../features/auth/hooks/useSignup';
+import { auth } from '../services/firebase';
 
 export const SignUpPage = () => {
   const { loading } = useAppSelector((state: RootState) => state.auth);
+  const user = auth.currentUser;
   const { signup } = useSignup();
   const { loginGoogle, loginGithub } = useOAuth();
+  const nav = useNavigate();
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -30,6 +33,22 @@ export const SignUpPage = () => {
   const handleLoginGithub = () => {
     loginGithub();
   };
+  if (user) {
+    return (
+      <Box sx={{ textAlign: 'center', mt: 10, mb: 10 }}>
+        <Typography variant='h6' fontFamily='Poppins, sans-serif'>
+          You're already logged in.
+        </Typography>
+        <Button
+          variant='outlined'
+          sx={{ mt: 2, ...buttonSx.defaultOutlined }}
+          onClick={() => nav('/')}
+        >
+          Back to Home
+        </Button>
+      </Box>
+    );
+  }
 
   return (
     <Grid

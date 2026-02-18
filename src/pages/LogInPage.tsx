@@ -5,10 +5,14 @@ import { useLogin } from '../features/auth/hooks/useLogin';
 import { useState } from 'react';
 import { useAppSelector } from '../store/hooks';
 import type { RootState } from '../store/store';
+import { useNavigate } from 'react-router';
+import { auth } from '../services/firebase';
 
 export const LogInPage = () => {
   const { login } = useLogin();
   const { loading } = useAppSelector((state: RootState) => state.auth);
+  const user = auth.currentUser;
+  const nav = useNavigate();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -16,6 +20,23 @@ export const LogInPage = () => {
   const handleSubmit = () => {
     login(email, password);
   };
+
+  if (user) {
+    return (
+      <Box sx={{ textAlign: 'center', mt: 10, mb: 10 }}>
+        <Typography variant='h6' fontFamily='Poppins, sans-serif'>
+          You're already logged in.
+        </Typography>
+        <Button
+          variant='outlined'
+          sx={{ mt: 2, ...buttonSx.defaultOutlined }}
+          onClick={() => nav('/')}
+        >
+          Back to Home
+        </Button>
+      </Box>
+    );
+  }
 
   return (
     <Grid

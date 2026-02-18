@@ -16,7 +16,7 @@ import { useAuthListener } from './store/authListener';
 import { Box } from '@mui/material';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
-import { ProtectedRoute } from './shared/components/ProtectedRoute';
+import { RequireAuth } from './shared/components/ProtectedRoute';
 import { AccountPage } from './pages/AccountPage';
 import { ProductsPage } from './pages/ProductsPage';
 import { AboutPage } from './pages/AboutPage';
@@ -35,34 +35,51 @@ function AuthListenerWrapper() {
 
 function App() {
   return (
-    <>
-      <ThemeProvider theme={theme}>
-        <Router>
-          <AuthListenerWrapper />
-          <ScrollToTop />
-          <Header />
-          <Box className='main-content' sx={{ textAlign: 'center' }}>
-            <Routes>
-              <Route path='/' element={<DashboardPage />} />
-              <Route path='/products' element={<ProductsPage />} />
-              <Route path='/product/:id' element={<ProductDetailPage />} />
-              <Route path='/contact' element={<ContactPage />} />
-              <Route path='/about' element={<AboutPage />} />
-              <Route path='/login' element={<LogInPage />} />
-              <Route path='/signup' element={<SignUpPage />} />
-              <Route path='/cart' element={<CartPage />} />
-              <Route path='/checkout' element={<CheckoutPage />} />
-            </Routes>
-            <ProtectedRoute>
-              <Routes>
-                <Route path='/account/*' element={<AccountPage />} />
-              </Routes>
-            </ProtectedRoute>
-          </Box>
-          <Footer />
-        </Router>
-      </ThemeProvider>
-    </>
+    <ThemeProvider theme={theme}>
+      <Router>
+        <AuthListenerWrapper />
+        <ScrollToTop />
+        <Header />
+        <Box className='main-content' sx={{ textAlign: 'center' }}>
+          <Routes>
+            <Route path='/' element={<DashboardPage />} />
+            <Route path='/products' element={<ProductsPage />} />
+            <Route path='/product/:id' element={<ProductDetailPage />} />
+            <Route path='/contact' element={<ContactPage />} />
+            <Route path='/about' element={<AboutPage />} />
+            <Route path='/login' element={<LogInPage />} />
+            <Route path='/signup' element={<SignUpPage />} />
+
+            {/* Auth only */}
+            <Route
+              path='/cart'
+              element={
+                <RequireAuth>
+                  <CartPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path='/checkout'
+              element={
+                <RequireAuth>
+                  <CheckoutPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path='/account/*'
+              element={
+                <RequireAuth>
+                  <AccountPage />
+                </RequireAuth>
+              }
+            />
+          </Routes>
+        </Box>
+        <Footer />
+      </Router>
+    </ThemeProvider>
   );
 }
 
