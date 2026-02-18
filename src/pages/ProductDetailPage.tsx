@@ -25,7 +25,7 @@ import { auth } from '../services/firebase';
 import { useAddCart } from '../features/cart/hooks/useAddCart';
 import { Loading } from '../shared/components/Loading';
 
-export const ProductDetail = () => {
+export const ProductDetailPage = () => {
   const uid = auth.currentUser?.uid;
   const theme = useTheme();
   const nav = useNavigate();

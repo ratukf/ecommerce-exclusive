@@ -19,7 +19,7 @@ export interface BuyNowState {
   item: OrderItem;
 }
 
-const CheckoutPage = () => {
+const CheckoutFeature = () => {
   const uid = auth.currentUser?.uid;
   const location = useLocation();
 
@@ -162,4 +162,4 @@ const CheckoutPage = () => {
   );
 };
 
-export { CheckoutPage };
+export { CheckoutFeature };
