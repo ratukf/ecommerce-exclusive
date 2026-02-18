@@ -24,7 +24,7 @@ import { About } from './pages/About';
 import { LogIn } from './pages/LogIn';
 import { SignUp } from './pages/SignUp';
 import { ProtectedRoute } from './shared/components/ProtectedRoute';
-import { Account } from './pages/Account';
+import { AccountPage } from './pages/AccountPage';
 import { Cart } from './pages/Cart';
 import { Checkout } from './pages/Checkout';
 
@@ -55,7 +55,7 @@ function App() {
             </Routes>
             <ProtectedRoute>
               <Routes>
-                <Route path='/account/*' element={<Account />} />
+                <Route path='/account/*' element={<AccountPage />} />
               </Routes>
             </ProtectedRoute>
           </Box>
