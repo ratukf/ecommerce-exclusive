@@ -48,7 +48,7 @@ const CartSummary = () => {
           Total
         </Typography>
         <Typography variant='body1' fontWeight={600} sx={{ color: 'black' }}>
-          ${totalSubtotal}
+          ${totalSubtotal.toFixed(2)}
         </Typography>
       </Box>
 

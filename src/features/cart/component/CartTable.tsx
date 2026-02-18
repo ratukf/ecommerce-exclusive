@@ -139,7 +139,7 @@ const CartTable = () => {
       headerName: 'Subtotal',
       flex: 0.5,
       type: 'number',
-      renderCell: (params: any) => <>${params.value}</>,
+      renderCell: (params: any) => <>${params.value.toFixed(2)}</>,
     },
   ];
 
