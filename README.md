@@ -8,6 +8,22 @@
 ![Firebase](https://img.shields.io/badge/firebase-a08021?style=for-the-badge&logo=firebase&logoColor=ffcd34)
 ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
 
+<p align="center">
+  <img width="1898" height="873" alt="image" src="https://github.com/user-attachments/assets/330087e4-2795-4902-bdf4-d2e40444a133" />
+</p>
+
+<p align="center">
+  <img width="1590" height="827" alt="image" src="https://github.com/user-attachments/assets/ca8bca22-4567-4e9e-9995-b4e35bab9767" />
+</p>
+
+<p align="center">
+  <img width="758" height="735" alt="image" src="https://github.com/user-attachments/assets/bfd56bdb-a242-4c06-b933-97821e584b47" />
+</p>
+
+<p align="center">
+  <img width="1621" height="690" alt="image" src="https://github.com/user-attachments/assets/5513ccfd-7bc4-4b9c-8785-0127894d1508" />
+</p>
+
 A shopping platform for discovering and shopping premium products online.
 
 ## About
