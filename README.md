@@ -21,18 +21,9 @@ E-Commerce Exclusive is a modern e-commerce web app built with React, TypeScript
 - Cart management
 - Dummy product purchasing & payment
 - Viewing product purchase progress and payment status
-- User's data management such as:
-
-1. Editing name & phone number
-2. Viewing user's personal information, wishlist, and order history
-3. Adding new addresses in address book
-4. Editing & deleting addresses in address book
-5. Adding wishlisht
+- User's data management such as viewing order history, updating name & phone number, adding new address, adding wishlist, and adding product to cart
 
 ## Project Status
-
-Ongoing project. Features, UI, and backend integration are under active development and may be
-incomplete.
 
 > **Current stage:** Working on `Error page` (70% progress)
 
@@ -80,26 +71,34 @@ incomplete.
 
 ## Run Project
 
+1. Clone the repository
+
 ```bash
-# 1. Clone the repository
 git clone https://github.com/ratukf/ecommerce-exclusive
+```
 
-# 2. Install dependencies
+2. Install dependencies
+
+```bash
 npm install
+```
 
-# 3. Start the development server
+# 3. Run
+
+```bash
 npm run dev
+```
+
+or 
+
+```bash
+npm run start
 ```
 
 ## Figma
 
 The UI is based on this Figma file:
 [Full E-Commerce Website UI/UX Design](https://www.figma.com/design/mLGzNknh0Iljbq1Yoo4szo/Full-E-Commerce-Website-UI-UX-Design--Community-?node-id=1-3&p=f&t=vgZVno6XvZyh27CY-0)
-
-## Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request for improvements or new
-features.
 
 ## License
 
